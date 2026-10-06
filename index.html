@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>TCG Portfolio</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f3f4f6;color:#111827}.app{max-width:520px;margin:auto;min-height:100vh;padding:18px 16px 92px}.top{display:flex;justify-content:space-between;align-items:center;margin:4px 0 18px}.top h1{font-size:24px;margin:0}.badge{font-size:12px;background:#e5e7eb;padding:6px 9px;border-radius:99px}.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 2px 14px #0000000c}.hero{text-align:center;padding:24px 16px}.camera{width:92px;height:92px;border-radius:50%;border:0;background:#111827;color:white;font-size:38px;cursor:pointer}.muted{color:#6b7280;font-size:13px}.preview{width:100%;max-height:330px;object-fit:contain;border-radius:12px;margin-top:14px;display:none;background:#eee}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{font-size:12px;color:#6b7280;display:block;margin-bottom:5px}select,input{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:11px;background:white;font-size:16px}.full{grid-column:1/-1}.primary{width:100%;padding:14px;border:0;border-radius:12px;background:#111827;color:#fff;font-weight:700;font-size:16px;margin-top:12px}.secondary{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:12px;background:#fff;font-weight:650}.result{display:none}.price{font-size:27px;font-weight:800}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid #e5e7eb;display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}.navin{width:min(520px,100%);display:flex}.nav button{flex:1;border:0;background:transparent;padding:15px;font-weight:700;color:#6b7280}.nav button.active{color:#111827}.screen{display:none}.screen.active{display:block}.item{padding:12px 0;border-bottom:1px solid #eee}.item:last-child{border:0}.tiny{font-size:11px;color:#9ca3af}.empty{text-align:center;color:#6b7280;padding:35px 5px}
+</style></head>
+<body><main class="app">
+<div class="top"><h1>TCG Portfolio</h1><span class="badge">Pokémon · V1</span></div>
+<section id="scan" class="screen active">
+<div class="card hero"><button class="camera" id="cameraBtn">📷</button><h2>Scanner une carte</h2><p class="muted">Prends une photo nette de la carte entière.</p><input id="photo" type="file" accept="image/*" capture="environment" hidden><img id="preview" class="preview"></div>
+<div class="card"><div class="grid">
+<div><label>Jeu</label><select id="game"><option>Pokémon</option></select></div>
+<div><label>Langue</label><select id="lang"><option>FR</option><option>EN</option><option>JP</option></select></div>
+<div class="full"><label>Nom de la carte</label><input id="name" placeholder="Ex. Pikachu"></div>
+<div><label>Numéro</label><input id="number" placeholder="025/165"></div>
+<div><label>Extension</label><input id="set" placeholder="151"></div>
+</div><button class="primary" id="identify">Identifier</button><p class="tiny">V1 test : l'identification automatique n'est pas encore connectée. Tu peux confirmer les informations manuellement après la photo.</p></div>
+<div class="card result" id="result"><div class="row"><div><div class="muted">Carte identifiée</div><strong id="resultName"></strong><div class="muted" id="resultMeta"></div></div><div style="text-align:right"><div class="muted">Estimation</div><div class="price">— €</div></div></div><hr style="border:0;border-top:1px solid #eee;margin:16px 0"><label>Prix d'achat (€)</label><input id="buy" inputmode="decimal" placeholder="0,00"><button class="primary" id="add">Ajouter au portfolio</button></div>
+</section>
+<section id="portfolio" class="screen"><div class="card"><div class="row"><div><div class="muted">Cartes enregistrées</div><div class="price" id="count">0</div></div><button class="secondary" style="width:auto" id="clear">Tout effacer</button></div></div><div class="card" id="list"></div></section>
+</main>
+<nav class="nav"><div class="navin"><button class="active" data-screen="scan">📷 Scanner</button><button data-screen="portfolio">🗂 Portfolio</button></div></nav>
+<script>
+const $=id=>document.getElementById(id);let cards=JSON.parse(localStorage.getItem('tcgCards')||'[]');
+$('cameraBtn').onclick=()=>$('photo').click();
+$('photo').onchange=e=>{const f=e.target.files[0];if(!f)return;const u=URL.createObjectURL(f);$('preview').src=u;$('preview').style.display='block'};
+$('identify').onclick=()=>{const n=$('name').value.trim(),num=$('number').value.trim(),set=$('set').value.trim();if(!n&&!num){alert("Pour cette V1, indique au moins le nom ou le numéro après la photo.");return}$('resultName').textContent=n||'Pokémon à confirmer';$('resultMeta').textContent=[set,num,$('lang').value].filter(Boolean).join(' · ');$('result').style.display='block';$('result').scrollIntoView({behavior:'smooth'})};
+$('add').onclick=()=>{cards.unshift({name:$('resultName').textContent,meta:$('resultMeta').textContent,buy:$('buy').value,date:new Date().toLocaleDateString('fr-FR')});save();render();show('portfolio')};
+function save(){localStorage.setItem('tcgCards',JSON.stringify(cards))}
+function render(){$('count').textContent=cards.length;$('list').innerHTML=cards.length?cards.map((c,i)=>`<div class="item"><div class="row"><div><strong>${esc(c.name)}</strong><div class="muted">${esc(c.meta)}</div><div class="tiny">Ajoutée le ${c.date}${c.buy?' · Achat '+esc(c.buy)+' €':''}</div></div><button class="secondary" style="width:auto" onclick="del(${i})">Supprimer</button></div></div>`).join(''):'<div class="empty">Aucune carte pour le moment.<br>Scanne ta première carte.</div>'}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}window.del=i=>{cards.splice(i,1);save();render()};$('clear').onclick=()=>{if(cards.length&&confirm('Effacer tout le portfolio ?')){cards=[];save();render()}};
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.screen===id));if(id==='portfolio')render();scrollTo(0,0)}document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>show(b.dataset.screen));render();
+</script></body></html>

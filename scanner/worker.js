@@ -54,7 +54,7 @@ function frame(data){
   const detection=V.detect(engine,src);let q=null;
   if(detection){crop=V.warp(engine,src,detection.points);q=V.quality(engine,crop);}
   const state=gate.update(detection,q,src.cols,src.rows,data.now);
-  return {...state,points:detection?.points.map(p=>({x:p.x/src.cols,y:p.y/src.rows}))||null,quality:q?{sharpness:q.sharpness,glare:q.glare,brightness:q.brightness}:null};
+  return {...state,stableFrames:gate.frames,points:detection?.points.map(p=>({x:p.x/src.cols,y:p.y/src.rows}))||null,quality:q?{sharpness:q.sharpness,glare:q.glare,brightness:q.brightness}:null};
  }finally{V.dispose(src,crop);}
 }
 async function analyse(data){

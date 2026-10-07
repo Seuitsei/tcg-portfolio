@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {BestFrame,nextDelay,configureFocus,cameraInfo} from '../scanner/camera.js';
+const b=new BestFrame();let captured=0;
+const state=(frames,sharpness=100,glare=0)=>({stableFrames:frames,quality:{sharpness,glare}});
+const capture=()=>({id:++captured});
+b.consider(state(1),100,capture);b.consider(state(2,80),200,capture);assert.equal(captured,1);b.consider(state(3,140),300,capture);assert.equal(b.take(400).id,2);assert.equal(b.take(401),null);
+b.consider(state(1),500,capture);b.consider(state(0),600,capture);assert.equal(b.take(601),null);
+b.consider(state(1),700,capture);assert.equal(b.take(1400),null);
+b.consider(state(1,500,.8),1500,capture);b.consider(state(2,200,0),1600,capture);assert.equal(b.take(1650).id,captured);
+assert.equal(nextDelay(0,60),90);assert.equal(nextDelay(0,300),20);
+let applied=0;assert.equal(await configureFocus({getCapabilities:()=>({}),applyConstraints:()=>applied++}),false);assert.equal(applied,0);
+assert.equal(await configureFocus({getCapabilities:()=>({focusMode:['continuous']}),applyConstraints:async c=>{assert.equal(c.advanced[0].focusMode,'continuous');applied++;}}),true);
+assert.equal(await configureFocus({getCapabilities:()=>({focusMode:['continuous']}),applyConstraints:async()=>{throw Error('unsupported')}}),false);
+assert(!('deviceId' in cameraInfo({getSettings:()=>({width:1920,deviceId:'private'})})));
+console.log('PASS best-frame sharpness, glare, movement reset, expiry, consumption, cadence, autofocus fallback and diagnostic privacy');

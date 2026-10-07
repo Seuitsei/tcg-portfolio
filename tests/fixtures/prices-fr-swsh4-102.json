@@ -1,0 +1,84 @@
+{
+  "id": "swsh4-102",
+  "name": "Zamazenta",
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Standard",
+      "thirdParty": {
+        "cardmarket": 511930,
+        "tcgplayer": 226554
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-06T22:54:32.761Z",
+          "unit": "EUR",
+          "idProduct": 511930,
+          "avg": 7.77,
+          "low": 2.15,
+          "trend": 6.4,
+          "avg1": 6.5,
+          "avg7": 7.93,
+          "avg30": 7.02,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 12.3,
+          "avg1-holo": 14.99,
+          "avg7-holo": 12.65,
+          "avg30-holo": 12.95
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-06T22:55:02.486Z",
+          "holofoil": {
+            "productId": 226554,
+            "lowPrice": 1.93,
+            "midPrice": 3.49,
+            "highPrice": 96.87,
+            "marketPrice": 2.78,
+            "directLowPrice": 2.99
+          }
+        }
+      }
+    }
+  ],
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-06T22:54:32.761Z",
+      "unit": "EUR",
+      "idProduct": 511930,
+      "avg": 7.77,
+      "low": 2.15,
+      "trend": 6.4,
+      "avg1": 6.5,
+      "avg7": 7.93,
+      "avg30": 7.02,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 12.3,
+      "avg1-holo": 14.99,
+      "avg7-holo": 12.65,
+      "avg30-holo": 12.95
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-06T22:55:02.486Z",
+      "holofoil": {
+        "productId": 226554,
+        "lowPrice": 1.93,
+        "midPrice": 3.49,
+        "highPrice": 96.87,
+        "marketPrice": 2.78,
+        "directLowPrice": 2.99
+      }
+    }
+  }
+}

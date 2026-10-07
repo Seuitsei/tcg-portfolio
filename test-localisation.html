@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#102a2a"><title>TCG Portfolio · Scanner TEST</title>
-<link rel="stylesheet" href="scanner/style.css?v=20261007-1">
+<link rel="stylesheet" href="scanner/style.css?v=20261007-2">
 </head>
 <body>
 <header><a href="./" class="brand">TCG Portfolio</a><span class="badge">TEST · V5 VISUEL</span></header>
@@ -23,7 +23,7 @@
 <p id="status" class="status" role="status" aria-live="polite">Préparation du moteur visuel… Tu peux déjà ouvrir la caméra.</p>
 <p id="coverage" class="muted"></p>
 <section id="results" class="panel" hidden><div class="resultTop"><h2 id="resultTitle">Résultat</h2><canvas id="cropPreview" width="252" height="352" aria-label="Carte détectée et redressée"></canvas></div><p id="resultReason"></p><div id="candidates"></div><button id="again" class="primary">Scanner une autre carte</button></section>
-<section id="selection" class="panel" hidden><h2 id="selectionName"></h2><p id="selectionMeta"></p><label>Finition <select id="finish"><option value="">À confirmer</option><option>Normale</option><option>Holographique</option><option>Reverse</option><option>Autre</option></select></label><label>Prix d’achat (€)<input id="buy" inputmode="decimal" placeholder="Facultatif"></label><button id="add" class="primary">Ajouter au portfolio</button><p class="muted">La finition et l’état ne sont pas déterminés automatiquement.</p></section>
+<section id="selection" class="panel" hidden><h2 id="selectionName"></h2><p id="selectionMeta"></p><label>Finition <select id="finish"><option value="">À confirmer</option><option>Normale</option><option>Holographique</option><option>Reverse</option><option>Autre</option></select></label><section class="prices" aria-label="Prix du marché"><h3>Prix du marché</h3><div id="priceContent" aria-live="polite"></div></section><label>Prix d’achat (€)<input id="buy" inputmode="decimal" placeholder="Facultatif"></label><button id="add" class="primary">Ajouter au portfolio</button><p class="muted">La finition et l’état ne sont pas déterminés automatiquement.</p></section>
 <details class="panel"><summary>Rechercher une carte manuellement</summary><div class="fields"><label>Nom<input id="name" placeholder="Dracaufeu"></label><label>Référence<input id="number" placeholder="021/072 ou OP05-119"></label></div><button id="search">Rechercher</button><p class="muted">Catalogue Pokémon pour cette version. Une référence seule ne suffit pas à confirmer l’édition.</p></details>
 <details class="panel" id="diagnostics"><summary>Détails du dernier scan</summary><pre id="debug">Aucun scan.</pre><button id="copyDiagnostics">Copier le diagnostic</button></details>
 </section>
@@ -32,5 +32,5 @@
 </main>
 <nav aria-label="Navigation"><button id="scanNav" class="active">Scanner</button><button id="portfolioNav">Portfolio</button><a href="./">Version stable</a></nav>
 <footer>Références : TCGdex / Pokémon TCG API. Application indépendante, non affiliée à Pokémon.<br><a href="docs/SCANNER-V5.md">Notes de version et limites</a> · <a href="THIRD_PARTY_NOTICES.md">Licences</a></footer>
-<script type="module" src="scanner/app.js?v=20261007-1"></script>
+<script type="module" src="scanner/app.js?v=20261007-2"></script>
 </body></html>

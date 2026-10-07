@@ -1,0 +1,62 @@
+{
+  "id": "cel25cc-CC002",
+  "name": "Dracaufeu",
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Standard",
+      "thirdParty": {
+        "cardmarket": 576772,
+        "tcgplayer": 250320
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-06T22:54:32.761Z",
+          "unit": "EUR",
+          "idProduct": 576772,
+          "avg": 235.11,
+          "low": 120,
+          "trend": 213.52,
+          "avg1": 160,
+          "avg7": 219.31,
+          "avg30": 235.68,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 0,
+          "avg1-holo": null,
+          "avg7-holo": null,
+          "avg30-holo": null
+        },
+        "tcgplayer": null
+      }
+    }
+  ],
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-06T22:54:32.761Z",
+      "unit": "EUR",
+      "idProduct": 576772,
+      "avg": 235.11,
+      "low": 120,
+      "trend": 213.52,
+      "avg1": 160,
+      "avg7": 219.31,
+      "avg30": 235.68,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 0,
+      "avg1-holo": null,
+      "avg7-holo": null,
+      "avg30-holo": null
+    },
+    "tcgplayer": null
+  }
+}

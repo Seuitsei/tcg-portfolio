@@ -1,5 +1,7 @@
+import {createPricePanel} from './prices.js?v=20261007-2';
 const $=id=>document.getElementById(id);
 const VERSION='20261007-1';
+const loadPrices=createPricePanel($('priceContent'));
 let worker,requestId=0,pending=new Map(),ready=false,preparing=false,summary=null,stream=null,cameraToken=0,live=false,paused=false,timer=null,frameBusy=false,analysisBusy=false,selected=null,lastDiagnostic=null;
 let collection=[];try{const stored=JSON.parse(localStorage.getItem('tcgCards')||'[]');if(Array.isArray(stored))collection=stored;}catch{status('Le portfolio local ne peut pas être lu. Il ne sera pas écrasé.',true);}
 const frameCanvas=document.createElement('canvas'),frameContext=frameCanvas.getContext('2d',{willReadFrequently:true});
@@ -69,7 +71,7 @@ function candidateNode(c){
  info.append(title,meta,note);const btn=document.createElement('button');btn.textContent='Choisir';btn.onclick=()=>choose(c);row.append(img,info,btn);return row;
 }
 function renderCandidates(candidates){$('candidates').replaceChildren(...candidates.map(candidateNode));}
-function choose(c){selected=c;$('selection').hidden=false;$('selectionName').textContent=c.name;$('selectionMeta').textContent=[c.setName,c.printedNumber||c.localId,c.id].filter(Boolean).join(' · ');$('buy').value='';$('finish').value='';}
+function choose(c){selected=c;$('selection').hidden=false;$('selectionName').textContent=c.name;$('selectionMeta').textContent=[c.setName,c.printedNumber||c.localId,c.id].filter(Boolean).join(' · ');$('buy').value='';$('finish').value='';loadPrices(c,c.lang||$('lang').value);}
 async function restart(){selected=null;$('selection').hidden=true;$('results').hidden=true;if(!stream){await startCamera();return;}paused=false;if(ready)await rpc('reset');schedule();status('Présente une autre carte.');}
 async function importPhoto(file){
  if(!file)return;if(analysisBusy){status('Attends la fin de l’analyse en cours.');return;}if(!ready){status('Attends la fin de préparation du catalogue avant d’importer.');return;}

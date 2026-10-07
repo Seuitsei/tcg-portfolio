@@ -1,0 +1,84 @@
+{
+  "id": "swsh4.5-21",
+  "name": "Kyogre",
+  "variants": {
+    "firstEdition": false,
+    "holo": true,
+    "normal": false,
+    "reverse": false,
+    "wPromo": false
+  },
+  "variants_detailed": [
+    {
+      "type": "Holo",
+      "size": "Standard",
+      "thirdParty": {
+        "cardmarket": 539128,
+        "tcgplayer": 232414
+      },
+      "variantId": "jr7oetx1mqug9",
+      "pricing": {
+        "cardmarket": {
+          "updated": "2026-10-06T22:54:32.761Z",
+          "unit": "EUR",
+          "idProduct": 539128,
+          "avg": 7.4,
+          "low": 2,
+          "trend": 6.45,
+          "avg1": 7.1,
+          "avg7": 6.67,
+          "avg30": 7.02,
+          "avg-holo": null,
+          "low-holo": null,
+          "trend-holo": 6.73,
+          "avg1-holo": 7.14,
+          "avg7-holo": 7.71,
+          "avg30-holo": 8.67
+        },
+        "tcgplayer": {
+          "unit": "USD",
+          "updated": "2026-10-06T22:55:02.694Z",
+          "holofoil": {
+            "productId": 232414,
+            "lowPrice": 2.94,
+            "midPrice": 4.46,
+            "highPrice": 99.99,
+            "marketPrice": 3.83,
+            "directLowPrice": 4.8
+          }
+        }
+      }
+    }
+  ],
+  "pricing": {
+    "cardmarket": {
+      "updated": "2026-10-06T22:54:32.761Z",
+      "unit": "EUR",
+      "idProduct": 539128,
+      "avg": 7.4,
+      "low": 2,
+      "trend": 6.45,
+      "avg1": 7.1,
+      "avg7": 6.67,
+      "avg30": 7.02,
+      "avg-holo": null,
+      "low-holo": null,
+      "trend-holo": 6.73,
+      "avg1-holo": 7.14,
+      "avg7-holo": 7.71,
+      "avg30-holo": 8.67
+    },
+    "tcgplayer": {
+      "unit": "USD",
+      "updated": "2026-10-06T22:55:02.694Z",
+      "holofoil": {
+        "productId": 232414,
+        "lowPrice": 2.94,
+        "midPrice": 4.46,
+        "highPrice": 99.99,
+        "marketPrice": 3.83,
+        "directLowPrice": 4.8
+      }
+    }
+  }
+}

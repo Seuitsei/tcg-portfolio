@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "viewport": "390x844",
+  "auto": {
+    "version": "20261007-1",
+    "date": "2026-10-07T09:30:33.830Z",
+    "lang": "fr",
+    "kind": "strong",
+    "durationMs": 1130,
+    "referenceCount": 17154,
+    "quality": {
+      "sharpness": 871.9251780918952,
+      "glare": 0.0012738997113997115
+    },
+    "unavailableReferences": 0,
+    "candidates": [
+      {
+        "id": "swsh4.5-21",
+        "distance": 0.2514635603345281,
+        "inliers": 115,
+        "coverage": 0.35873015652831325,
+        "unverified": false
+      },
+      {
+        "id": "swsh6-39",
+        "distance": 0.7094235364396655,
+        "inliers": 11,
+        "coverage": 0.12791439118151401,
+        "unverified": false
+      },
+      {
+        "id": "swsh12-036",
+        "distance": 0.680794504181601,
+        "inliers": 12,
+        "coverage": 0.12073864001904387,
+        "unverified": false
+      }
+    ]
+  },
+  "checks": [
+    "camera-before-engine",
+    "auto-capture",
+    "import",
+    "portfolio-preservation",
+    "camera-stop",
+    "camera-reopen",
+    "navigation-cleanup",
+    "denied-permission",
+    "cached-scan-without-network",
+    "english-catalogue",
+    "celebrations-ambiguity"
+  ],
+  "errors": []
+}

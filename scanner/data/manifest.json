@@ -1,0 +1,246 @@
+{
+  "version": 1,
+  "created": "2026-10-07",
+  "packs": [
+    {
+      "file": "fr-base1.json",
+      "lang": "fr",
+      "setId": "base1",
+      "name": "Set de Base",
+      "count": 102,
+      "available": 102,
+      "bytes": 1700049,
+      "sha256": "8360e1fc212005232602a093762bd171de2daa7c25aa91a57f278d6b8b2ceb05"
+    },
+    {
+      "file": "en-base1.json",
+      "lang": "en",
+      "setId": "base1",
+      "name": "Base Set",
+      "count": 102,
+      "available": 102,
+      "bytes": 1706186,
+      "sha256": "a8fc8e7bac06e6ecbbbb67582c20506fbfbe054227537693e4d6198df20cddb2"
+    },
+    {
+      "file": "fr-base2.json",
+      "lang": "fr",
+      "setId": "base2",
+      "name": "Jungle",
+      "count": 64,
+      "available": 64,
+      "bytes": 1088609,
+      "sha256": "d7d74886863c4a8e003bc149bcb37f509f0d2474a04ee45ed999149413a509b0"
+    },
+    {
+      "file": "en-base2.json",
+      "lang": "en",
+      "setId": "base2",
+      "name": "Jungle",
+      "count": 64,
+      "available": 64,
+      "bytes": 1082919,
+      "sha256": "89d0b661232d9dec3a0082695960775342f2d50a38b95df8683743fa5522361c"
+    },
+    {
+      "file": "fr-basep.json",
+      "lang": "fr",
+      "setId": "basep",
+      "name": "Wizards Black Star Promos",
+      "count": 0,
+      "available": 0,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "file": "en-basep.json",
+      "lang": "en",
+      "setId": "basep",
+      "name": "Wizards Black Star Promos",
+      "count": 53,
+      "available": 53,
+      "bytes": 901850,
+      "sha256": "0b3fe7c5f8cc3b2e8a53aacc291f3250e7ce27a5f49beb7097051480d725e2db"
+    },
+    {
+      "file": "fr-neo1.json",
+      "lang": "fr",
+      "setId": "neo1",
+      "name": "Neo Genesis",
+      "count": 111,
+      "available": 111,
+      "bytes": 1868798,
+      "sha256": "801c9f5d7fb061e31cbfe31a816e310cb4646e93338f446eda584ffb0bceddec"
+    },
+    {
+      "file": "en-neo1.json",
+      "lang": "en",
+      "setId": "neo1",
+      "name": "Neo Genesis",
+      "count": 111,
+      "available": 111,
+      "bytes": 1865664,
+      "sha256": "1b3ca874f0e7880baf20b8f91bd197b4a2f1a3ca99cfbdcaac101e888a9c7c75"
+    },
+    {
+      "file": "fr-ex3.json",
+      "lang": "fr",
+      "setId": "ex3",
+      "name": "EX Dragon",
+      "count": 100,
+      "available": 100,
+      "bytes": 1687874,
+      "sha256": "890a9aff33668786829f608e893657cd10b59efa091e6c986899dc080baff7f5"
+    },
+    {
+      "file": "en-ex3.json",
+      "lang": "en",
+      "setId": "ex3",
+      "name": "Dragon",
+      "count": 100,
+      "available": 100,
+      "bytes": 1673593,
+      "sha256": "9f9a3ac3c82f4469f34a85113773deeb140db099ab47b5919142a234b579fcf9"
+    },
+    {
+      "file": "fr-xy12.json",
+      "lang": "fr",
+      "setId": "xy12",
+      "name": "Évolutions",
+      "count": 113,
+      "available": 113,
+      "bytes": 1890394,
+      "sha256": "e0e0272b97b28042ebb40704f39a8f5801a47b23473ec24161aacd6766e9e0dd"
+    },
+    {
+      "file": "en-xy12.json",
+      "lang": "en",
+      "setId": "xy12",
+      "name": "Evolutions",
+      "count": 113,
+      "available": 113,
+      "bytes": 1885497,
+      "sha256": "305b3dde474801feca78a461b0fdfe407ae04a088ac16fcf05751cb77ef53e4c"
+    },
+    {
+      "file": "fr-swsh4.json",
+      "lang": "fr",
+      "setId": "swsh4",
+      "name": "Voltage Éclatant",
+      "count": 203,
+      "available": 203,
+      "bytes": 3423868,
+      "sha256": "1cccf828c6b8d047b946bd96ac9f08f7dcb550b27f15998f940b7879c043ed4a"
+    },
+    {
+      "file": "en-swsh4.json",
+      "lang": "en",
+      "setId": "swsh4",
+      "name": "Vivid Voltage",
+      "count": 203,
+      "available": 203,
+      "bytes": 3420122,
+      "sha256": "b5d49563a3da11fdac2a3d6b6ab3d58ebc99cd623a260a34e26579dce292d18c"
+    },
+    {
+      "file": "fr-swsh4.5.json",
+      "lang": "fr",
+      "setId": "swsh4.5",
+      "name": "Destinées Radieuses",
+      "count": 73,
+      "available": 73,
+      "bytes": 1236774,
+      "sha256": "5f8da09e00e813eeb0b5da140b310fa83d8049a546b7123b192fbcb994a6b727"
+    },
+    {
+      "file": "en-swsh4.5.json",
+      "lang": "en",
+      "setId": "swsh4.5",
+      "name": "Shining Fates",
+      "count": 73,
+      "available": 73,
+      "bytes": 1236520,
+      "sha256": "ceef3d134ffc8086bd75674e1208a57c373a198f2a28df29df1553eaf8349428"
+    },
+    {
+      "file": "fr-swsh4.5sv.json",
+      "lang": "fr",
+      "setId": "swsh4.5sv",
+      "name": "Destinées Radieuses Coffre Étincelant",
+      "count": 0,
+      "available": 0,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "file": "en-swsh4.5sv.json",
+      "lang": "en",
+      "setId": "swsh4.5sv",
+      "name": "Shining Fates Shiny Vault",
+      "count": 0,
+      "available": 0,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "file": "fr-cel25.json",
+      "lang": "fr",
+      "setId": "cel25",
+      "name": "Célébrations",
+      "count": 24,
+      "available": 24,
+      "bytes": 404332,
+      "sha256": "c09c895943cdc1abe58e9361e6b2725e601431a5bad7ab6d8eb4ca03be379410"
+    },
+    {
+      "file": "en-cel25.json",
+      "lang": "en",
+      "setId": "cel25",
+      "name": "Celebrations",
+      "count": 24,
+      "available": 24,
+      "bytes": 403666,
+      "sha256": "9ace555f681aea696e1424fecf34ffab8e87b1adeba340478764823736f01288"
+    },
+    {
+      "file": "fr-sv03.5.json",
+      "lang": "fr",
+      "setId": "sv03.5",
+      "name": "151",
+      "count": 207,
+      "available": 207,
+      "bytes": 3501034,
+      "sha256": "ef025aa3e4fafb75c1dd7f810cb200a3d63bae9f99c6b36915961e34ffe48eac"
+    },
+    {
+      "file": "en-sv03.5.json",
+      "lang": "en",
+      "setId": "sv03.5",
+      "name": "151",
+      "count": 207,
+      "available": 207,
+      "bytes": 3494609,
+      "sha256": "4447a5d3eab8dc4b96d9dc20804fd8df5b004c4667bf4e2013b4509b928bdde4"
+    },
+    {
+      "file": "fr-cel25cc.json",
+      "lang": "fr",
+      "setId": "cel25cc",
+      "name": "Célébrations Collection Classique",
+      "count": 25,
+      "available": 25,
+      "bytes": 429760,
+      "sha256": "b82f09954fc7311aef93fa9a83b95a4e6eb1e54395edc8b6fa75722a79076d6b"
+    },
+    {
+      "file": "en-cel25cc.json",
+      "lang": "en",
+      "setId": "cel25cc",
+      "name": "Celebrations Classic Collection",
+      "count": 25,
+      "available": 25,
+      "bytes": 429642,
+      "sha256": "cacaa4d41ebe360902b5ab29a2fe2a2e05fc5dfdf3d79f38da489fa403868fd0"
+    }
+  ]
+}

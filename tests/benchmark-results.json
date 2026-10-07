@@ -1,0 +1,2975 @@
+{
+  "referenceCount": 17154,
+  "kind": "synthetic-reference-distortions",
+  "trials": [
+    {
+      "id": "swsh4.5-21",
+      "mode": "clean",
+      "detected": true,
+      "top1": "swsh4.5-21",
+      "top3": [
+        "swsh4.5-21",
+        "swsh10-035",
+        "swsh6-39"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh4.5-21",
+        "distance": 0.24743130227001198,
+        "inliers": 136,
+        "ratio": 0.9315068493150684,
+        "coverage": 0.48193993506493504,
+        "evidence": 101.55663985368535
+      },
+      "quality": 693.6984352407351,
+      "ms": 795
+    },
+    {
+      "id": "swsh4.5-21",
+      "mode": "camera",
+      "detected": true,
+      "top1": "swsh4.5-21",
+      "top3": [
+        "swsh4.5-21",
+        "swshp-SWSH113",
+        "swsh9-041"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh4.5-21",
+        "distance": 0.22956989247311832,
+        "inliers": 112,
+        "ratio": 0.7943262411347518,
+        "coverage": 0.3733295492754353,
+        "evidence": 72.35419438268103
+      },
+      "quality": 320.5162788600288,
+      "ms": 595
+    },
+    {
+      "id": "swsh4.5-21",
+      "mode": "glare",
+      "detected": true,
+      "top1": "swsh4.5-21",
+      "top3": [
+        "swsh4.5-21",
+        "swsh3-41",
+        "swsh10-035"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "swsh4.5-21",
+        "distance": 0.4925179211469534,
+        "inliers": 97,
+        "ratio": 0.8818181818181818,
+        "coverage": 0.47499999855503894,
+        "evidence": 57.310108256945824
+      },
+      "quality": 340.71482683982686,
+      "ms": 592
+    },
+    {
+      "id": "swsh4-102",
+      "mode": "clean",
+      "detected": true,
+      "top1": "swsh4-102",
+      "top3": [
+        "swsh4-102",
+        "swsh12.5-070",
+        "swsh3-92"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh4-102",
+        "distance": 0.32492532855436085,
+        "inliers": 126,
+        "ratio": 0.8181818181818182,
+        "coverage": 0.37341093899637323,
+        "evidence": 77.80884467156545
+      },
+      "quality": 727.8274711353959,
+      "ms": 1637
+    },
+    {
+      "id": "swsh4-102",
+      "mode": "camera",
+      "detected": true,
+      "top1": "swsh4-102",
+      "top3": [
+        "swsh4-102",
+        "swsh12.5-070",
+        "swsh11-097"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh4-102",
+        "distance": 0.3075567502986858,
+        "inliers": 141,
+        "ratio": 0.9591836734693877,
+        "coverage": 0.45524836876691677,
+        "evidence": 103.43329108146902
+      },
+      "quality": 333.01605339105333,
+      "ms": 1428
+    },
+    {
+      "id": "swsh4-102",
+      "mode": "glare",
+      "detected": true,
+      "top1": "swsh4-102",
+      "top3": [
+        "swsh4-102",
+        "swsh8-144",
+        "swsh9-076"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "swsh4-102",
+        "distance": 0.5733721624850656,
+        "inliers": 101,
+        "ratio": 0.9181818181818182,
+        "coverage": 0.30630586296180584,
+        "evidence": 58.941149365380284
+      },
+      "quality": 346.0152867965367,
+      "ms": 1636
+    },
+    {
+      "id": "base1-4",
+      "mode": "clean",
+      "detected": true,
+      "top1": "base1-4",
+      "top3": [
+        "base1-4",
+        "base2-16",
+        "base1-1"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "base1-4",
+        "distance": 0.25851254480286734,
+        "inliers": 145,
+        "ratio": 0.7671957671957672,
+        "coverage": 0.4460225444906676,
+        "evidence": 88.3927511909
+      },
+      "quality": 632.911232856224,
+      "ms": 311
+    },
+    {
+      "id": "base1-4",
+      "mode": "camera",
+      "detected": true,
+      "top1": "base1-4",
+      "top3": [
+        "base1-4",
+        "base2-16",
+        "base1-10"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "base1-4",
+        "distance": 0.2451463560334528,
+        "inliers": 136,
+        "ratio": 0.7771428571428571,
+        "coverage": 0.5041260822510822,
+        "evidence": 84.88273531805525
+      },
+      "quality": 277.0699630210545,
+      "ms": 336
+    },
+    {
+      "id": "base1-4",
+      "mode": "glare",
+      "detected": true,
+      "top1": "base1-4",
+      "top3": [
+        "base1-4",
+        "base1-1",
+        "base2-16"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "base1-4",
+        "distance": 0.4083333333333333,
+        "inliers": 106,
+        "ratio": 0.848,
+        "coverage": 0.5289809266089703,
+        "evidence": 63.825798816568046
+      },
+      "quality": 303.25394570503727,
+      "ms": 346
+    },
+    {
+      "id": "xy12-11",
+      "mode": "clean",
+      "detected": true,
+      "top1": "xy12-11",
+      "top3": [
+        "xy12-11",
+        "cel25cc-CC002",
+        "xy12-44"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "xy12-11",
+        "distance": 0.341173835125448,
+        "inliers": 150,
+        "ratio": 0.9375,
+        "coverage": 0.5091901724472717,
+        "evidence": 104.85217972273259
+      },
+      "quality": 925.8298160127407,
+      "ms": 398
+    },
+    {
+      "id": "xy12-11",
+      "mode": "camera",
+      "detected": true,
+      "top1": "xy12-11",
+      "top3": [
+        "xy12-11",
+        "cel25cc-CC002",
+        "base1-4"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "xy12-11",
+        "distance": 0.335663082437276,
+        "inliers": 113,
+        "ratio": 0.7583892617449665,
+        "coverage": 0.5091901724472717,
+        "evidence": 64.16137999472309
+      },
+      "quality": 393.59494498557,
+      "ms": 292
+    },
+    {
+      "id": "xy12-11",
+      "mode": "glare",
+      "detected": true,
+      "top1": "xy12-11",
+      "top3": [
+        "xy12-11",
+        "cel25cc-CC002",
+        "sv02-276"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "xy12-11",
+        "distance": 0.5662335722819594,
+        "inliers": 83,
+        "ratio": 0.9222222222222223,
+        "coverage": 0.5190341028816257,
+        "evidence": 48.8716662693683
+      },
+      "quality": 402.5868055555556,
+      "ms": 418
+    },
+    {
+      "id": "cel25cc-CC002",
+      "mode": "clean",
+      "detected": true,
+      "top1": "cel25cc-CC002",
+      "top3": [
+        "cel25cc-CC002",
+        "xy12-11",
+        "base1-4"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "cel25cc-CC002",
+        "distance": 0.37659796893667863,
+        "inliers": 130,
+        "ratio": 0.9027777777777778,
+        "coverage": 0.45075757575757575,
+        "evidence": 85.25445610076265
+      },
+      "quality": 904.9600130709731,
+      "ms": 458
+    },
+    {
+      "id": "cel25cc-CC002",
+      "mode": "camera",
+      "detected": true,
+      "top1": "cel25cc-CC002",
+      "top3": [
+        "cel25cc-CC002",
+        "xy12-11",
+        "base1-4"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "cel25cc-CC002",
+        "distance": 0.3752986857825568,
+        "inliers": 118,
+        "ratio": 0.8309859154929577,
+        "coverage": 0.41648135158406646,
+        "evidence": 71.29821255691385
+      },
+      "quality": 372.4231376262626,
+      "ms": 330
+    },
+    {
+      "id": "cel25cc-CC002",
+      "mode": "glare",
+      "detected": true,
+      "top1": "cel25cc-CC002",
+      "top3": [
+        "cel25cc-CC002",
+        "base1-4",
+        "xy12-11"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "cel25cc-CC002",
+        "distance": 0.5813918757467145,
+        "inliers": 72,
+        "ratio": 0.96,
+        "coverage": 0.4973174029459683,
+        "evidence": 43.70833128718482
+      },
+      "quality": 384.7256718975468,
+      "ms": 362
+    },
+    {
+      "id": "hgss4-1",
+      "mode": "clean",
+      "detected": true,
+      "top1": "hgss4-1",
+      "top3": [
+        "hgss4-1",
+        "bw4-76",
+        "dp3-23"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss4-1",
+        "distance": 0.2858422939068101,
+        "inliers": 139,
+        "ratio": 0.8742138364779874,
+        "coverage": 0.38745005166602753,
+        "evidence": 94.50282032739464
+      },
+      "quality": 1086.865575396317,
+      "ms": 376
+    },
+    {
+      "id": "hgss4-1",
+      "mode": "camera",
+      "detected": true,
+      "top1": "hgss4-1",
+      "top3": [
+        "hgss4-1",
+        "dp3-101",
+        "sv06-151"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss4-1",
+        "distance": 0.28608124253285544,
+        "inliers": 130,
+        "ratio": 0.87248322147651,
+        "coverage": 0.3895325086164954,
+        "evidence": 88.19257683019096
+      },
+      "quality": 416.50813943001447,
+      "ms": 219
+    },
+    {
+      "id": "hgss4-1",
+      "mode": "glare",
+      "detected": true,
+      "top1": "hgss4-1",
+      "top3": [
+        "hgss4-1",
+        "xy4-60",
+        "ex6-111"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss4-1",
+        "distance": 0.6375746714456392,
+        "inliers": 103,
+        "ratio": 0.8110236220472441,
+        "coverage": 0.25427816474970955,
+        "evidence": 51.01167875118737
+      },
+      "quality": 440.85777417027424,
+      "ms": 306
+    },
+    {
+      "id": "neo4-4",
+      "mode": "clean",
+      "detected": true,
+      "top1": "neo4-4",
+      "top3": [
+        "neo4-4",
+        "neo2-16",
+        "neo2-35"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "neo4-4",
+        "distance": 0.2253584229390681,
+        "inliers": 151,
+        "ratio": 0.825136612021858,
+        "coverage": 0.3677962662337662,
+        "evidence": 101.68096622411365
+      },
+      "quality": 371.06599476098603,
+      "ms": 388
+    },
+    {
+      "id": "neo4-4",
+      "mode": "camera",
+      "detected": true,
+      "top1": "neo4-4",
+      "top3": [
+        "neo4-4",
+        "neo2-16",
+        "neo2-35"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "neo4-4",
+        "distance": 0.2149193548387097,
+        "inliers": 158,
+        "ratio": 0.9404761904761905,
+        "coverage": 0.535173207650453,
+        "evidence": 122.30872568078013
+      },
+      "quality": 187.71017090230615,
+      "ms": 302
+    },
+    {
+      "id": "neo4-4",
+      "mode": "glare",
+      "detected": true,
+      "top1": "neo4-4",
+      "top3": [
+        "neo4-4",
+        "base1-3",
+        "neo4-40"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "neo4-4",
+        "distance": 0.5672341696535246,
+        "inliers": 91,
+        "ratio": 0.8504672897196262,
+        "coverage": 0.418323900964525,
+        "evidence": 49.381595209601315
+      },
+      "quality": 234.0182742572845,
+      "ms": 243
+    },
+    {
+      "id": "bw1-8",
+      "mode": "clean",
+      "detected": true,
+      "top1": "bw1-8",
+      "top3": [
+        "bw1-8",
+        "xy10-3",
+        "xy4-4"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "bw1-8",
+        "distance": 0.2613351254480287,
+        "inliers": 144,
+        "ratio": 0.8372093023255814,
+        "coverage": 0.37527468013577575,
+        "evidence": 95.57978454937678
+      },
+      "quality": 773.7235073908072,
+      "ms": 379
+    },
+    {
+      "id": "bw1-8",
+      "mode": "camera",
+      "detected": true,
+      "top1": "bw1-8",
+      "top3": [
+        "bw1-8",
+        "xy10-3",
+        "bw4-1"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "bw1-8",
+        "distance": 0.25101553166069296,
+        "inliers": 126,
+        "ratio": 0.7325581395348837,
+        "coverage": 0.1262182223074364,
+        "evidence": 46.563112746731946
+      },
+      "quality": 348.4882305194805,
+      "ms": 225
+    },
+    {
+      "id": "bw1-8",
+      "mode": "glare",
+      "detected": true,
+      "top1": "bw1-8",
+      "top3": [
+        "bw1-8",
+        "xy4-30",
+        "pl3-39"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "bw1-8",
+        "distance": 0.6049133811230585,
+        "inliers": 89,
+        "ratio": 0.8811881188118812,
+        "coverage": 0.28689812031315176,
+        "evidence": 48.86602822102338
+      },
+      "quality": 374.0710001803752,
+      "ms": 344
+    },
+    {
+      "id": "sm9-12",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm9-12",
+      "top3": [
+        "sm9-12",
+        "sm9-15",
+        "sm6-15"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm9-12",
+        "distance": 0.3490890083632019,
+        "inliers": 103,
+        "ratio": 0.7573529411764706,
+        "coverage": 0.2445269877102342,
+        "evidence": 57.82224334910252
+      },
+      "quality": 487.02674062049067,
+      "ms": 426
+    },
+    {
+      "id": "sm9-12",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm9-12",
+      "top3": [
+        "sm9-12",
+        "sm6-15",
+        "sm9-15"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm9-12",
+        "distance": 0.32927120669056154,
+        "inliers": 81,
+        "ratio": 0.7641509433962265,
+        "coverage": 0.4000034893093683,
+        "evidence": 46.56403155620526
+      },
+      "quality": 273.4121347402598,
+      "ms": 334
+    },
+    {
+      "id": "sm9-12",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm9-12",
+      "top3": [
+        "sm9-12",
+        "sm6-14",
+        "sm8-49"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm9-12",
+        "distance": 0.6518817204301075,
+        "inliers": 69,
+        "ratio": 0.8734177215189873,
+        "coverage": 0.35038961435981286,
+        "evidence": 36.48313437908766
+      },
+      "quality": 284.9349071067821,
+      "ms": 475
+    },
+    {
+      "id": "neo3-15",
+      "mode": "clean",
+      "detected": true,
+      "top1": "neo3-15",
+      "top3": [
+        "neo3-15",
+        "neo4-67",
+        "neo4-75"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "neo3-15",
+        "distance": 0.24746117084826763,
+        "inliers": 165,
+        "ratio": 0.9649122807017544,
+        "coverage": 0.5508996212121212,
+        "evidence": 127.62764087280334
+      },
+      "quality": 505.28043831168833,
+      "ms": 494
+    },
+    {
+      "id": "neo3-15",
+      "mode": "camera",
+      "detected": true,
+      "top1": "neo3-15",
+      "top3": [
+        "neo3-15",
+        "base5-40",
+        "neo4-67"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "neo3-15",
+        "distance": 0.27132616487455197,
+        "inliers": 144,
+        "ratio": 0.9411764705882353,
+        "coverage": 0.5284880050505051,
+        "evidence": 106.60475298097813
+      },
+      "quality": 256.65134604355615,
+      "ms": 389
+    },
+    {
+      "id": "neo3-15",
+      "mode": "glare",
+      "detected": true,
+      "top1": "neo3-15",
+      "top3": [
+        "neo3-15",
+        "base5-40",
+        "base1-60"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "neo3-15",
+        "distance": 0.5875746714456394,
+        "inliers": 97,
+        "ratio": 0.8434782608695652,
+        "coverage": 0.5570549242424242,
+        "evidence": 51.536090097636304
+      },
+      "quality": 289.36696202479715,
+      "ms": 367
+    },
+    {
+      "id": "ex11-19",
+      "mode": "clean",
+      "detected": true,
+      "top1": "ex11-19",
+      "top3": [
+        "ex11-19",
+        "xy8-124",
+        "swshp-SWSH201"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "ex11-19",
+        "distance": 0.3524044205495818,
+        "inliers": 121,
+        "ratio": 0.7756410256410257,
+        "coverage": 0.33743157537434404,
+        "evidence": 69.3968184934096
+      },
+      "quality": 473.6873421717172,
+      "ms": 548
+    },
+    {
+      "id": "ex11-19",
+      "mode": "camera",
+      "detected": true,
+      "top1": "ex11-19",
+      "top3": [
+        "ex11-19",
+        "swshp-SWSH201",
+        "neo4-81"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "ex11-19",
+        "distance": 0.38045101553166066,
+        "inliers": 125,
+        "ratio": 0.8333333333333334,
+        "coverage": 0.40733768912448853,
+        "evidence": 75.45843024828258
+      },
+      "quality": 247.98484343973107,
+      "ms": 388
+    },
+    {
+      "id": "ex11-19",
+      "mode": "glare",
+      "detected": true,
+      "top1": "ex11-19",
+      "top3": [
+        "ex11-19",
+        "swshp-SWSH201",
+        "neo4-81"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "ex11-19",
+        "distance": 0.5126045400238949,
+        "inliers": 125,
+        "ratio": 0.9124087591240876,
+        "coverage": 0.409733793178162,
+        "evidence": 75.40047108989191
+      },
+      "quality": 250.5389109000485,
+      "ms": 461
+    },
+    {
+      "id": "xy7-23",
+      "mode": "clean",
+      "detected": true,
+      "top1": "xy7-23",
+      "top3": [
+        "xy7-23",
+        "xy8-30",
+        "xy11-29"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "xy7-23",
+        "distance": 0.23113799283154124,
+        "inliers": 137,
+        "ratio": 0.9383561643835616,
+        "coverage": 0.4843344471671365,
+        "evidence": 104.41948446808944
+      },
+      "quality": 756.4675099160596,
+      "ms": 645
+    },
+    {
+      "id": "xy7-23",
+      "mode": "camera",
+      "detected": true,
+      "top1": "xy7-23",
+      "top3": [
+        "xy7-23",
+        "bw3-26",
+        "xy8-30"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "xy7-23",
+        "distance": 0.2140830346475508,
+        "inliers": 120,
+        "ratio": 0.8333333333333334,
+        "coverage": 0.46567827049960153,
+        "evidence": 82.3666892182791
+      },
+      "quality": 337.63751352813847,
+      "ms": 467
+    },
+    {
+      "id": "xy7-23",
+      "mode": "glare",
+      "detected": true,
+      "top1": "xy7-23",
+      "top3": [
+        "xy7-23",
+        "xyp-XY190",
+        "xy5-50"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "xy7-23",
+        "distance": 0.5462813620071685,
+        "inliers": 100,
+        "ratio": 0.9615384615384616,
+        "coverage": 0.48448776957964657,
+        "evidence": 62.183926235153315
+      },
+      "quality": 365.9513212481963,
+      "ms": 560
+    },
+    {
+      "id": "xy4-27",
+      "mode": "clean",
+      "detected": true,
+      "top1": "xy4-27",
+      "top3": [
+        "xy4-27",
+        "xy4-28",
+        "bw4-44"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "xy4-27",
+        "distance": 0.2433393070489845,
+        "inliers": 127,
+        "ratio": 0.7696969696969697,
+        "coverage": 0.4324012907036455,
+        "evidence": 78.62014383147302
+      },
+      "quality": 886.4459325351072,
+      "ms": 828
+    },
+    {
+      "id": "xy4-27",
+      "mode": "camera",
+      "detected": true,
+      "top1": "xy4-27",
+      "top3": [
+        "xy4-27",
+        "bw3-36",
+        "xy4-28"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "xy4-27",
+        "distance": 0.23400537634408602,
+        "inliers": 118,
+        "ratio": 0.7763157894736842,
+        "coverage": 0.38950215841268565,
+        "evidence": 74.23408756069458
+      },
+      "quality": 371.232187950938,
+      "ms": 476
+    },
+    {
+      "id": "xy4-27",
+      "mode": "glare",
+      "detected": true,
+      "top1": "xy4-27",
+      "top3": [
+        "xy4-27",
+        "bw8-49",
+        "pl3-77"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "xy4-27",
+        "distance": 0.5344384707287934,
+        "inliers": 87,
+        "ratio": 0.87,
+        "coverage": 0.39315025011698407,
+        "evidence": 49.32749109454382
+      },
+      "quality": 411.8679202741703,
+      "ms": 742
+    },
+    {
+      "id": "sm2-31",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm2-31",
+      "top3": [
+        "sm2-31",
+        "sm10-46",
+        "sm6-30"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm2-31",
+        "distance": 0.2694743130227001,
+        "inliers": 115,
+        "ratio": 0.7098765432098766,
+        "coverage": 0.3660779463780391,
+        "evidence": 64.30677772026417
+      },
+      "quality": 732.5553526334776,
+      "ms": 612
+    },
+    {
+      "id": "sm2-31",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm2-31",
+      "top3": [
+        "sm2-31",
+        "sm10-46",
+        "sm8-54"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm2-31",
+        "distance": 0.2625,
+        "inliers": 142,
+        "ratio": 0.8875,
+        "coverage": 0.4882467763867724,
+        "evidence": 99.82178217821782
+      },
+      "quality": 338.8090954184704,
+      "ms": 493
+    },
+    {
+      "id": "sm2-31",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm2-31",
+      "top3": [
+        "sm2-31",
+        "sm5-30",
+        "sm8-61"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm2-31",
+        "distance": 0.5185334528076464,
+        "inliers": 87,
+        "ratio": 0.8787878787878788,
+        "coverage": 0.49071169097537065,
+        "evidence": 50.347620141780304
+      },
+      "quality": 341.5677534271284,
+      "ms": 577
+    },
+    {
+      "id": "hgss1-35",
+      "mode": "clean",
+      "detected": true,
+      "top1": "hgss1-35",
+      "top3": [
+        "hgss1-35",
+        "bw7-7",
+        "sv10.5b-002"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss1-35",
+        "distance": 0.3433243727598567,
+        "inliers": 116,
+        "ratio": 0.6987951807228916,
+        "coverage": 0.2512987151703271,
+        "evidence": 60.34301365151095
+      },
+      "quality": 691.4510506849172,
+      "ms": 475
+    },
+    {
+      "id": "hgss1-35",
+      "mode": "camera",
+      "detected": true,
+      "top1": "hgss1-35",
+      "top3": [
+        "hgss1-35",
+        "bw7-7",
+        "me03-002"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss1-35",
+        "distance": 0.34598267622461176,
+        "inliers": 138,
+        "ratio": 0.8679245283018868,
+        "coverage": 0.31590911991152415,
+        "evidence": 88.9859780674273
+      },
+      "quality": 336.4893127705627,
+      "ms": 291
+    },
+    {
+      "id": "hgss1-35",
+      "mode": "glare",
+      "detected": true,
+      "top1": "hgss1-35",
+      "top3": [
+        "hgss1-35",
+        "sv06-011",
+        "xy8-5"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss1-35",
+        "distance": 0.6202956989247311,
+        "inliers": 76,
+        "ratio": 0.8172043010752689,
+        "coverage": 0.41868258279467385,
+        "evidence": 38.33098299460805
+      },
+      "quality": 346.5042388167388,
+      "ms": 367
+    },
+    {
+      "id": "hgss4-39",
+      "mode": "clean",
+      "detected": true,
+      "top1": "hgss4-39",
+      "top3": [
+        "hgss4-39",
+        "sv03.5-118",
+        "bw6-32"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss4-39",
+        "distance": 0.23181003584229393,
+        "inliers": 149,
+        "ratio": 0.9430379746835443,
+        "coverage": 0.43233228663861417,
+        "evidence": 114.07007098441733
+      },
+      "quality": 683.0311823587989,
+      "ms": 504
+    },
+    {
+      "id": "hgss4-39",
+      "mode": "camera",
+      "detected": true,
+      "top1": "hgss4-39",
+      "top3": [
+        "hgss4-39",
+        "sv03.5-118",
+        "bw6-32"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss4-39",
+        "distance": 0.23313918757467145,
+        "inliers": 102,
+        "ratio": 0.6754966887417219,
+        "coverage": 0.22544103404660237,
+        "evidence": 55.87419728925242
+      },
+      "quality": 327.5103715728716,
+      "ms": 331
+    },
+    {
+      "id": "hgss4-39",
+      "mode": "glare",
+      "detected": true,
+      "top1": "hgss4-39",
+      "top3": [
+        "hgss4-39",
+        "sv03.5-118",
+        "ex2-73"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss4-39",
+        "distance": 0.4556302270011947,
+        "inliers": 92,
+        "ratio": 0.8,
+        "coverage": 0.13073581761845954,
+        "evidence": 33.051512665210424
+      },
+      "quality": 344.3105384199134,
+      "ms": 410
+    },
+    {
+      "id": "hgss2-43",
+      "mode": "clean",
+      "detected": true,
+      "top1": "hgss2-43",
+      "top3": [
+        "hgss2-43",
+        "hgss3-34",
+        "pl1-93"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "hgss2-43",
+        "distance": 0.2923387096774194,
+        "inliers": 143,
+        "ratio": 0.8562874251497006,
+        "coverage": 0.2410190725957516,
+        "evidence": 94.75000700626826
+      },
+      "quality": 944.9049422794337,
+      "ms": 818
+    },
+    {
+      "id": "hgss2-43",
+      "mode": "camera",
+      "detected": true,
+      "top1": "hgss2-43",
+      "top3": [
+        "hgss2-43",
+        "hgss3-34",
+        "bw6-102"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "hgss2-43",
+        "distance": 0.28016726403823183,
+        "inliers": 135,
+        "ratio": 0.9246575342465754,
+        "coverage": 0.4174513254330788,
+        "evidence": 97.50973222789715
+      },
+      "quality": 387.82758387445887,
+      "ms": 692
+    },
+    {
+      "id": "hgss2-43",
+      "mode": "glare",
+      "detected": true,
+      "top1": "hgss2-43",
+      "top3": [
+        "hgss2-43",
+        "pl1-93",
+        "ex16-22"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "hgss2-43",
+        "distance": 0.5461021505376344,
+        "inliers": 74,
+        "ratio": 0.8809523809523809,
+        "coverage": 0.4174513254330788,
+        "evidence": 42.16440431688628
+      },
+      "quality": 408.89944083694087,
+      "ms": 755
+    },
+    {
+      "id": "sm1-47",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm1-47",
+      "top3": [
+        "sm1-47",
+        "sm5-40",
+        "sm8-63"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm1-47",
+        "distance": 0.26081242532855436,
+        "inliers": 118,
+        "ratio": 0.7515923566878981,
+        "coverage": 0.4113853407800628,
+        "evidence": 70.34186553647015
+      },
+      "quality": 703.342306998557,
+      "ms": 1037
+    },
+    {
+      "id": "sm1-47",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm1-47",
+      "top3": [
+        "sm1-47",
+        "sm5-40",
+        "sm4-20"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm1-47",
+        "distance": 0.24931302270011946,
+        "inliers": 127,
+        "ratio": 0.9407407407407408,
+        "coverage": 0.45489721277575473,
+        "evidence": 95.63181676907261
+      },
+      "quality": 326.32792207792215,
+      "ms": 776
+    },
+    {
+      "id": "sm1-47",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm1-47",
+      "top3": [
+        "sm1-47",
+        "sm4-20",
+        "sm8-59"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm1-47",
+        "distance": 0.4710872162485066,
+        "inliers": 119,
+        "ratio": 0.9296875,
+        "coverage": 0.45489721277575473,
+        "evidence": 75.20479498294486
+      },
+      "quality": 348.6777371933622,
+      "ms": 769
+    },
+    {
+      "id": "sm10-51",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm10-51",
+      "top3": [
+        "sm10-51",
+        "sm7-37",
+        "sm1-40"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm10-51",
+        "distance": 0.29274193548387095,
+        "inliers": 166,
+        "ratio": 0.9707602339181286,
+        "coverage": 0.4647862738087063,
+        "evidence": 124.65457676213825
+      },
+      "quality": 699.7228760822511,
+      "ms": 853
+    },
+    {
+      "id": "sm10-51",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm10-51",
+      "top3": [
+        "sm10-51",
+        "sm6-33",
+        "sm6-21"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm10-51",
+        "distance": 0.2793757467144564,
+        "inliers": 147,
+        "ratio": 0.8963414634146342,
+        "coverage": 0.4675505022809963,
+        "evidence": 102.9894426718089
+      },
+      "quality": 331.4415358946609,
+      "ms": 820
+    },
+    {
+      "id": "sm10-51",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm10-51",
+      "top3": [
+        "sm10-51",
+        "sm6-33",
+        "sv03.5-072"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm10-51",
+        "distance": 0.5141726403823178,
+        "inliers": 117,
+        "ratio": 0.9512195121951219,
+        "coverage": 0.4675505022809963,
+        "evidence": 73.50065637081427
+      },
+      "quality": 335.621663059163,
+      "ms": 771
+    },
+    {
+      "id": "sm3-55",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm3-55",
+      "top3": [
+        "sm3-55",
+        "sm12-100",
+        "sm9-58"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm3-55",
+        "distance": 0.2857228195937873,
+        "inliers": 147,
+        "ratio": 0.8698224852071006,
+        "coverage": 0.4415711093946625,
+        "evidence": 99.44904405277744
+      },
+      "quality": 701.9937996031746,
+      "ms": 966
+    },
+    {
+      "id": "sm3-55",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm3-55",
+      "top3": [
+        "sm3-55",
+        "sm12-100",
+        "sm4-43"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm3-55",
+        "distance": 0.29507168458781363,
+        "inliers": 160,
+        "ratio": 0.9467455621301775,
+        "coverage": 0.47776875901875904,
+        "evidence": 116.96595002695943
+      },
+      "quality": 338.04069715007216,
+      "ms": 849
+    },
+    {
+      "id": "sm3-55",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm3-55",
+      "top3": [
+        "sm3-55",
+        "sm4-43",
+        "swsh12.5-062"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm3-55",
+        "distance": 0.5159498207885306,
+        "inliers": 79,
+        "ratio": 0.7247706422018348,
+        "coverage": 0.36680555464041353,
+        "evidence": 37.76964115089406
+      },
+      "quality": 346.7664592352093,
+      "ms": 934
+    },
+    {
+      "id": "sm5-59",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm5-59",
+      "top3": [
+        "sm5-59",
+        "sm8-92",
+        "sm9-62"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm5-59",
+        "distance": 0.2845430107526882,
+        "inliers": 137,
+        "ratio": 0.85625,
+        "coverage": 0.4928391175868707,
+        "evidence": 91.32138746468556
+      },
+      "quality": 724.8358360389611,
+      "ms": 1074
+    },
+    {
+      "id": "sm5-59",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm5-59",
+      "top3": [
+        "sm5-59",
+        "swsh3-81",
+        "swshp-SWSH040"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm5-59",
+        "distance": 0.27828554360812424,
+        "inliers": 122,
+        "ratio": 0.8133333333333334,
+        "coverage": 0.4825486938158671,
+        "evidence": 77.62480547701942
+      },
+      "quality": 338.98759920634916,
+      "ms": 941
+    },
+    {
+      "id": "sm5-59",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm5-59",
+      "top3": [
+        "sm5-59",
+        "ex2-89",
+        "ex9-85"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm5-59",
+        "distance": 0.5730436081242533,
+        "inliers": 94,
+        "ratio": 0.8392857142857143,
+        "coverage": 0.4849967404361411,
+        "evidence": 50.1530006767781
+      },
+      "quality": 351.92933802308795,
+      "ms": 979
+    },
+    {
+      "id": "sm4-63a",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm4-63a",
+      "top3": [
+        "sm4-63a",
+        "sv04-255",
+        "sm2-97"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm4-63a",
+        "distance": 0.26081242532855436,
+        "inliers": 138,
+        "ratio": 0.8961038961038961,
+        "coverage": 0.45559499471906634,
+        "evidence": 98.0814712625572
+      },
+      "quality": 2087.4951524170274,
+      "ms": 1091
+    },
+    {
+      "id": "sm4-63a",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm4-63a",
+      "top3": [
+        "sm4-63a",
+        "sv04-255",
+        "sm2-97"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm4-63a",
+        "distance": 0.2890083632019116,
+        "inliers": 136,
+        "ratio": 0.9315068493150684,
+        "coverage": 0.41663669197648384,
+        "evidence": 98.28092285775593
+      },
+      "quality": 837.2630546491046,
+      "ms": 973
+    },
+    {
+      "id": "sm4-63a",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm4-63a",
+      "top3": [
+        "sm4-63a",
+        "sm4-63",
+        "swsh1-26"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm4-63a",
+        "distance": 0.5497461170848268,
+        "inliers": 105,
+        "ratio": 0.9210526315789473,
+        "coverage": 0.40858120139990295,
+        "evidence": 62.40410945355892
+      },
+      "quality": 869.6679067414565,
+      "ms": 994
+    },
+    {
+      "id": "g1-67",
+      "mode": "clean",
+      "detected": true,
+      "top1": "g1-67",
+      "top3": [
+        "g1-67",
+        "xy0-35",
+        "bw5-94"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "g1-67",
+        "distance": 0.24635603345280765,
+        "inliers": 137,
+        "ratio": 0.7873563218390804,
+        "coverage": 0.3284023365417084,
+        "evidence": 86.5465510630421
+      },
+      "quality": 688.5083198006197,
+      "ms": 1127
+    },
+    {
+      "id": "g1-67",
+      "mode": "camera",
+      "detected": true,
+      "top1": "g1-67",
+      "top3": [
+        "g1-67",
+        "xy0-35",
+        "xy5-138"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "g1-67",
+        "distance": 0.2361111111111111,
+        "inliers": 130,
+        "ratio": 0.8125,
+        "coverage": 0.21861824586876918,
+        "evidence": 85.4494382022472
+      },
+      "quality": 327.046378968254,
+      "ms": 915
+    },
+    {
+      "id": "g1-67",
+      "mode": "glare",
+      "detected": true,
+      "top1": "xy0-35",
+      "top3": [
+        "xy0-35",
+        "g1-67",
+        "xy10-113"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "xy0-35",
+        "distance": 0.41385902031063326,
+        "inliers": 81,
+        "ratio": 0.84375,
+        "coverage": 0.34053031001428163,
+        "evidence": 48.33844748183201
+      },
+      "quality": 363.80336850649354,
+      "ms": 665
+    },
+    {
+      "id": "sv06-071",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sv06-071",
+      "top3": [
+        "sv06-071",
+        "sv05-059",
+        "sv02-069"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv06-071",
+        "distance": 0.2172341696535245,
+        "inliers": 174,
+        "ratio": 0.93048128342246,
+        "coverage": 0.5381493754201121,
+        "evidence": 133.00952877587437
+      },
+      "quality": 478.5069555622071,
+      "ms": 1242
+    },
+    {
+      "id": "sv06-071",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sv06-071",
+      "top3": [
+        "sv06-071",
+        "sv05-059",
+        "sv02-069"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv06-071",
+        "distance": 0.22528375149342894,
+        "inliers": 150,
+        "ratio": 0.8287292817679558,
+        "coverage": 0.3447698304590266,
+        "evidence": 101.45355483060939
+      },
+      "quality": 220.9961782905715,
+      "ms": 1365
+    },
+    {
+      "id": "sv06-071",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sv06-071",
+      "top3": [
+        "sv06-071",
+        "sv05-059",
+        "sv02-069"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv06-071",
+        "distance": 0.4150985663082437,
+        "inliers": 106,
+        "ratio": 0.8091603053435115,
+        "coverage": 0.43246757192873164,
+        "evidence": 60.611320234868465
+      },
+      "quality": 227.04546580860898,
+      "ms": 1515
+    },
+    {
+      "id": "swsh6-75",
+      "mode": "clean",
+      "detected": true,
+      "top1": "swsh6-75",
+      "top3": [
+        "swsh6-75",
+        "swsh9-097",
+        "ex10-99"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh6-75",
+        "distance": 0.024432497013142176,
+        "inliers": 224,
+        "ratio": 0.9696969696969697,
+        "coverage": 0.4858193360553671,
+        "evidence": 212.03165835272662
+      },
+      "quality": 1000.3619924039201,
+      "ms": 1886
+    },
+    {
+      "id": "swsh6-75",
+      "mode": "camera",
+      "detected": true,
+      "top1": "swsh6-75",
+      "top3": [
+        "swsh6-75",
+        "swsh9-097",
+        "ex10-99"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh6-75",
+        "distance": 0.049641577060931905,
+        "inliers": 188,
+        "ratio": 0.9038461538461539,
+        "coverage": 0.48639975648125844,
+        "evidence": 161.88676271653904
+      },
+      "quality": 293.2495340302756,
+      "ms": 1668
+    },
+    {
+      "id": "swsh6-75",
+      "mode": "glare",
+      "detected": true,
+      "top1": "swsh6-75",
+      "top3": [
+        "swsh6-75",
+        "me02.5-238",
+        "me02.5-224"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "swsh6-75",
+        "distance": 0.5316009557945043,
+        "inliers": 161,
+        "ratio": 0.9877300613496932,
+        "coverage": 0.48639975648125844,
+        "evidence": 103.82896359241828
+      },
+      "quality": 331.25178872003033,
+      "ms": 1427
+    },
+    {
+      "id": "sv08.5-079",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sv08.5-079",
+      "top3": [
+        "sv08.5-079",
+        "sv05-128",
+        "svp-099"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv08.5-079",
+        "distance": 0.22850955794504185,
+        "inliers": 159,
+        "ratio": 0.8833333333333333,
+        "coverage": 0.5120197480375116,
+        "evidence": 114.32552485381893
+      },
+      "quality": 983.419237012987,
+      "ms": 1400
+    },
+    {
+      "id": "sv08.5-079",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sv08.5-079",
+      "top3": [
+        "sv08.5-079",
+        "sv05-128",
+        "svp-099"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv08.5-079",
+        "distance": 0.23157108721624847,
+        "inliers": 140,
+        "ratio": 0.8484848484848485,
+        "coverage": 0.4382575941292238,
+        "evidence": 96.45231202721564
+      },
+      "quality": 355.43656049509923,
+      "ms": 1458
+    },
+    {
+      "id": "sv08.5-079",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sv05-128",
+      "top3": [
+        "sv05-128",
+        "sv08.5-079",
+        "svp-099"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv05-128",
+        "distance": 0.4272252090800478,
+        "inliers": 109,
+        "ratio": 0.9008264462809917,
+        "coverage": 0.5168087121212122,
+        "evidence": 68.79788979338367
+      },
+      "quality": 356.557592241131,
+      "ms": 1766
+    },
+    {
+      "id": "sv04-084",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sv04-084",
+      "top3": [
+        "sv04-084",
+        "sv02-104",
+        "me02-046"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv04-084",
+        "distance": 0.2906660692951016,
+        "inliers": 155,
+        "ratio": 0.8516483516483516,
+        "coverage": 0.43283740432772283,
+        "evidence": 102.27703171711133
+      },
+      "quality": 600.9195186935203,
+      "ms": 1465
+    },
+    {
+      "id": "sv04-084",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sv04-084",
+      "top3": [
+        "sv04-084",
+        "sv02-102",
+        "me02-046"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv04-084",
+        "distance": 0.28360215053763443,
+        "inliers": 124,
+        "ratio": 0.7337278106508875,
+        "coverage": 0.3512730427508354,
+        "evidence": 70.88041141299296
+      },
+      "quality": 244.72915538292355,
+      "ms": 1311
+    },
+    {
+      "id": "sv04-084",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sv04-084",
+      "top3": [
+        "sv04-084",
+        "30th-077",
+        "sv04.5-027"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv04-084",
+        "distance": 0.6069593787335723,
+        "inliers": 96,
+        "ratio": 0.8275862068965517,
+        "coverage": 0.5092261843867116,
+        "evidence": 49.44012705827158
+      },
+      "quality": 263.2257282544964,
+      "ms": 1395
+    },
+    {
+      "id": "swsh1-88",
+      "mode": "clean",
+      "detected": true,
+      "top1": "swsh1-88",
+      "top3": [
+        "swsh1-88",
+        "swsh1-82",
+        "swsh2-86"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh1-88",
+        "distance": 0.3349910394265233,
+        "inliers": 135,
+        "ratio": 0.9375,
+        "coverage": 0.4684568903318903,
+        "evidence": 94.8040071148102
+      },
+      "quality": 673.0014429968678,
+      "ms": 1372
+    },
+    {
+      "id": "swsh1-88",
+      "mode": "camera",
+      "detected": true,
+      "top1": "swsh1-88",
+      "top3": [
+        "swsh1-88",
+        "swsh1-82",
+        "swsh8-118"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh1-88",
+        "distance": 0.30818399044205497,
+        "inliers": 127,
+        "ratio": 0.9202898550724637,
+        "coverage": 0.4502308669716421,
+        "evidence": 89.34279309954594
+      },
+      "quality": 316.35989357864355,
+      "ms": 1314
+    },
+    {
+      "id": "swsh1-88",
+      "mode": "glare",
+      "detected": true,
+      "top1": "swsh1-88",
+      "top3": [
+        "swsh1-88",
+        "sm2-55",
+        "sm10-135"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "swsh1-88",
+        "distance": 0.4467592592592593,
+        "inliers": 94,
+        "ratio": 0.8245614035087719,
+        "coverage": 0.3862778307003337,
+        "evidence": 53.574063157894734
+      },
+      "quality": 319.92266414141415,
+      "ms": 1331
+    },
+    {
+      "id": "pl3-92",
+      "mode": "clean",
+      "detected": true,
+      "top1": "pl3-92",
+      "top3": [
+        "pl3-92",
+        "pop9-6",
+        "bw6-33"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "pl3-92",
+        "distance": 0.23884408602150536,
+        "inliers": 137,
+        "ratio": 0.8509316770186336,
+        "coverage": 0.27274465855040786,
+        "evidence": 94.10194637642974
+      },
+      "quality": 568.8878066378068,
+      "ms": 1518
+    },
+    {
+      "id": "pl3-92",
+      "mode": "camera",
+      "detected": true,
+      "top1": "pl3-92",
+      "top3": [
+        "pl3-92",
+        "bw1-81",
+        "bw1-31"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "pl3-92",
+        "distance": 0.24039725209080048,
+        "inliers": 132,
+        "ratio": 0.9041095890410958,
+        "coverage": 0.2672730784911614,
+        "evidence": 96.2131007241932
+      },
+      "quality": 301.49314574314576,
+      "ms": 1367
+    },
+    {
+      "id": "pl3-92",
+      "mode": "glare",
+      "detected": true,
+      "top1": "pl3-92",
+      "top3": [
+        "pl3-92",
+        "ex3-60",
+        "bw1-81"
+      ],
+      "decision": "reject",
+      "best": {
+        "id": "pl3-92",
+        "distance": 0.506347072879331,
+        "inliers": 86,
+        "ratio": 0.8686868686868687,
+        "coverage": 0.03456438138199403,
+        "evidence": 8.571078107899105
+      },
+      "quality": 322.6658324314575,
+      "ms": 1405
+    },
+    {
+      "id": "ecard2-97",
+      "mode": "clean",
+      "detected": true,
+      "top1": "ecard2-97",
+      "top3": [
+        "ecard2-97",
+        "ecard2-96",
+        "ecard1-18"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "ecard2-97",
+        "distance": 0.26465053763440866,
+        "inliers": 120,
+        "ratio": 0.8450704225352113,
+        "coverage": 0.508691829004329,
+        "evidence": 80.18693519390334
+      },
+      "quality": 454.1065115440116,
+      "ms": 1363
+    },
+    {
+      "id": "ecard2-97",
+      "mode": "camera",
+      "detected": true,
+      "top1": "ecard2-97",
+      "top3": [
+        "ecard2-97",
+        "ecard2-96",
+        "ecard1-54"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "ecard2-97",
+        "distance": 0.24632616487455197,
+        "inliers": 125,
+        "ratio": 0.8802816901408451,
+        "coverage": 0.49181552160353886,
+        "evidence": 88.28765243701768
+      },
+      "quality": 202.68551587301585,
+      "ms": 1293
+    },
+    {
+      "id": "ecard2-97",
+      "mode": "glare",
+      "detected": true,
+      "top1": "ecard2-97",
+      "top3": [
+        "ecard2-97",
+        "ecard1-54",
+        "ecard1-18"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "ecard2-97",
+        "distance": 0.47874850657108725,
+        "inliers": 101,
+        "ratio": 0.7952755905511811,
+        "coverage": 0.5031421911974499,
+        "evidence": 54.31811717052643
+      },
+      "quality": 211.7045229076479,
+      "ms": 1270
+    },
+    {
+      "id": "xy2-102",
+      "mode": "clean",
+      "detected": false,
+      "ms": 14
+    },
+    {
+      "id": "xy2-102",
+      "mode": "camera",
+      "detected": false,
+      "ms": 22
+    },
+    {
+      "id": "xy2-102",
+      "mode": "glare",
+      "detected": false,
+      "ms": 22
+    },
+    {
+      "id": "bw8-107",
+      "mode": "clean",
+      "detected": true,
+      "top1": "bw8-107",
+      "top3": [
+        "bw8-107",
+        "xy10-81",
+        "bw1-82"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "bw8-107",
+        "distance": 0.280241935483871,
+        "inliers": 158,
+        "ratio": 0.9294117647058824,
+        "coverage": 0.45553180906507706,
+        "evidence": 114.70258452987494
+      },
+      "quality": 998.3968253922503,
+      "ms": 1694
+    },
+    {
+      "id": "bw8-107",
+      "mode": "camera",
+      "detected": true,
+      "top1": "bw8-107",
+      "top3": [
+        "bw8-107",
+        "xy10-81",
+        "ex4-68"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "bw8-107",
+        "distance": 0.26545698924731187,
+        "inliers": 141,
+        "ratio": 0.9215686274509803,
+        "coverage": 0.46358765410138414,
+        "evidence": 102.68320264908937
+      },
+      "quality": 395.08743686868684,
+      "ms": 1520
+    },
+    {
+      "id": "bw8-107",
+      "mode": "glare",
+      "detected": true,
+      "top1": "bw8-107",
+      "top3": [
+        "bw8-107",
+        "bw2-89",
+        "xy11-72"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "bw8-107",
+        "distance": 0.5676672640382319,
+        "inliers": 92,
+        "ratio": 0.9019607843137255,
+        "coverage": 0.35939934948650104,
+        "evidence": 52.93240093762591
+      },
+      "quality": 425.6982548701298,
+      "ms": 1462
+    },
+    {
+      "id": "sv05-112",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sv05-112",
+      "top3": [
+        "sv05-112",
+        "sv07-109",
+        "sv01-156"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv05-112",
+        "distance": 0.2515830346475508,
+        "inliers": 149,
+        "ratio": 0.9371069182389937,
+        "coverage": 0.524837681225368,
+        "evidence": 111.5618596227856
+      },
+      "quality": 754.0582272072288,
+      "ms": 1652
+    },
+    {
+      "id": "sv05-112",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sv05-112",
+      "top3": [
+        "sv05-112",
+        "sv07-109",
+        "sv03-147"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv05-112",
+        "distance": 0.2431451612903226,
+        "inliers": 112,
+        "ratio": 0.7619047619047619,
+        "coverage": 0.4562770744078775,
+        "evidence": 68.64309655097848
+      },
+      "quality": 282.69039726604035,
+      "ms": 1544
+    },
+    {
+      "id": "sv05-112",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sv05-112",
+      "top3": [
+        "sv05-112",
+        "sv03-166",
+        "sv03.5-022"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv05-112",
+        "distance": 0.5620669056152927,
+        "inliers": 94,
+        "ratio": 0.912621359223301,
+        "coverage": 0.4893939551852998,
+        "evidence": 54.91852330947331
+      },
+      "quality": 299.5083987090419,
+      "ms": 1729
+    },
+    {
+      "id": "xy4-119",
+      "mode": "clean",
+      "detected": true,
+      "top1": "xy4-119",
+      "top3": [
+        "xy4-119",
+        "swsh11-022",
+        "bw2-20"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "xy4-119",
+        "distance": 0.17556750298685783,
+        "inliers": 149,
+        "ratio": 0.8975903614457831,
+        "coverage": 0.44009289321789324,
+        "evidence": 113.76714949640527
+      },
+      "quality": 599.3218115509602,
+      "ms": 1707
+    },
+    {
+      "id": "xy4-119",
+      "mode": "camera",
+      "detected": true,
+      "top1": "xy4-119",
+      "top3": [
+        "xy4-119",
+        "swsh11-022",
+        "sm1-139"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "xy4-119",
+        "distance": 0.19169653524492236,
+        "inliers": 117,
+        "ratio": 0.7222222222222222,
+        "coverage": 0.3975356240981241,
+        "evidence": 70.907313649807
+      },
+      "quality": 211.9224613320656,
+      "ms": 1588
+    },
+    {
+      "id": "xy4-119",
+      "mode": "glare",
+      "detected": true,
+      "top1": "xy4-119",
+      "top3": [
+        "xy4-119",
+        "me02-120",
+        "swsh11-023"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "xy4-119",
+        "distance": 0.4221326164874552,
+        "inliers": 105,
+        "ratio": 0.8267716535433071,
+        "coverage": 0.41825622294372294,
+        "evidence": 61.042846929749054
+      },
+      "quality": 233.97138809974243,
+      "ms": 1590
+    },
+    {
+      "id": "sv06-126",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sv06-126",
+      "top3": [
+        "sv06-126",
+        "sv08-139",
+        "sv03.5-082"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv06-126",
+        "distance": 0.2372311827956989,
+        "inliers": 150,
+        "ratio": 0.8241758241758241,
+        "coverage": 0.3691964490073068,
+        "evidence": 99.92180551659095
+      },
+      "quality": 619.6163305622072,
+      "ms": 1783
+    },
+    {
+      "id": "sv06-126",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sv06-126",
+      "top3": [
+        "sv06-126",
+        "sv08-139",
+        "sv03.5-082"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv06-126",
+        "distance": 0.22719534050179213,
+        "inliers": 144,
+        "ratio": 0.9171974522292994,
+        "coverage": 0.46686507002443806,
+        "evidence": 107.6246207608757
+      },
+      "quality": 253.13646508710826,
+      "ms": 1665
+    },
+    {
+      "id": "sv06-126",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sv06-126",
+      "top3": [
+        "sv06-126",
+        "me02.5-156",
+        "sv09-115"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv06-126",
+        "distance": 0.5839008363201912,
+        "inliers": 99,
+        "ratio": 0.9339622641509434,
+        "coverage": 0.47910803539240343,
+        "evidence": 58.376296060147936
+      },
+      "quality": 270.24277370904196,
+      "ms": 1754
+    },
+    {
+      "id": "ecard1-134",
+      "mode": "clean",
+      "detected": true,
+      "top1": "ecard1-134",
+      "top3": [
+        "ecard1-134",
+        "ecard2-117",
+        "ecard1-120"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "ecard1-134",
+        "distance": 0.13460274790919952,
+        "inliers": 201,
+        "ratio": 0.9220183486238532,
+        "coverage": 0.5438852790114167,
+        "evidence": 163.3397137587629
+      },
+      "quality": 464.2057060787442,
+      "ms": 2815
+    },
+    {
+      "id": "ecard1-134",
+      "mode": "camera",
+      "detected": true,
+      "top1": "ecard1-134",
+      "top3": [
+        "ecard1-134",
+        "ecard1-125",
+        "ecard2-108"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "ecard1-134",
+        "distance": 0.13124253285543608,
+        "inliers": 179,
+        "ratio": 0.9421052631578948,
+        "coverage": 0.5518353174603174,
+        "evidence": 149.07222563458336
+      },
+      "quality": 162.9404579350485,
+      "ms": 1569
+    },
+    {
+      "id": "ecard1-134",
+      "mode": "glare",
+      "detected": true,
+      "top1": "ecard1-134",
+      "top3": [
+        "ecard1-134",
+        "ecard1-102",
+        "ecard2-78"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "ecard1-134",
+        "distance": 0.443757467144564,
+        "inliers": 131,
+        "ratio": 0.9703703703703703,
+        "coverage": 0.5518353174603174,
+        "evidence": 88.04700333078179
+      },
+      "quality": 179.29512063346124,
+      "ms": 1588
+    },
+    {
+      "id": "sv08-142",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sv08-142",
+      "top3": [
+        "sv08-142",
+        "sv08-086",
+        "sv04.5-203"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv08-142",
+        "distance": 0.2782556750298686,
+        "inliers": 156,
+        "ratio": 0.8666666666666667,
+        "coverage": 0.3852911277347139,
+        "evidence": 105.76913730255166
+      },
+      "quality": 964.6160093177199,
+      "ms": 2909
+    },
+    {
+      "id": "sv08-142",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sv08-142",
+      "top3": [
+        "sv08-142",
+        "sv03-222",
+        "sv04.5-203"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv08-142",
+        "distance": 0.29245818399044204,
+        "inliers": 150,
+        "ratio": 0.9090909090909091,
+        "coverage": 0.4025974025974026,
+        "evidence": 105.5071940065527
+      },
+      "quality": 349.643308080808,
+      "ms": 1888
+    },
+    {
+      "id": "sv08-142",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sv08-142",
+      "top3": [
+        "sv08-142",
+        "sv08-086",
+        "me02.5-149"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv08-142",
+        "distance": 0.5085872162485066,
+        "inliers": 84,
+        "ratio": 0.75,
+        "coverage": 0.21725373539443177,
+        "evidence": 41.76092659506014
+      },
+      "quality": 361.8902867965367,
+      "ms": 1848
+    },
+    {
+      "id": "sv01-151",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sv01-151",
+      "top3": [
+        "sv01-151",
+        "sv03-180",
+        "sv03-178"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv01-151",
+        "distance": 0.22661290322580646,
+        "inliers": 121,
+        "ratio": 0.7469135802469136,
+        "coverage": 0.27485298951656756,
+        "evidence": 73.67975909286451
+      },
+      "quality": 706.7106667815433,
+      "ms": 2744
+    },
+    {
+      "id": "sv01-151",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sv01-151",
+      "top3": [
+        "sv01-151",
+        "me01-110",
+        "sv03-178"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv01-151",
+        "distance": 0.23076463560334531,
+        "inliers": 128,
+        "ratio": 0.7901234567901234,
+        "coverage": 0.4538109115593018,
+        "evidence": 82.1731463055542
+      },
+      "quality": 275.7091111910043,
+      "ms": 1609
+    },
+    {
+      "id": "sv01-151",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sv01-151",
+      "top3": [
+        "sv01-151",
+        "sv03-166",
+        "sv03-180"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv01-151",
+        "distance": 0.4551672640382318,
+        "inliers": 95,
+        "ratio": 0.7364341085271318,
+        "coverage": 0.3334090616795924,
+        "evidence": 48.07779974099212
+      },
+      "quality": 289.4603512703694,
+      "ms": 1529
+    },
+    {
+      "id": "ecard1-161",
+      "mode": "clean",
+      "detected": true,
+      "top1": "ecard1-161",
+      "top3": [
+        "ecard1-161",
+        "ex1-108",
+        "xy1-133"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "ecard1-161",
+        "distance": 0.19478793309438472,
+        "inliers": 93,
+        "ratio": 0.8378378378378378,
+        "coverage": 0.1054294899262128,
+        "evidence": 34.3782844205148
+      },
+      "quality": 241.76950306434458,
+      "ms": 1745
+    },
+    {
+      "id": "ecard1-161",
+      "mode": "camera",
+      "detected": true,
+      "top1": "ecard1-161",
+      "top3": [
+        "ecard1-161",
+        "ex1-108",
+        "g1-76"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "ecard1-161",
+        "distance": 0.21868279569892474,
+        "inliers": 67,
+        "ratio": 0.9305555555555556,
+        "coverage": 0.2599296569824219,
+        "evidence": 51.15951619425756
+      },
+      "quality": 159.17506538282566,
+      "ms": 1713
+    },
+    {
+      "id": "ecard1-161",
+      "mode": "glare",
+      "detected": true,
+      "top1": "ecard1-161",
+      "top3": [
+        "ecard1-161",
+        "ex1-108",
+        "hgss1-116"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "ecard1-161",
+        "distance": 0.4840651135005974,
+        "inliers": 41,
+        "ratio": 0.7592592592592593,
+        "coverage": 0.11901380265773977,
+        "evidence": 12.4821194294174
+      },
+      "quality": 188.9386611620464,
+      "ms": 2969
+    },
+    {
+      "id": "sv04-172",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sv04-172",
+      "top3": [
+        "sv04-172",
+        "sv06-160",
+        "sv03-188"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv04-172",
+        "distance": 0.2388888888888889,
+        "inliers": 170,
+        "ratio": 0.918918918918919,
+        "coverage": 0.47048614138648626,
+        "evidence": 126.09380681129561
+      },
+      "quality": 624.6084166011682,
+      "ms": 2077
+    },
+    {
+      "id": "sv04-172",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sv04-172",
+      "top3": [
+        "sv04-172",
+        "sv06-160",
+        "sv03-190"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sv04-172",
+        "distance": 0.2426075268817205,
+        "inliers": 148,
+        "ratio": 0.8604651162790697,
+        "coverage": 0.3697504341860354,
+        "evidence": 102.4851648282541
+      },
+      "quality": 252.60060425482078,
+      "ms": 2086
+    },
+    {
+      "id": "sv04-172",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sv04-172",
+      "top3": [
+        "sv04-172",
+        "sv03-190",
+        "sv09-145"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sv04-172",
+        "distance": 0.6151583034647551,
+        "inliers": 98,
+        "ratio": 0.8521739130434782,
+        "coverage": 0.3302489317856826,
+        "evidence": 51.705794595559425
+      },
+      "quality": 283.5761859647775,
+      "ms": 2236
+    },
+    {
+      "id": "swsh8-185",
+      "mode": "clean",
+      "detected": true,
+      "top1": "swsh8-185",
+      "top3": [
+        "swsh8-185",
+        "swsh4-22",
+        "swsh5-6"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh8-185",
+        "distance": 0.09456391875746714,
+        "inliers": 202,
+        "ratio": 0.8859649122807017,
+        "coverage": 0.5515584354792838,
+        "evidence": 163.5033909064535
+      },
+      "quality": 1054.8586842267468,
+      "ms": 3488
+    },
+    {
+      "id": "swsh8-185",
+      "mode": "camera",
+      "detected": true,
+      "top1": "swsh8-185",
+      "top3": [
+        "swsh8-185",
+        "swsh4-22",
+        "swsh3.5-32"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh8-185",
+        "distance": 0.10878136200716847,
+        "inliers": 159,
+        "ratio": 0.8153846153846154,
+        "coverage": 0.38169830189475956,
+        "evidence": 116.92670736407604
+      },
+      "quality": 316.0113694010683,
+      "ms": 1991
+    },
+    {
+      "id": "swsh8-185",
+      "mode": "glare",
+      "detected": true,
+      "top1": "swsh8-185",
+      "top3": [
+        "swsh8-185",
+        "swshp-SWSH078",
+        "swsh1-138"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "swsh8-185",
+        "distance": 0.43685782556750297,
+        "inliers": 115,
+        "ratio": 0.8214285714285714,
+        "coverage": 0.5064430126724133,
+        "evidence": 65.74365538008325
+      },
+      "quality": 334.8787485496975,
+      "ms": 2168
+    },
+    {
+      "id": "swsh2-201",
+      "mode": "clean",
+      "detected": true,
+      "top1": "swsh2-201",
+      "top3": [
+        "swsh2-201",
+        "swsh12-205",
+        "swsh1-210"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh2-201",
+        "distance": 0.3024193548387097,
+        "inliers": 159,
+        "ratio": 0.8784530386740331,
+        "coverage": 0.5101190748668852,
+        "evidence": 107.24198210834201
+      },
+      "quality": 510.6840596866807,
+      "ms": 2234
+    },
+    {
+      "id": "swsh2-201",
+      "mode": "camera",
+      "detected": true,
+      "top1": "swsh2-201",
+      "top3": [
+        "swsh2-201",
+        "swsh1-210",
+        "swsh12-205"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swsh2-201",
+        "distance": 0.27274492234169656,
+        "inliers": 154,
+        "ratio": 0.8651685393258427,
+        "coverage": 0.48674242424242425,
+        "evidence": 104.68394154819468
+      },
+      "quality": 238.10654536321408,
+      "ms": 3572
+    },
+    {
+      "id": "swsh2-201",
+      "mode": "glare",
+      "detected": true,
+      "top1": "swsh2-201",
+      "top3": [
+        "swsh2-201",
+        "swsh1-210",
+        "swsh3.5-78"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "swsh2-201",
+        "distance": 0.45235961768219835,
+        "inliers": 109,
+        "ratio": 0.8320610687022901,
+        "coverage": 0.3287337662337662,
+        "evidence": 62.446418493298545
+      },
+      "quality": 244.34441513233384,
+      "ms": 2033
+    },
+    {
+      "id": "sm12-222",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm12-222",
+      "top3": [
+        "sm12-222",
+        "sm12-1",
+        "xy11-106"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm12-222",
+        "distance": 0.23663381123058544,
+        "inliers": 153,
+        "ratio": 0.9216867469879518,
+        "coverage": 0.49840367674655556,
+        "evidence": 114.03381583819731
+      },
+      "quality": 1752.3069872681717,
+      "ms": 2520
+    },
+    {
+      "id": "sm12-222",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm12-222",
+      "top3": [
+        "sm12-222",
+        "sm12-1",
+        "xy11-106"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm12-222",
+        "distance": 0.2606929510155317,
+        "inliers": 130,
+        "ratio": 0.8176100628930818,
+        "coverage": 0.4746597972611156,
+        "evidence": 84.31022644370377
+      },
+      "quality": 654.3065701659452,
+      "ms": 2248
+    },
+    {
+      "id": "sm12-222",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm12-222",
+      "top3": [
+        "sm12-222",
+        "sm12-129",
+        "hgss2-70"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm12-222",
+        "distance": 0.4847222222222223,
+        "inliers": 108,
+        "ratio": 0.9473684210526315,
+        "coverage": 0.5221365378876613,
+        "evidence": 68.91241199350105
+      },
+      "quality": 660.314641955267,
+      "ms": 2206
+    },
+    {
+      "id": "sm12-264",
+      "mode": "clean",
+      "detected": true,
+      "top1": "sm12-264",
+      "top3": [
+        "sm12-264",
+        "hgss2-33",
+        "sv04-215"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm12-264",
+        "distance": 0.27485065710872164,
+        "inliers": 187,
+        "ratio": 0.9257425742574258,
+        "coverage": 0.4919941332433131,
+        "evidence": 135.79148304221732
+      },
+      "quality": 722.9473529530505,
+      "ms": 2466
+    },
+    {
+      "id": "sm12-264",
+      "mode": "camera",
+      "detected": true,
+      "top1": "sm12-264",
+      "top3": [
+        "sm12-264",
+        "sv04-215",
+        "hgss2-33"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "sm12-264",
+        "distance": 0.2721027479091995,
+        "inliers": 170,
+        "ratio": 0.9139784946236559,
+        "coverage": 0.4878874740215263,
+        "evidence": 122.1413477342099
+      },
+      "quality": 292.08179708484704,
+      "ms": 2392
+    },
+    {
+      "id": "sm12-264",
+      "mode": "glare",
+      "detected": true,
+      "top1": "sm12-264",
+      "top3": [
+        "sm12-264",
+        "sm3-162",
+        "sm12-266"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "sm12-264",
+        "distance": 0.46152927120669063,
+        "inliers": 143,
+        "ratio": 0.910828025477707,
+        "coverage": 0.4878874740215263,
+        "evidence": 89.11789192957757
+      },
+      "quality": 309.27175469667964,
+      "ms": 2274
+    },
+    {
+      "id": "swshp-SWSH183",
+      "mode": "clean",
+      "detected": true,
+      "top1": "swshp-SWSH183",
+      "top3": [
+        "swshp-SWSH183",
+        "neo3-16",
+        "neo1-54"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swshp-SWSH183",
+        "distance": 0.06397849462365592,
+        "inliers": 203,
+        "ratio": 0.90625,
+        "coverage": 0.42047453674716,
+        "evidence": 172.90645528044467
+      },
+      "quality": 1041.1693540095869,
+      "ms": 3456
+    },
+    {
+      "id": "swshp-SWSH183",
+      "mode": "camera",
+      "detected": true,
+      "top1": "swshp-SWSH183",
+      "top3": [
+        "swshp-SWSH183",
+        "neo3-16",
+        "neo1-54"
+      ],
+      "decision": "strong",
+      "best": {
+        "id": "swshp-SWSH183",
+        "distance": 0.08097371565113501,
+        "inliers": 176,
+        "ratio": 0.9119170984455959,
+        "coverage": 0.4940476476028024,
+        "evidence": 148.47484911300336
+      },
+      "quality": 306.7707905443271,
+      "ms": 1856
+    },
+    {
+      "id": "swshp-SWSH183",
+      "mode": "glare",
+      "detected": true,
+      "top1": "swshp-SWSH183",
+      "top3": [
+        "swshp-SWSH183",
+        "sv03-138",
+        "sv09-101"
+      ],
+      "decision": "candidates",
+      "best": {
+        "id": "swshp-SWSH183",
+        "distance": 0.4632765830346475,
+        "inliers": 145,
+        "ratio": 0.9177215189873418,
+        "coverage": 0.4133802222990891,
+        "evidence": 90.93948594270213
+      },
+      "quality": 326.75067871171524,
+      "ms": 2184
+    }
+  ],
+  "negatives": [
+    {
+      "uniform": 0,
+      "rejected": true
+    },
+    {
+      "uniform": 50,
+      "rejected": true
+    },
+    {
+      "uniform": 128,
+      "rejected": true
+    },
+    {
+      "uniform": 255,
+      "rejected": true
+    }
+  ],
+  "summary": {
+    "clean": {
+      "n": 45,
+      "detected": 44,
+      "top1": 44,
+      "top3": 44,
+      "strong": 34,
+      "falseStrong": 0,
+      "medianMs": 1127
+    },
+    "camera": {
+      "n": 45,
+      "detected": 44,
+      "top1": 44,
+      "top3": 44,
+      "strong": 35,
+      "falseStrong": 0,
+      "medianMs": 973
+    },
+    "glare": {
+      "n": 45,
+      "detected": 44,
+      "top1": 42,
+      "top3": 44,
+      "strong": 1,
+      "falseStrong": 0,
+      "medianMs": 994
+    }
+  }
+}

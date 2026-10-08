@@ -1,3 +1,4 @@
+import {priceHistory,drawHistory} from './price-history.js?v=20261008-4';
 // TCGdex exposes aggregate Cardmarket prices, without condition/language slices.
 import {variants} from './prices.js?v=20261007-4';
 const cache=new Map(),languages={fr:'français',en:'anglais',ja:'japonais'},ids={fr:2,en:1,ja:7};
@@ -8,11 +9,11 @@ let running=0;const queue=[];
 function drain(){while(running<3&&queue.length){const job=queue.shift();if(!job.target.isConnected)continue;running++;load(job.target,job.card).finally(()=>{running--;drain();});}}
 export function loadPortfolioPrice(target,card){target.className='portfolioQuote';target.append(node('p','Chargement Cardmarket…'));queue.push({target,card});drain();}
 async function load(target,card){
- const lang=card.lang;if(!ids[lang]){target.replaceChildren(node('p','Cote NM : confirme la langue de cette carte.'));return;}
- try{const data=await fetchCard(card.id,lang);if(!target.isConnected)return;target.replaceChildren(node('p','Near Mint · '+languages[lang]+' : indisponible dans la source actuelle.'));
+ const lang=card.lang;if(!ids[lang]){target.replaceChildren(node('p','Confirme la langue pour afficher le prix.'));return;}
+ try{const data=await fetchCard(card.id,lang);if(!target.isConnected)return;target.replaceChildren();
  const choices=variants(data),body=node('div');target.append(body);
- const show=i=>{body.replaceChildren();if(i===''){body.append(node('p','Choisis l’édition pour afficher son repère de prix.'));return;}const v=choices[Number(i)],cm=v.pricing.cardmarket,holo=choices.length===1&&!data.variants_detailed?.length&&card.finish==='Holographique',avg=euros(holo?cm?.['avg30-holo']:cm?.avg30);body.append(node('p',avg?'Cardmarket · moyenne 30 j : '+avg:'Moyenne Cardmarket indisponible.'));if(avg)body.append(node('small','Repère global : langues et états regroupés, pas une cote NM '+languages[lang]+'.'));if(cm?.updated){const d=new Date(cm.updated);if(!Number.isNaN(+d))body.append(node('p','Données : '+d.toLocaleDateString('fr-FR')));}
- const id=cm?.idProduct||v.ids.cardmarket;if(/^\d+$/.test(String(id))&&Number(id)>0){const a=node('a','Voir Cardmarket · '+languages[lang]+' / vérifier NM');a.href='https://www.cardmarket.com/fr/Pokemon/Products?idProduct='+id+'&language='+ids[lang];a.target='_blank';a.rel='noopener noreferrer';body.append(a);}
+ const show=i=>{body.replaceChildren();if(i===''){body.append(node('p','Choisis l’édition pour afficher son repère de prix.'));return;}const v=choices[Number(i)],cm=v.pricing.cardmarket,holo=choices.length===1&&!data.variants_detailed?.length&&card.finish==='Holographique',avg=euros(holo?cm?.['avg30-holo']:cm?.avg30);const price=node('strong',avg||'Prix indisponible');price.className='portfolioPrice';body.append(price,node('small','Moyenne Cardmarket · 30 jours'));const history=priceHistory(lang+':'+card.id+':'+(cm?.idProduct||v.ids.cardmarket||i)+':'+(holo?'holo':'standard'),cm,holo);drawHistory(body,history);if(cm?.updated){const d=new Date(cm.updated);if(!Number.isNaN(+d))body.append(node('p','Données : '+d.toLocaleDateString('fr-FR')));}
+ const id=cm?.idProduct||v.ids.cardmarket;if(/^\d+$/.test(String(id))&&Number(id)>0){const a=node('a','Cardmarket · '+languages[lang]);a.href='https://www.cardmarket.com/fr/Pokemon/Products?idProduct='+id+'&language='+ids[lang];a.target='_blank';a.rel='noopener noreferrer';body.append(a);}
  };
  if(choices.length>1){const label=node('label','Édition pour la cote '),select=node('select');select.setAttribute('aria-label','Édition Cardmarket de '+card.name);const empty=node('option','Choisir la variante');empty.value='';select.append(empty);choices.forEach((v,i)=>{const o=node('option',v.label);o.value=i;select.append(o);});select.onchange=()=>show(select.value);label.append(select);target.insertBefore(label,body);show('');}else show(0);
  }catch{if(target.isConnected){target.replaceChildren(node('p','Prix Cardmarket momentanément indisponibles.'));const retry=node('button','Réessayer les prix');retry.type='button';retry.onclick=()=>{target.replaceChildren(node('p','Chargement Cardmarket…'));queue.push({target,card});drain();};target.append(retry);}}

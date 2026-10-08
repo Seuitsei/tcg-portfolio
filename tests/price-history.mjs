@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {priceHistory} from '../scanner/price-history.js';
+const store=new Map();globalThis.localStorage={getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)};
+const now=Date.parse('2026-10-09T12:00:00Z');
+let rows=priceHistory('card:fr',{updated:'2026-10-08T08:00:00Z',avg1:12},false,now);assert.deepEqual(rows,[{date:'2026-10-08',value:12}]);
+rows=priceHistory('card:fr',{updated:'2026-10-08T10:00:00Z',avg1:13},false,now);assert.equal(rows.length,1);assert.equal(rows[0].value,13);
+rows=priceHistory('card:fr',{updated:'2026-10-09T08:00:00Z',avg1:14},false,now);assert.equal(rows.length,2);
+rows=priceHistory('card:fr',{updated:'2026-10-10T08:00:00Z',avg1:99},false,now);assert.equal(rows.length,2);
+assert.equal(priceHistory('only-average',{updated:'2026-10-09',avg30:100},false,now).length,0);
+assert.deepEqual(priceHistory('holo',{updated:'2026-10-09',avg1:1,'avg1-holo':9},true,now),[{date:'2026-10-09',value:9}]);
+assert.equal(priceHistory('card:fr',{},false,Date.parse('2026-11-10')).length,0);
+console.log('PASS real dated daily points, daily deduplication, future/old points rejected, no history invented from avg30, foil isolation.');

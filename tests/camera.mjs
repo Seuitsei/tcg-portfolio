@@ -13,3 +13,33 @@ assert.equal(await configureFocus({getCapabilities:()=>({focusMode:['continuous'
 assert.equal(await configureFocus({getCapabilities:()=>({focusMode:['continuous']}),applyConstraints:async()=>{throw Error('unsupported')}}),false);
 assert(!('deviceId' in cameraInfo({getSettings:()=>({width:1920,deviceId:'private'})})));
 console.log('PASS best-frame sharpness, glare, movement reset, expiry, consumption, cadence, autofocus fallback and diagnostic privacy');
+const {configureCamera}=await import('../scanner/camera.js');
+const requests=[];
+const settings=await configureCamera({getCapabilities:()=>({focusMode:['continuous'],exposureMode:['continuous'],whiteBalanceMode:['continuous']}),applyConstraints:async c=>{const key=Object.keys(c.advanced[0])[0];requests.push(key);if(key==='exposureMode')throw Error('Android control unsupported');}});
+assert.deepEqual(requests,['focusMode','exposureMode','whiteBalanceMode']);
+assert.deepEqual(settings,{focusMode:true,exposureMode:false,whiteBalanceMode:true});
+assert.deepEqual(await configureCamera({getCapabilities:()=>({})}),{focusMode:false,exposureMode:false,whiteBalanceMode:false});
+let current=true;
+const stopped=await configureCamera({getCapabilities:()=>({focusMode:['continuous'],exposureMode:['continuous']}),applyConstraints:async()=>{current=false;}},()=>current);
+assert.deepEqual(stopped,{focusMode:true});
+const points=[{x:.2,y:.1},{x:.7,y:.1},{x:.7,y:.8},{x:.2,y:.8}];
+b.consider({...state(1),points},2000,capture);points[0].x=.3;
+b.consider({...state(2,80),points},2100,capture);
+assert.equal(b.takeSample(2150).points[0].x,.2); // geometry belongs to the retained image
+const {default:V}=await import('../scanner/vision.js');
+assert.equal(V.capturePoints(null,100,200),null);
+assert.equal(V.capturePoints([{x:0,y:0}],100,200),null);
+assert.equal(V.capturePoints([{x:NaN,y:0},...points.slice(1)],100,200),null);
+assert.equal(V.capturePoints([points[0],points[2],points[1],points[3]],100,200),null);
+assert.equal(V.capturePoints(points.map(p=>({x:p.x/10,y:p.y/10})),100,200),null);
+assert.equal(V.capturePoints(points,100,200)[0].x,30);
+const d={fraction:.4,points:[{x:10,y:10},{x:80,y:10},{x:80,y:100},{x:10,y:100}]};
+const quality={brightness:120,sharpness:400,glare:0,sample:[10,20]};
+function sequence(q){const gate=new V.StabilityGate();let result;for(const time of [1,151,301,451,651])result=gate.update(d,q,100,120,time);return result;}
+assert(sequence(quality).ready);
+assert(!sequence({...quality,glare:.1}).ready);
+assert(!sequence({...quality,sharpness:100}).ready);
+assert(!sequence({...quality,glare:.3}).ready);
+const gate=new V.StabilityGate();gate.update(d,quality,100,120,1);gate.update(d,quality,100,120,201);
+assert(!gate.update({...d,points:d.points.map(p=>({x:p.x+10,y:p.y}))},quality,100,120,651).ready);
+console.log('PASS camera capability isolation, stopped-track guard, retained-image geometry, invalid corner fallback and fast trigger only for clear stable frames.');

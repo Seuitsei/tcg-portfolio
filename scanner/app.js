@@ -1,9 +1,9 @@
-import {createCatalog} from './catalog.js?v=20261009-1';
-import {loadPortfolioPrice} from './portfolio-prices.js?v=20261009-1';
-import {BestFrame,nextDelay,configureFocus,cameraInfo} from './camera.js?v=20261007-3';
+import {createCatalog} from './catalog.js?v=20261009-2';
+import {loadPortfolioPrice} from './portfolio-prices.js?v=20261009-2';
+import {BestFrame,nextDelay,configureCamera,cameraInfo} from './camera.js?v=20261009-2';
 import {createPricePanel} from './prices.js?v=20261007-4';
 const $=id=>document.getElementById(id);
-const VERSION='20261009-1';
+const VERSION='20261009-2';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));
@@ -35,7 +35,7 @@ async function startCamera(){
   stream=acquired;$('video').srcObject=stream;$('video').hidden=false;$('cameraPlaceholder').hidden=true;await $('video').play();
   if(token!==cameraToken){acquired.getTracks().forEach(t=>t.stop());return;}
   live=true;paused=false;$('scanScreen').classList.add('camera-open');$('stop').hidden=false;$('capture').hidden=false;$('liveHint').hidden=false;$('meter').hidden=false;$('stage').classList.remove('idle');
-  const track=stream.getVideoTracks()[0];cameraDiagnostic=cameraInfo(track);configureFocus(track).then(applied=>{if(stream===acquired)cameraDiagnostic={...cameraInfo(track),continuousFocusRequested:applied};});track.addEventListener('ended',()=>{if(stream===acquired){stopCamera();status('Caméra interrompue. Appuie sur « Ouvrir la caméra » pour reprendre.');}});
+  const track=stream.getVideoTracks()[0];cameraDiagnostic=cameraInfo(track);configureCamera(track,()=>stream===acquired).then(applied=>{if(stream===acquired)cameraDiagnostic={...cameraInfo(track),automaticControls:applied};});track.addEventListener('ended',()=>{if(stream===acquired){stopCamera();status('Caméra interrompue. Appuie sur « Ouvrir la caméra » pour reprendre.');}});
   if(ready)await rpc('reset');schedule();status(ready?'Présente la carte entière : le scan se déclenchera automatiquement.':'Caméra ouverte. Le catalogue visuel finit de se préparer…');
  }catch(e){if(token!==cameraToken)return;stopCamera();const messages={NotAllowedError:'Accès caméra refusé. Autorise la caméra dans les réglages du site, puis réessaie.',NotFoundError:'Aucune caméra trouvée. Tu peux importer une photo.',NotReadableError:'Caméra occupée par une autre application. Ferme-la puis réessaie.'};status(messages[e.name]||e.message,true);}
 }
@@ -59,16 +59,16 @@ async function tick(){
   const result=await rpc('frame',{image,now:sampleTime},[image.data.buffer]);if(!live||paused||token!==cameraToken)return;
   bestFrame.consider(result,sampleTime,()=>frameContext.getImageData(0,0,frameCanvas.width,frameCanvas.height));
   drawOutline(result.points,result.progress);$('liveHint').textContent=result.hint;
-  if(result.ready){const best=bestFrame.take(performance.now());if(best)await analyseImage(best);else await analyseCamera();}
+  if(result.ready){const best=bestFrame.takeSample(performance.now());if(best)await analyseImage(best.image,false,best.points);else await analyseCamera();}
  }
  catch(e){if(token===cameraToken)status(e.message,true);}finally{frameBusy=false;schedule();}
 }
 async function analyseCamera(){if(!ready){status('Le catalogue est encore en préparation.');return;}if(analysisBusy||!live)return;try{const image=grab(1600);await analyseImage(image);}catch(e){status(e.message,true);}}
-async function analyseImage(image,alreadyCropped=false){
+async function analyseImage(image,alreadyCropped=false,points=null){
  if(analysisBusy)return;bestFrame.reset();analysisBusy=true;$('again').hidden=true;paused=true;clearTimeout(timer);$('capture').disabled=true;$('import').disabled=true;$('results').hidden=true;$('selection').hidden=true;selected=null;
  const token=cameraToken;
  status('Comparaison visuelle locale…');$('liveHint').textContent='Analyse de la carte…';
- try{const result=await rpc('analyse',{image,alreadyCropped},[image.data.buffer]);if(token!==cameraToken)return;showResult(result);}
+ try{const result=await rpc('analyse',{image,alreadyCropped,points},[image.data.buffer]);if(token!==cameraToken)return;showResult(result);}
  catch(e){if(token===cameraToken){status(e.message,true);$('results').hidden=false;$('resultTitle').textContent='Analyse interrompue';$('resultReason').textContent='Réessaie ou importe une photo.';$('candidates').replaceChildren();}}
  finally{analysisBusy=false;if(token===cameraToken)$('again').hidden=false;$('capture').disabled=false;$('import').disabled=false;}
 }

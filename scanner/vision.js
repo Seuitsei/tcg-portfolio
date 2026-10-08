@@ -116,6 +116,18 @@ function verify(cv,query,reference){
   return {inliers,ratio:inliers/good.length,coverage};
  }finally{dispose(a,b,matches,matcher,src,dst,mask,H);}
 }
+function capturePoints(points,width,height){
+ if(!Array.isArray(points)||points.length!==4||!points.every(p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1))return null;
+ let sign=0,area=0;
+ for(let i=0;i<4;i++){
+  const a=points[i],b=points[(i+1)%4],c=points[(i+2)%4];
+  const cross=(b.x-a.x)*(c.y-b.y)-(b.y-a.y)*(c.x-b.x);
+  if(Math.abs(cross)<.0001||sign&&Math.sign(cross)!==sign)return null;
+  sign=Math.sign(cross);area+=a.x*b.y-b.x*a.y;
+ }
+ if(Math.abs(area)/2<.09||Math.abs(area)/2>.93)return null;
+ return points.map(p=>({x:p.x*width,y:p.y*height}));
+}
 class StabilityGate{
  constructor(){this.reset();}
  reset(){this.previous=null;this.since=0;this.frames=0;}
@@ -128,7 +140,8 @@ class StabilityGate{
   this.previous={points:current,sample:q.sample};
   if(hint||motion>.018||pixel>12){this.since=now;this.frames=0;return {ready:false,progress:hint?0:.2,hint:hint||'Carte détectée : stabilise le téléphone.'};}
   if(!this.since)this.since=now;this.frames++;
-  const progress=Math.min(1,(now-this.since)/850,this.frames/4);
+  const clear=q.sharpness>=150&&q.glare<=.06&&q.brightness>=60&&q.brightness<=210&&detection.fraction>=.24;
+  const progress=Math.min(1,(now-this.since)/(clear?650:850),this.frames/4);
   return {ready:progress>=1,progress,hint:progress>=1?'Image prête.':'Ne bouge plus…'};
  }
 }
@@ -139,6 +152,6 @@ function decision(ranked,hasUnindexedVariant=false){
  if(!hasUnindexedVariant&&a.inliers>=24&&a.ratio>=.65&&a.coverage>=.22&&a.distance<.42&&margin)return 'strong';
  return 'candidates';
 }
-root.ScannerVision={WIDTH,HEIGHT,normaliseNumber,orderPoints,descriptor,distance,vectorDistance,rankVectors,detect,warp,quality,features,verify,StabilityGate,decision,dispose};
+root.ScannerVision={WIDTH,HEIGHT,normaliseNumber,orderPoints,descriptor,distance,vectorDistance,rankVectors,detect,warp,quality,features,verify,capturePoints,StabilityGate,decision,dispose};
 if(typeof module!=='undefined')module.exports=root.ScannerVision;
 })(globalThis);

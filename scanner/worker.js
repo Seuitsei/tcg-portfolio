@@ -1,5 +1,5 @@
 'use strict';
-importScripts('vision.js?v=20261007-1');
+importScripts('vision.js?v=20261009-2');
 const V=ScannerVision;let engine=null,entries=[],allCards=[],sets=[],lang='fr',gate=new V.StabilityGate(),featuresCache=new Map(),prebuiltPacks=[];
 let engineReady=new Promise((resolve,reject)=>{
  self.Module={onRuntimeInitialized:()=>resolve(),onAbort:()=>reject(Error('Le moteur visuel ne peut pas démarrer.'))};
@@ -60,7 +60,8 @@ function frame(data){
 async function analyse(data){
  const t=performance.now(),src=engine.matFromImageData(data.image);let card,rotated;
  try{
-  let detection=data.alreadyCropped?null:V.detect(engine,src);
+  const captured=data.alreadyCropped?null:V.capturePoints(data.points,src.cols,src.rows);
+  let detection=data.alreadyCropped?null:captured?{points:captured}:V.detect(engine,src);
   if(data.alreadyCropped){card=new engine.Mat();engine.resize(src,card,new engine.Size(V.WIDTH,V.HEIGHT),0,0,engine.INTER_AREA);}
   else if(detection)card=V.warp(engine,src,detection.points);
   else return {kind:'reject',reason:'Les quatre coins ne sont pas visibles. Pose la carte sur un fond uni et contrasté.',candidates:[],ms:performance.now()-t};

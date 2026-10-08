@@ -1,7 +1,7 @@
 import {BestFrame,nextDelay,configureFocus,cameraInfo} from './camera.js?v=20261007-3';
-import {createPricePanel} from './prices.js?v=20261007-2';
+import {createPricePanel} from './prices.js?v=20261007-4';
 const $=id=>document.getElementById(id);
-const VERSION='20261007-3';
+const VERSION='20261007-4';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));
@@ -21,7 +21,7 @@ async function boot(){
  try{summary=await rpc('init',{lang:$('lang').value});ready=true;$('search').disabled=false;updateCoverage();if(!$('status').classList.contains('error'))status(live?'Présente une carte entière. Le scan est automatique.':'Scanner prêt. Ouvre la caméra et présente une carte entière.');renderSets();if(live)schedule();}
  catch(e){status(e.message,true);}
 }
-function updateCoverage(){if(!summary)return;$('coverage').textContent=summary.count.toLocaleString('fr-FR')+' références visuelles · '+summary.lang.toUpperCase()+' · traitement sur cet appareil';$('catalogState').textContent=$('coverage').textContent;}
+function updateCoverage(){if(!summary)return;$('coverage').textContent=summary.count.toLocaleString('fr-FR')+' références visuelles · '+summary.lang.toUpperCase()+' · traitement sur cet appareil'+(summary.lang==='ja'?' · couverture japonaise partielle : seules les cartes illustrées du catalogue sont reconnues.':'');$('catalogState').textContent=$('coverage').textContent;}
 function stopCamera(){bestFrame.reset();lastVideoTime=-1;$('scanScreen').classList.remove('camera-open');cameraToken++;live=false;paused=false;clearTimeout(timer);timer=null;stream?.getTracks().forEach(t=>t.stop());stream=null;$('video').srcObject=null;$('video').hidden=true;$('cameraPlaceholder').hidden=false;$('liveHint').hidden=true;$('meter').hidden=true;$('stop').hidden=true;$('capture').hidden=true;$('start').disabled=false;$('stage').classList.add('idle');$('outline').setAttribute('points','16,5 84,5 84,95 16,95');$('outline').style.stroke='#f27568';}
 async function startCamera(){
  stopCamera();const token=++cameraToken;$('start').disabled=true;selected=null;$('selection').hidden=true;$('results').hidden=true;

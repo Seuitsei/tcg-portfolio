@@ -31,8 +31,8 @@ function imageURL(c){return c.image+(/\.(png|jpg|webp)$/.test(c.image)?'':'/low.
 async function fetchBytes(url){const ctrl=new AbortController(),t=setTimeout(()=>ctrl.abort(),15000);try{const r=await fetch(url,{signal:ctrl.signal});if(!r.ok)throw Error('Référence indisponible ('+r.status+').');return await r.arrayBuffer();}finally{clearTimeout(t);}}
 async function init(data){
  lang=data.lang||'fr';entries=[];featuresCache.clear();gate.reset();
- const [catalog,allSets,manifest]=await Promise.all([getJSON('data/catalog.json'),getJSON('data/sets.json'),getJSON('data/manifest.json')]);
- allCards=catalog[lang];sets=allSets[lang];
+ const [catalog,allSets,manifest]=await Promise.all([getJSON(lang==='ja'?'data/catalog-ja.json':'data/catalog.json'),getJSON(lang==='ja'?'data/sets-ja.json':'data/sets.json'),getJSON('data/manifest.json')]);
+ allCards=lang==='ja'?catalog:catalog[lang];sets=lang==='ja'?allSets:allSets[lang];
  postMessage({type:'progress',text:'Chargement de l’index visuel '+lang.toUpperCase()+'…'});
  const [global,blob]=await Promise.all([getJSON('data/vectors-'+lang+'.json'),fetchBytes('data/vectors-'+lang+'.bin')]);
  if(blob.byteLength!==global.cards.length*216)throw Error('Index visuel incomplet. Actualise la page.');

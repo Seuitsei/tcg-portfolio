@@ -1,7 +1,7 @@
 import {BestFrame,nextDelay,configureFocus,cameraInfo} from './camera.js?v=20261007-3';
 import {createPricePanel} from './prices.js?v=20261007-4';
 const $=id=>document.getElementById(id);
-const VERSION='20261007-4';
+const VERSION='20261008-1';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));
@@ -22,7 +22,7 @@ async function boot(){
  catch(e){status(e.message,true);}
 }
 function updateCoverage(){if(!summary)return;$('coverage').textContent=summary.count.toLocaleString('fr-FR')+' références visuelles · '+summary.lang.toUpperCase()+' · traitement sur cet appareil'+(summary.lang==='ja'?' · couverture japonaise partielle : seules les cartes illustrées du catalogue sont reconnues.':'');$('catalogState').textContent=$('coverage').textContent;}
-function stopCamera(){bestFrame.reset();lastVideoTime=-1;$('scanScreen').classList.remove('camera-open');cameraToken++;live=false;paused=false;clearTimeout(timer);timer=null;stream?.getTracks().forEach(t=>t.stop());stream=null;$('video').srcObject=null;$('video').hidden=true;$('cameraPlaceholder').hidden=false;$('liveHint').hidden=true;$('meter').hidden=true;$('stop').hidden=true;$('capture').hidden=true;$('start').disabled=false;$('stage').classList.add('idle');$('outline').setAttribute('points','16,5 84,5 84,95 16,95');$('outline').style.stroke='#f27568';}
+function stopCamera(){$('again').hidden=true;bestFrame.reset();lastVideoTime=-1;$('scanScreen').classList.remove('camera-open');cameraToken++;live=false;paused=false;clearTimeout(timer);timer=null;stream?.getTracks().forEach(t=>t.stop());stream=null;$('video').srcObject=null;$('video').hidden=true;$('cameraPlaceholder').hidden=false;$('liveHint').hidden=true;$('meter').hidden=true;$('stop').hidden=true;$('capture').hidden=true;$('start').disabled=false;$('stage').classList.add('idle');$('outline').setAttribute('points','16,5 84,5 84,95 16,95');$('outline').style.stroke='#f27568';}
 async function startCamera(){
  stopCamera();const token=++cameraToken;$('start').disabled=true;selected=null;$('selection').hidden=true;$('results').hidden=true;
  try{
@@ -63,12 +63,12 @@ async function tick(){
 }
 async function analyseCamera(){if(!ready){status('Le catalogue est encore en préparation.');return;}if(analysisBusy||!live)return;try{const image=grab(1600);await analyseImage(image);}catch(e){status(e.message,true);}}
 async function analyseImage(image,alreadyCropped=false){
- if(analysisBusy)return;bestFrame.reset();analysisBusy=true;paused=true;clearTimeout(timer);$('capture').disabled=true;$('import').disabled=true;$('results').hidden=true;$('selection').hidden=true;selected=null;
+ if(analysisBusy)return;bestFrame.reset();analysisBusy=true;$('again').hidden=true;paused=true;clearTimeout(timer);$('capture').disabled=true;$('import').disabled=true;$('results').hidden=true;$('selection').hidden=true;selected=null;
  const token=cameraToken;
  status('Comparaison visuelle locale…');$('liveHint').textContent='Analyse de la carte…';
  try{const result=await rpc('analyse',{image,alreadyCropped},[image.data.buffer]);if(token!==cameraToken)return;showResult(result);}
  catch(e){if(token===cameraToken){status(e.message,true);$('results').hidden=false;$('resultTitle').textContent='Analyse interrompue';$('resultReason').textContent='Réessaie ou importe une photo.';$('candidates').replaceChildren();}}
- finally{analysisBusy=false;$('capture').disabled=false;$('import').disabled=false;}
+ finally{analysisBusy=false;if(token===cameraToken)$('again').hidden=false;$('capture').disabled=false;$('import').disabled=false;}
 }
 function showResult(result){
  $('results').hidden=false;$('resultTitle').textContent=result.kind==='strong'?'Carte reconnue':result.kind==='candidates'?'À toi de confirmer':'Réessaie le scan';$('resultReason').textContent=result.reason;
@@ -86,7 +86,13 @@ function candidateNode(c){
 }
 function renderCandidates(candidates){$('candidates').replaceChildren(...candidates.map(candidateNode));}
 function choose(c){selected=c;$('selection').hidden=false;$('selectionName').textContent=c.name;$('selectionMeta').textContent=[c.setName,c.printedNumber||c.localId,c.id].filter(Boolean).join(' · ');$('buy').value='';$('finish').value='';loadPrices(c,c.lang||$('lang').value);}
-async function restart(){bestFrame.reset();lastVideoTime=-1;selected=null;$('selection').hidden=true;$('results').hidden=true;if(!stream){await startCamera();return;}paused=false;if(ready)await rpc('reset');schedule();status('Présente une autre carte.');}
+async function restart(){
+ if(analysisBusy)return;
+ // Safari can suspend a video preview while the results scroll it off screen.
+ // Open a fresh stream, as on the first scan, and reset the worker stability gate.
+ $('stage').scrollIntoView({behavior:'instant',block:'center'});
+ await startCamera();
+}
 async function importPhoto(file){
  if(!file)return;if(analysisBusy){status('Attends la fin de l’analyse en cours.');return;}if(!ready){status('Attends la fin de préparation du catalogue avant d’importer.');return;}
  stopCamera();const url=URL.createObjectURL(file);const img=new Image();
@@ -104,7 +110,7 @@ function readCollection(){const raw=JSON.parse(localStorage.getItem('tcgCards')|
 function renderPortfolio(){try{collection=readCollection();}catch{status('Le portfolio local est illisible ; aucune donnée n’a été modifiée.',true);return;}$('count').textContent=collection.length+' carte(s) enregistrée(s)';$('portfolioList').replaceChildren(...collection.map(c=>{const row=document.createElement('div');row.className='portfolioItem';const img=document.createElement('img');img.src=c.image||'';img.alt=c.name;img.loading='lazy';img.onerror=()=>{img.hidden=true;};const info=document.createElement('div');info.className='info';const name=document.createElement('strong'),meta=document.createElement('p');name.textContent=c.name;meta.textContent=[c.meta,c.finish,c.buy?c.buy+' €':''].filter(Boolean).join(' · ');info.append(name,meta);row.append(img,info);return row;}));}
 $('start').onclick=startCamera;$('stop').onclick=stopCamera;$('capture').onclick=analyseCamera;$('again').onclick=restart;$('import').onclick=()=>$('photo').click();$('photo').onchange=e=>importPhoto(e.target.files[0]);
 $('lang').onchange=()=>{stopCamera();$('results').hidden=true;$('selection').hidden=true;selected=null;boot();};$('catalogBtn').onclick=()=>navigate('catalog');$('back').onclick=()=>navigate('scan');$('scanNav').onclick=()=>navigate('scan');$('portfolioNav').onclick=()=>navigate('portfolio');$('setFilter').oninput=renderSets;
-$('search').onclick=async()=>{if(!ready)return;paused=true;clearTimeout(timer);try{const candidates=await rpc('search',{query:$('name').value,number:$('number').value});$('results').hidden=false;$('resultTitle').textContent='Recherche catalogue';$('resultReason').textContent=candidates.length?candidates.length+' résultat(s). Confirme l’édition.':'Aucun résultat.';$('selection').hidden=true;selected=null;renderCandidates(candidates);}catch(e){status(e.message,true);}};
+$('search').onclick=async()=>{if(!ready)return;paused=true;clearTimeout(timer);try{const candidates=await rpc('search',{query:$('name').value,number:$('number').value});$('results').hidden=false;$('again').hidden=false;$('resultTitle').textContent='Recherche catalogue';$('resultReason').textContent=candidates.length?candidates.length+' résultat(s). Confirme l’édition.':'Aucun résultat.';$('selection').hidden=true;selected=null;renderCandidates(candidates);}catch(e){status(e.message,true);}};
 $('add').onclick=()=>{if(!selected)return;try{const current=readCollection();current.unshift({id:selected.id,name:selected.name,meta:$('selectionMeta').textContent,image:imageURL(selected),buy:$('buy').value,finish:$('finish').value,lang:selected.lang||$('lang').value,date:new Date().toLocaleDateString('fr-FR')});localStorage.setItem('tcgCards',JSON.stringify(current));collection=current;selected=null;$('selection').hidden=true;navigate('portfolio');}catch{status('Impossible d’enregistrer le portfolio. Vérifie l’espace disponible ; les anciennes données sont conservées.',true);}};
 $('copyDiagnostics').onclick=async()=>{try{await navigator.clipboard.writeText($('debug').textContent);$('copyDiagnostics').textContent='Diagnostic copié';}catch{status('Sélectionne et copie le texte du diagnostic ci-dessus.');}};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&(stream||$('start').disabled)){stopCamera();status('Caméra mise en pause. Rouvre-la pour reprendre.');}});window.addEventListener('pagehide',stopCamera);

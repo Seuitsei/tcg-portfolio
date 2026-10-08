@@ -129,7 +129,7 @@ self.onmessage=async event=>{
  const {id,type,...data}=event.data;
  try{
   let result;if(type==='init')result=await init(data);else{await engineReady;
-   if(type==='frame')result=frame(data);else if(type==='analyse')result=await analyse(data);else if(type==='prepare')result=await prepareSet(data);else if(type==='search')result=search(data);else if(type==='reset'){gate.reset();result=true;}else throw Error('Commande inconnue.');
+   if(type==='frame')result=frame(data);else if(type==='analyse')result=await analyse(data);else if(type==='prepare')result=await prepareSet(data);else if(type==='search')result=search(data);else if(type==='setCards'){const set=sets.find(s=>s.id===data.setId);if(!set)throw Error('Extension inconnue.');result=allCards.filter(c=>(c.setId||c.id.slice(0,c.id.lastIndexOf('-')))===set.id).map(c=>({...publicEntry(c),setName:set.name})).sort((a,b)=>a.localId.localeCompare(b.localId,undefined,{numeric:true}));}else if(type==='reset'){gate.reset();result=true;}else throw Error('Commande inconnue.');
   }
   postMessage({id,type:'result',result});
  }catch(error){postMessage({id,type:'error',error:error.message||String(error)});}

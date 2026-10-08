@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102a2a"><title>TCG Portfolio · Interface mobile</title>
+<link rel="stylesheet" href="scanner/style.css?v=20261007-2">
+<link rel="stylesheet" href="interface-reference/mobile.css?v=1">
+</head>
+<body>
+<header><a href="./" class="brand">TCG Portfolio</a><a class="badge" href="atelier-interface.html">Atelier interface</a></header>
+<main>
+<section id="homeScreen" hidden><p class="eyebrow">MA COLLECTION</p><h1>Mon classeur</h1><p class="muted">Tes cartes, réunies au même endroit.</p><div class="metrics"><article><span>Cartes enregistrées</span><strong id="homeCount">0</strong></article><article><span>Total des achats saisis</span><strong id="homeSpend">0 €</strong></article></div><button id="homeScan" class="primary wide">Scanner une carte</button><div class="shortcuts"><button id="homeCollection">Mes cartes →</button><button id="homeCatalog">Catalogue →</button></div><h2>Derniers ajouts</h2><div id="recentCards" class="recent"></div><p class="muted">Prototype mobile · Les montants ci-dessus sont tes achats saisis, pas une estimation du marché.</p></section>
+<section id="scanScreen">
+<div class="intro"><p class="eyebrow">POKÉMON · SCAN LOCAL</p><h1>Scanner une carte</h1><p>Carte entière, lumière diffuse, téléphone stable.</p></div>
+<div class="toolbar"><label>Langue de la carte <select id="lang"><option value="fr">Français</option><option value="en">English</option><option value="ja">日本語 · Japonais (partiel)</option></select></label><button id="catalogBtn" class="text">Catalogue visuel</button></div>
+<div id="stage" class="stage">
+ <video id="video" autoplay playsinline muted hidden></video>
+ <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polygon id="outline" points="16,5 84,5 84,95 16,95"/></svg>
+ <div id="cameraPlaceholder"><span class="cameraIcon" aria-hidden="true">▣</span><h2>Prêt à scanner ?</h2><p>Ta photo reste sur ton appareil.</p><button id="start" class="primary">Ouvrir la caméra</button></div>
+ <div id="liveHint" class="liveHint" hidden>Présente une carte entière.</div>
+ <div id="meter" class="meter" hidden><span></span></div>
+</div>
+<div class="cameraActions"><button id="again" class="primary" hidden>Scanner une autre carte</button></div>
+<div class="cameraActions"><button id="stop" hidden>Fermer la caméra</button><button id="capture" hidden>Analyser maintenant</button><button id="import">Importer une photo</button></div>
+<input type="file" id="photo" accept="image/*" hidden>
+<p id="status" class="status" role="status" aria-live="polite">Préparation du moteur visuel… Tu peux déjà ouvrir la caméra.</p>
+<p id="coverage" class="muted"></p>
+<section id="results" class="panel" hidden><div class="resultTop"><h2 id="resultTitle">Résultat</h2><canvas id="cropPreview" width="252" height="352" aria-label="Carte détectée et redressée"></canvas></div><p id="resultReason"></p><div id="candidates"></div></section>
+<section id="selection" class="panel" hidden><h2 id="selectionName"></h2><p id="selectionMeta"></p><label>Finition <select id="finish"><option value="">À confirmer</option><option>Normale</option><option>Holographique</option><option>Reverse</option><option>Autre</option></select></label><section class="prices" aria-label="Prix du marché"><h3>Prix du marché</h3><div id="priceContent" aria-live="polite"></div></section><label>Prix d’achat (€)<input id="buy" inputmode="decimal" placeholder="Facultatif"></label><button id="add" class="primary">Ajouter au portfolio</button><p class="muted">La finition et l’état ne sont pas déterminés automatiquement.</p></section>
+<details class="panel"><summary>Rechercher une carte manuellement</summary><div class="fields"><label>Nom<input id="name" placeholder="Dracaufeu"></label><label>Référence<input id="number" placeholder="021/072 ou OP05-119"></label></div><button id="search">Rechercher</button><p class="muted">Catalogue Pokémon pour cette version. Une référence seule ne suffit pas à confirmer l’édition.</p></details>
+<details class="panel" id="diagnostics"><summary>Détails du dernier scan</summary><pre id="debug">Aucun scan.</pre><button id="copyDiagnostics">Copier le diagnostic</button></details>
+</section>
+<section id="catalogScreen" hidden><button id="back" class="text">← Retour au scanner</button><h1>Catalogue visuel</h1><p id="catalogHelp">Les références préparées sont conservées sur cet appareil. Les images du catalogue servent à la comparaison ; tes photos ne sont pas envoyées.</p><p id="catalogState" role="status"></p><input id="setFilter" type="search" placeholder="Rechercher une extension"><div id="setList"></div></section>
+<section id="portfolioScreen" hidden><h1>Mes cartes</h1><p id="count"></p><div id="portfolioList"></div><p class="muted">Le portfolio utilise le même stockage local que la version stable, sur ce navigateur.</p></section>
+</main>
+<nav aria-label="Navigation"><button id="homeNav">Accueil</button><button id="catalogNav">Catalogue</button><button id="scanNav" class="active">Scanner</button><button id="portfolioNav">Classeur</button></nav>
+<footer>Références : TCGdex / Pokémon TCG API. Application indépendante, non affiliée à Pokémon.<br><a href="docs/SCANNER-V5.md">Notes de version et limites</a> · <a href="THIRD_PARTY_NOTICES.md">Licences</a></footer>
+<script type="module" src="scanner/app.js?v=20261008-1"></script>
+<script type="module" src="interface-reference/mobile.js?v=1"></script>
+</body></html>

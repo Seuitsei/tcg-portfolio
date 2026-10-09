@@ -42,8 +42,8 @@ async function startCamera(){
 }
 function grab(maxEdge){const v=$('video');if(v.readyState<2||!v.videoWidth||!v.videoHeight)throw Error('La caméra n’est pas encore prête.');const scale=Math.min(1,maxEdge/Math.max(v.videoWidth,v.videoHeight));frameCanvas.width=Math.round(v.videoWidth*scale);frameCanvas.height=Math.round(v.videoHeight*scale);frameContext.drawImage(v,0,0,frameCanvas.width,frameCanvas.height);return frameContext.getImageData(0,0,frameCanvas.width,frameCanvas.height);}
 function drawOutline(points,progress){
- const stage=$('stage'),v=$('video'),w=stage.clientWidth,h=stage.clientHeight,scale=Math.min(w/v.videoWidth,h/v.videoHeight),dw=v.videoWidth*scale,dh=v.videoHeight*scale;
- if(points)$('outline').setAttribute('points',points.map(p=>[(p.x*dw+(w-dw)/2)/w*100,(p.y*dh+(h-dh)/2)/h*100].join(',')).join(' '));
+ // The visible guide stays fixed; detected corners still drive capture and recognition.
+ $('outline').setAttribute('points','16,5 84,5 84,95 16,95');
  $('outline').style.stroke=progress>=1?'#71e7a4':progress>0?'#f5bb58':'#f27568';$('meter').firstElementChild.style.width=(progress*100)+'%';
 }
 function schedule(){clearTimeout(timer);if(live&&!paused)timer=setTimeout(tick,nextDelay(tickStart,performance.now()));}

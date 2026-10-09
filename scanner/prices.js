@@ -19,13 +19,14 @@ export function renderPrices(target,card,lang){
  const render=()=>{
   grid.replaceChildren();if(select.value===''){grid.append(node('p','Confirme la variante pour afficher ses prix.'));return;}
   const v=list[Number(select.value)],cm=v.pricing.cardmarket,tp=v.pricing.tcgplayer;
-  const eu=node('article',undefined,'marketPrice');eu.append(node('h4','Cardmarket · EUR'),node('p',lang==='ja'?'Édition japonaise demandée · correspondance à vérifier sur la fiche.':'Langues regroupées · pas de cote française ou anglaise distincte.','muted'));
+  const eu=node('article',undefined,'marketPrice');eu.append(node('h4','Cardmarket · EUR'));const notice=node('p',lang==='ja'?'Édition japonaise demandée · correspondance à vérifier sur la fiche.':'Langues regroupées · pas de cote française ou anglaise distincte.','muted');
   if(cm){
-   eu.append(node('p','Tendance du produit : '+money(cm.trend,'EUR'),'priceValue'));
+   eu.append(node('p',money(cm.trend,'EUR'),'scanMarketValue'),node('p','Tendance Cardmarket','muted'));
    eu.append(node('p','Moyenne 30 jours : '+money(cm.avg30,'EUR')));
    if(typeof cm['trend-holo']==='number'&&cm['trend-holo']>0)eu.append(node('p','Autre série « holo » de la source : '+money(cm['trend-holo'],'EUR')+' · finition à vérifier sur la fiche.','muted'));
    eu.append(node('p',updated(cm.updated),'muted'));
   }else eu.append(node('p','Prix indisponible pour cette variante.'));
+  eu.append(notice);
   const cmid=productId(cm?.idProduct)||productId(v.ids.cardmarket);
   if(cmid)eu.append(link('https://www.cardmarket.com/fr/Pokemon/Products?idProduct='+cmid+'&language='+(lang==='fr'?'2':lang==='ja'?'7':'1'),'Voir la fiche Cardmarket · vérifier la langue'));
   const us=node('article',undefined,'marketPrice');us.append(node('h4','TCGplayer · USD'),node('p',lang==='fr'?'Référence du marché américain · pas une cote de la carte française.':lang==='ja'?'Édition japonaise demandée · vérifie la langue sur la fiche du vendeur.':'Référence du marché américain · langue non certifiée par la source.','muted'));

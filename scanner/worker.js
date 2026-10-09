@@ -1,5 +1,5 @@
 'use strict';
-importScripts('vision.js?v=20261009-4');
+importScripts('vision.js?v=20261009-5');
 const V=ScannerVision;let engine=null,entries=[],allCards=[],sets=[],lang='fr',gate=new V.StabilityGate(),featuresCache=new Map(),prebuiltPacks=[],located=null,lastLocate=-Infinity;
 let engineReady=new Promise((resolve,reject)=>{
  self.Module={onRuntimeInitialized:()=>resolve(),onAbort:()=>reject(Error('Le moteur visuel ne peut pas démarrer.'))};
@@ -15,7 +15,9 @@ function summary(){return {count:entries.length,sets:sets.map(s=>({...s,indexed:
 function addEntries(items){const seen=new Map(entries.map(c=>[c.id,c]));for(const e of items){if(seen.has(e.id)){if(e.orb)Object.assign(seen.get(e.id),{...e,v:Int8Array.from(e.v)});}else{e.v=Int8Array.from(e.v);entries.push(e);seen.set(e.id,e);}}}
 function fromBase64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0));}
 function toBase64(bytes){let s='';for(let i=0;i<bytes.length;i++)s+=String.fromCharCode(bytes[i]);return btoa(s);}
-async function referenceFeatures(entry){
+async function referenceFeatures(entry,enhance=false){
+ if(enhance&&entry.foil)return {...entry.foil,bytes:Uint8Array.from(entry.foil.bytes)};
+ if(enhance){const key="orb-foil-v1:"+lang+":"+entry.id;if(featuresCache.has(key))return featuresCache.get(key);let f=await cacheGet(key);if(!f){const bytes=await fetchBytes(imageURL(entry)),bitmap=await createImageBitmap(new Blob([bytes]));let mat;try{const canvas=new OffscreenCanvas(bitmap.width,bitmap.height),ctx=canvas.getContext("2d");ctx.drawImage(bitmap,0,0);mat=engine.matFromImageData(ctx.getImageData(0,0,canvas.width,canvas.height));f=V.features(engine,mat,false,true);await cachePut(key,f);}finally{bitmap.close();V.dispose(mat);}}if(featuresCache.size>100)featuresCache.delete(featuresCache.keys().next().value);featuresCache.set(key,f);return f;}
  if(featuresCache.has(entry.id))return featuresCache.get(entry.id);
  if(!entry.orb){
   const key='orb-v1:'+lang+':'+entry.id;let f=await cacheGet(key);
@@ -46,19 +48,20 @@ async function init(data){
   addEntries(rows);postMessage({type:'progress',text:'Préparation du catalogue '+lang.toUpperCase()+' · '+(++done)+'/'+packs.length,count:entries.length});
  }
  const custom=await cacheGet('custom:'+lang)||[];for(const sid of custom){const rows=await cacheGet('set:'+lang+':'+sid);if(rows)addEntries(rows);}
+ if(lang==='fr'){const extra=await getJSON('data/fr-cel25-extra.json');addEntries(extra);for(const e of extra){const card=allCards.find(c=>c.id===e.id);if(card)Object.assign(card,publicEntry(e));}}
  await engineReady;return summary();
 }
-async function locateCard(src){
- const scene=V.features(engine,src,true);if(scene.points.length<40)return null;
- const samples=V.sceneSamples(engine,src),shortlist=V.rankVectors(samples.map(s=>s.v),entries,16);let best=null;
+async function locateCard(src,enhance=false){
+ const scene=V.features(engine,src,true,enhance);if(scene.points.length<40)return null;
+ const samples=V.sceneSamples(engine,src),shortlist=V.rankVectors(samples.map(s=>s.v),entries,enhance?40:16);let best=null;
  const refs=new Map(),jobs=shortlist.slice(),deadline=performance.now()+8000;
- async function download(){while(jobs.length&&performance.now()<deadline){const rank=jobs.shift();try{refs.set(rank.index,await referenceFeatures(entries[rank.index]));}catch{}}}
+ async function download(){while(jobs.length&&performance.now()<deadline){const rank=jobs.shift();try{refs.set(rank.index,await referenceFeatures(entries[rank.index],enhance));}catch{}}}
  await Promise.all([download(),download(),download()]);
  for(const rank of shortlist){
   const ref=refs.get(rank.index);if(!ref)continue;
-  const nearest=samples.map(s=>({s,d:V.vectorDistance(s.v,entries[rank.index].v)})).sort((a,b)=>a.d-b.d).slice(0,3);
+  const nearest=samples.map(s=>({s,d:V.vectorDistance(s.v,entries[rank.index].v)})).sort((a,b)=>a.d-b.d).slice(0,enhance?2:3);
   const attempts=[{f:scene,rect:{x:0,y:0,width:src.cols,height:src.rows}}];
-  for(const {s} of nearest){if(!s.features){const roi=src.roi(new engine.Rect(s.rect.x,s.rect.y,s.rect.width,s.rect.height));try{s.features=V.features(engine,roi);}finally{roi.delete();}}attempts.push({f:s.features,rect:s.rect});}
+  for(const {s} of nearest){if(!s.features){const roi=src.roi(new engine.Rect(s.rect.x,s.rect.y,s.rect.width,s.rect.height));try{s.features=V.features(engine,roi,false,enhance);}finally{roi.delete();}}attempts.push({f:s.features,rect:s.rect});}
   for(const {f,rect} of attempts){
    const match=V.verify(engine,f,ref);
    if(match.inliers<8||match.ratio<.5||match.referenceCoverage<.10||!match.corners)continue;
@@ -71,8 +74,9 @@ async function locateCard(src){
    const score=match.inliers*match.ratio*Math.min(1,match.referenceCoverage/.25);
    if(!best||score>best.score)best={points,score,id:entries[rank.index].id};
   }
+  if(enhance&&best?.score>=24)break;
  }
- return best;
+ return best||(!enhance?await locateCard(src,true):null);
 }
 async function frame(data){
  const src=engine.matFromImageData(data.image);let crop;
@@ -92,8 +96,9 @@ async function analyse(data){
  const t=performance.now(),src=engine.matFromImageData(data.image);let card,rotated;
  try{
   const captured=data.alreadyCropped?null:V.capturePoints(data.points,src.cols,src.rows);
+  let detailed=null;
   let detection=data.alreadyCropped?null:captured?{points:captured}:V.detect(engine,src);
-  if(!data.alreadyCropped&&(data.manual||!detection)){const details=await locateCard(src);if(details)detection={points:V.capturePoints(details.points,src.cols,src.rows)};}
+  if(!data.alreadyCropped&&(data.manual||!detection)){const details=await locateCard(src);if(details){detailed=details;detection={points:V.capturePoints(details.points,src.cols,src.rows)};}}
   if(data.alreadyCropped){card=new engine.Mat();engine.resize(src,card,new engine.Size(V.WIDTH,V.HEIGHT),0,0,engine.INTER_AREA);}
   else if(detection)card=V.warp(engine,src,detection.points);
   else return {kind:'reject',reason:'Carte non localisée. Centre une seule carte entière, puis reprends une photo.',candidates:[],ms:performance.now()-t};
@@ -101,6 +106,8 @@ async function analyse(data){
   if(q.sharpness<40||q.brightness<35||q.glare>.28)return {kind:'reject',reason:'Photo trop floue, sombre ou réfléchissante. Réessaie sous une lumière diffuse.',candidates:[],ms:performance.now()-t};
   const upright=V.descriptor(engine,card);rotated=new engine.Mat();engine.rotate(card,rotated,engine.ROTATE_180);const inverted=V.descriptor(engine,rotated);
   let shortlist=V.rankVectors([upright,inverted],entries,16);
+  const locatedIndex=entries.findIndex(e=>e.id===(detailed?.id||located?.id));
+  if(locatedIndex>=0&&!shortlist.some(s=>s.index===locatedIndex))shortlist.push({index:locatedIndex,distance:Math.min(V.vectorDistance(upright,entries[locatedIndex].v),V.vectorDistance(inverted,entries[locatedIndex].v))});
   const top=entries[shortlist[0]?.index];if(!top)return {kind:'reject',reason:'Prépare au moins une extension dans le catalogue visuel.',candidates:[]};
   // Include same-name/number printings even if the artwork shortlist missed them.
   const siblings=entries.map((e,i)=>({e,i})).filter(({e})=>e.name===top.name&&V.normaliseNumber(e.localId)===V.normaliseNumber(top.localId));
@@ -115,6 +122,15 @@ async function analyse(data){
    // Geometric evidence carries more weight than coarse visual resemblance.
    const evidence=verified.inliers*Math.min(1,verified.coverage/.2)*verified.ratio/(1+s.distance);
    ranks.push({...publicEntry(e),...verified,distance:s.distance,evidence});
+  }
+  // Recheck weak geometry at higher detail; retain the existing confidence rules.
+  if(!ranks.some(r=>r.inliers>=24&&r.coverage>=.22&&r.ratio>=.65)){
+   const detailCard=data.alreadyCropped?src:V.warp(engine,src,detection.points,2);
+   try{const detailQuery=V.features(engine,detailCard,false,true);
+    const extra=V.rankVectors([upright,inverted],entries,detailed||located?16:40);for(const s of shortlist)if(!extra.some(x=>x.index===s.index))extra.push(s);
+    const detailRefs=new Map(),jobs=extra.slice(),deadline=performance.now()+8000;async function detailLoad(){while(jobs.length&&performance.now()<deadline){const s=jobs.shift();try{detailRefs.set(s.index,await referenceFeatures(entries[s.index],true));}catch{unavailable++;}}}await Promise.all([detailLoad(),detailLoad(),detailLoad()]);unavailable+=jobs.length;
+    for(const s of extra){const ref=detailRefs.get(s.index);if(!ref)continue;const verified=V.verify(engine,detailQuery,ref);if(verified.inliers<12||verified.ratio<.55||verified.referenceCoverage<.15)continue;const e=entries[s.index],evidence=verified.inliers*Math.min(1,verified.coverage/.2)*verified.ratio/(1+s.distance),old=ranks.find(r=>r.id===e.id);if(!old||evidence>old.evidence){if(old)ranks.splice(ranks.indexOf(old),1);ranks.push({...publicEntry(e),...verified,distance:s.distance,evidence});}}
+   }finally{if(detailCard!==src)detailCard.delete();}
   }
   ranks.sort((a,b)=>b.evidence-a.evidence||a.distance-b.distance);
   if(!ranks.length)return {kind:'reject',reason:'Les références ne sont pas accessibles. Vérifie ta connexion pour ce premier scan ; les références déjà préparées restent locales.',candidates:[],ms:Math.round(performance.now()-t)};

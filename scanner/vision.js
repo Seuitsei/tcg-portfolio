@@ -73,11 +73,12 @@ function detect(cv,source){
   return best;
  }finally{dispose(small,gray,blur,edges);}
 }
-function warp(cv,source,points){
+function warp(cv,source,points,scale=1){
+ const width=WIDTH*scale,height=HEIGHT*scale;
  const src=cv.matFromArray(4,1,cv.CV_32FC2,points.flatMap(p=>[p.x,p.y]));
- const dst=cv.matFromArray(4,1,cv.CV_32FC2,[0,0,WIDTH-1,0,WIDTH-1,HEIGHT-1,0,HEIGHT-1]);
+ const dst=cv.matFromArray(4,1,cv.CV_32FC2,[0,0,width-1,0,width-1,height-1,0,height-1]);
  const matrix=cv.getPerspectiveTransform(src,dst),out=new cv.Mat();
- try{cv.warpPerspective(source,out,matrix,new cv.Size(WIDTH,HEIGHT),cv.INTER_LINEAR,cv.BORDER_REPLICATE);return out;}catch(e){out.delete();throw e;}finally{dispose(src,dst,matrix);}
+ try{cv.warpPerspective(source,out,matrix,new cv.Size(width,height),cv.INTER_LINEAR,cv.BORDER_REPLICATE);return out;}catch(e){out.delete();throw e;}finally{dispose(src,dst,matrix);}
 }
 function quality(cv,card){
  const gray=new cv.Mat(),lap=new cv.Mat(),mean=new cv.Mat(),std=new cv.Mat(),small=new cv.Mat();
@@ -89,13 +90,18 @@ function quality(cv,card){
   return {sharpness,brightness,glare,sample:Array.from(small.data)};
  }finally{dispose(gray,lap,mean,std,small);}
 }
-function features(cv,card,scene=false){
- const gray=new cv.Mat(),resized=new cv.Mat(),kp=new cv.KeyPointVector(),desc=new cv.Mat(),mask=new cv.Mat(),orb=new cv.ORB(scene?1200:350);
+// Enhanced descriptors retain detail and reduce uneven foil illumination.
+// Coordinates stay in the same logical frame as existing cached descriptors.
+function features(cv,card,scene=false,enhance=false){
+ const gray=new cv.Mat(),resized=new cv.Mat(),kp=new cv.KeyPointVector(),desc=new cv.Mat(),mask=new cv.Mat(),orb=new cv.ORB(enhance?1600:scene?1200:350);
+ let eq,clahe;
  try{
-  const scale=Math.min(1,900/Math.max(card.cols,card.rows));const width=scene?Math.round(card.cols*scale):WIDTH,height=scene?Math.round(card.rows*scale):HEIGHT;
-  cv.resize(card,resized,new cv.Size(width,height),0,0,cv.INTER_AREA);cv.cvtColor(resized,gray,cv.COLOR_RGBA2GRAY);orb.detectAndCompute(gray,mask,kp,desc);
-  return {width:resized.cols,height:resized.rows,bytes:desc.data.slice(),points:Array.from({length:kp.size()},(_,i)=>{const p=kp.get(i).pt;return {x:p.x,y:p.y};})};
- }finally{dispose(gray,resized,kp,desc,mask,orb);}
+  const scale=Math.min(1,900/Math.max(card.cols,card.rows));const width=scene?Math.round(card.cols*scale):WIDTH,height=scene?Math.round(card.rows*scale):HEIGHT,factor=enhance&&!scene?2:1;
+  cv.resize(card,resized,new cv.Size(width*factor,height*factor),0,0,cv.INTER_AREA);cv.cvtColor(resized,gray,cv.COLOR_RGBA2GRAY);
+  if(enhance){eq=new cv.Mat();clahe=new cv.CLAHE(2,new cv.Size(8,8));clahe.apply(gray,eq);}
+  orb.detectAndCompute(eq||gray,mask,kp,desc);
+  return {width,height,bytes:desc.data.slice(),points:Array.from({length:kp.size()},(_,i)=>{const p=kp.get(i).pt;return {x:p.x/factor,y:p.y/factor};})};
+ }finally{dispose(gray,resized,kp,desc,mask,orb,eq,clahe);}
 }
 function verify(cv,query,reference){
  if(query.points.length<8||reference.points.length<8)return {inliers:0,ratio:0,coverage:0};

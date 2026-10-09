@@ -43,3 +43,22 @@ Tests : tests/portfolio-variants.cjs couvre les doublons, la migration, le recha
 Définir CHROMIUM_PATH et les chemins des photos/références externes TCG_TEST_PHOTOS et TCG_TEST_IMAGES pour les tests protected-cards.cjs et protected-browser.cjs. Les photos de l'utilisateur et l'APK ne sont pas publiés dans le dépôt.
 
 La version stable index.html garde l'empreinte e92df4c75e06d17885b4a8455344e859f2e19d27.
+
+
+## Correctifs 20261009-5 — trois nouvelles cartes et édition du classeur
+
+Diagnostic reproduit avec les fichiers originaux du 9 octobre à 14:20 :
+
+- Mew 025/025 : présent dans le catalogue textuel, absent de l'index visuel car TCGdex ne fournit pas son image. Ajout d'une référence officielle française distincte du Mew 011/025. Source : https://assets.pokemon.com/assets/cms2-fr-fr/img/cards/web/CEL/CEL_FR_25.png . Le fichier fr-cel25-extra.json contient seulement ses métadonnées et descripteurs calculés, pas les photos utilisateur. Aucun remplacement par une carte similaire.
+- Mentali VMAX 065/203 : 28e candidat dans la recherche de scène, hors de la limite de 16. Aucun match ORB suffisant à la résolution initiale, même sur un cadrage manuel de diagnostic.
+- Dracolosse V 191/203 : premier candidat colorimétrique mais aucun match ORB suffisant à la résolution initiale.
+
+Le recours supplémentaire élargit la localisation à 40 candidats et calcule des détails ORB à 504 × 704 avec égalisation locale du contraste CLAHE. Les coordonnées restent dans le repère logique initial ; les homographies et les seuils de confiance existants sont conservés. La vérification finale à haute résolution part du cliché original. Ses nouveaux résultats doivent avoir au moins 12 points, un ratio de 0,55 et une couverture de référence de 0,15. Les références de ce mode utilisent une cache séparée. Les téléchargements commencent pendant huit secondes au maximum ; les requêtes lancées peuvent encore atteindre leur timeout. Les candidats non traités rendent la conclusion prudente.
+
+La voie rapide reste prioritaire. Le mode détaillé peut prendre davantage de temps sur les cartes difficiles, particulièrement lors du premier téléchargement. Les références manquantes ne sont pas présentées comme exclues. Une localisation n'est jamais une confirmation d'identité.
+
+Résultats de tests : bonne première carte pour les sept photos, en capture manuelle et en simulation de déclenchement automatique ; vrai Worker/OpenCV dans Chromium pour les sept imports ; deux images sans carte toujours rejetées. Mentali nécessite une confirmation ; le classement strong/candidates des autres photos dépend du cadrage et des références accessibles. Ces tests ne mesurent pas une précision générale sur iPhone/Android.
+
+Classeur : crayon de même style que la corbeille, placé au-dessus ; dialogue de modification du prix d'achat et de la variante. Le prix de marché reste calculé depuis la source. Sauvegarde atomique sur l'identifiant de chaque exemplaire, y compris les doublons. Une version indisponible reste conservée et une modification concurrente de cette carte empêche l'écrasement. Annulation, validation du prix, effacement du prix d'achat, persistance et recalcul du gain sont testés dans portfolio-editor.cjs.
+
+Après scan : prix Cardmarket en grand et vert, placé avant les détails de finition. Les variantes multiples restent à confirmer avant d'afficher leur prix. Le prix reste une tendance agrégée du produit, sans prétendre isoler langue et état.

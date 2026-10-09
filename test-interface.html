@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#102a2a"><title>TCG Portfolio · Interface mobile</title>
-<link rel="stylesheet" href="scanner/style.css?v=20261009-5">
-<link rel="stylesheet" href="interface-reference/mobile.css?v=20261009-5">
+<link rel="stylesheet" href="scanner/style.css?v=20261009-6">
+<link rel="stylesheet" href="interface-reference/mobile.css?v=20261009-6">
 </head>
 <body>
 <header><a href="./" class="brand">TCG Portfolio</a><a class="badge" href="atelier-interface.html">Atelier interface</a></header>
 <main>
-<section id="homeScreen" hidden><p class="eyebrow">MA COLLECTION</p><h1>Mon classeur</h1><p class="muted">Tes cartes, réunies au même endroit.</p><div class="metrics"><article><span>Cartes enregistrées</span><strong id="homeCount">0</strong></article><article><span>Total des achats saisis</span><strong id="homeSpend">0 €</strong></article></div><button id="homeScan" class="primary wide">Scanner une carte</button><div class="shortcuts"><button id="homeCollection">Mes cartes →</button><button id="homeCatalog">Catalogue →</button></div><h2>Derniers ajouts</h2><div id="recentCards" class="recent"></div><p class="muted">Prototype mobile · Les montants ci-dessus sont tes achats saisis, pas une estimation du marché.</p></section>
+<section id="homeScreen" hidden><p class="eyebrow">MA COLLECTION</p><h1>Mon classeur</h1><p class="muted">Tes cartes, réunies au même endroit.</p><div class="metrics"><article><span>Classeur</span><strong id="homeCount">0</strong></article><article><span>Valeur de mon classeur</span><strong id="homeSpend">Calcul…</strong><small id="homeValueState" aria-live="polite"></small></article></div><button id="homeScan" class="primary wide">Scanner une carte</button><div class="shortcuts"><button id="homeCollection">Mes cartes →</button><button id="homeCatalog">Catalogue →</button></div><h2>Derniers ajouts</h2><div id="recentCards" class="recent"></div><p class="muted">Valeur estimée d’après les prix Cardmarket. Les cartes sans prix ou sans variante confirmée ne sont pas incluses.</p></section>
 <section id="scanScreen">
 <div class="intro"><p class="eyebrow">POKÉMON · SCAN LOCAL</p><h1>Scanner une carte</h1><p>Carte entière, lumière diffuse, téléphone stable.</p></div>
 <div class="toolbar"><label>Langue de la carte <select id="lang"><option value="fr">Français</option><option value="en">English</option><option value="ja">日本語 · Japonais (partiel)</option></select></label><button id="catalogBtn" class="text">Catalogue visuel</button></div>
@@ -35,6 +35,6 @@
 </main>
 <nav aria-label="Navigation"><button id="homeNav">Accueil</button><button id="catalogNav">Catalogue</button><button id="scanNav" class="active">Scanner</button><button id="portfolioNav">Classeur</button></nav>
 <footer>Références : TCGdex / Pokémon TCG API. Application indépendante, non affiliée à Pokémon.<br><a href="docs/SCANNER-V5.md">Notes de version et limites</a> · <a href="THIRD_PARTY_NOTICES.md">Licences</a></footer>
-<script type="module" src="scanner/app.js?v=20261009-5"></script>
-<script type="module" src="interface-reference/mobile.js?v=1"></script>
+<script type="module" src="scanner/app.js?v=20261009-6"></script>
+<script type="module" src="interface-reference/mobile.js?v=20261009-6"></script>
 </body></html>

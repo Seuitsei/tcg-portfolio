@@ -1,5 +1,5 @@
 import {createCatalog} from './catalog.js?v=20261009-5';
-import {loadPortfolioPrice,loadPortfolioVariants} from './portfolio-prices.js?v=20261009-5';
+import {loadPortfolioPrice,loadPortfolioVariants} from './portfolio-prices.js?v=20261009-6';
 import {BestFrame,nextDelay,configureCamera,cameraInfo} from './camera.js?v=20261009-5';
 import {createPricePanel} from './prices.js?v=20261009-5';
 const $=id=>document.getElementById(id);

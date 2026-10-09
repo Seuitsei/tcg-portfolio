@@ -6,3 +6,5 @@ strong.portfolioPrice,.priceHistory{color:#a5e584}.portfolioQuote small{color:#9
 .portfolioGain.up{color:#a5e584}.portfolioGain.down{color:#ff8585}.portfolioGain.equal{color:#92a6c5}
 
 .priceGrid .scanMarketValue{color:#a5e584}.portfolioEditor{background:#0c192b;color:#eff4fc;border-color:#263b5b}
+
+.metrics small{display:block;color:#92a6c5;font-size:11px;line-height:1.5;margin-top:8px}#homeSpend{color:#a5e584;overflow-wrap:anywhere}

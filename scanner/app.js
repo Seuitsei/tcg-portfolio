@@ -3,7 +3,7 @@ import {loadPortfolioPrice,loadPortfolioVariants} from './portfolio-prices.js?v=
 import {BestFrame,nextDelay,configureCamera,cameraInfo} from './camera.js?v=20261009-5';
 import {createPricePanel} from './prices.js?v=20261009-5';
 const $=id=>document.getElementById(id);
-const VERSION='20261009-5';
+const VERSION='20261009-10';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));
@@ -13,7 +13,7 @@ let collection=[];try{const stored=JSON.parse(localStorage.getItem('tcgCards')||
 const frameCanvas=document.createElement('canvas'),frameContext=frameCanvas.getContext('2d',{willReadFrequently:true});
 function status(text,error=false){$('status').textContent=text;$('status').classList.toggle('error',error);}
 function rpc(type,data={},transfer=[]){
- return new Promise((resolve,reject)=>{const id=++requestId;const timeout=type==='prepare'?600000:type==='init'?180000:30000;const t=setTimeout(()=>{pending.delete(id);reject(Error(type==='analyse'?'L’analyse a pris trop de temps. Réessaie.':'Chargement trop long. Vérifie la connexion puis actualise la page.'));},timeout);pending.set(id,{resolve,reject,t});worker.postMessage({id,type,...data},transfer);});
+ return new Promise((resolve,reject)=>{const id=++requestId;const timeout=type==='prepare'?600000:type==='init'?180000:type==='analyse'?60000:30000;const t=setTimeout(()=>{pending.delete(id);reject(Error(type==='analyse'?'L’analyse a pris trop de temps. Réessaie.':'Chargement trop long. Vérifie la connexion puis actualise la page.'));},timeout);pending.set(id,{resolve,reject,t});worker.postMessage({id,type,...data},transfer);});
 }
 async function boot(){
  ready=false;summary=null;$('search').disabled=true;

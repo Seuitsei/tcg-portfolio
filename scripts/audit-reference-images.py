@@ -29,7 +29,7 @@ def source_urls(card, lang):
     sid = set_id(card)
     prefix = {'swsh9tg':'SWSH9', 'swsh10tg':'SWSH10',
               'swsh11tg':'SWSH11', 'swsh12tg':'SWSH12TG',
-              'swsh12.5gg':'SWSH12PT5GG', 'sma':'SMA', 'col1':'COL1',
+              'swsh12.5gg':'SWSH12PT5GG', 'sma':'SMA', 'col1':'COL1', 'det1':'DET',
               'smp':'SMP', 'swshp':'SWSHP', 'svp':'SVP',
               'hgssp':'HGSSP', 'dpp':'DPP', 'mep':'MEP'}.get(sid)
     if prefix is None and re.fullmatch(r'(?:dp|pl|hgss|sm|swsh|sv|xy)\d+(?:\.\d+)?(?:sv)?', sid):
@@ -130,7 +130,11 @@ async def main():
             statuses = [checks.get(url, {}).get('status', 'not-checked') for url in urls]
             reason = 'no-source-candidate' if not urls else 'network-error' if 'network-error' in statuses else 'not-checked' if 'not-checked' in statuses else 'no-image-confirmed'
             unresolved_reasons[c['lang']][reason] += 1
-    document = {'checkedAt':date,'scope':'physical cards in current FR/EN/JA catalog; global vectors plus local ORB packs; Pocket excluded', 'scannerChanged':False,'summary':summary, 'cards':found, 'unresolvedBySeries':dict(unresolved), 'unresolvedReasons':unresolved_reasons}
+    existing = out/'reference-image-audit.json'
+    previous = json.loads(existing.read_text()).get('cards',[]) if existing.exists() else []
+    bank = {(c['lang'],c['id']):c for c in previous}
+    bank.update({(c['lang'],c['id']):c for c in found})
+    document = {'checkedAt':date,'scope':'physical cards in current FR/EN/JA catalog; global vectors plus local ORB packs; Pocket excluded', 'scannerChanged':False,'summary':summary, 'cards':list(bank.values()), 'foundThisAudit':len(found), 'unresolvedBySeries':dict(unresolved), 'unresolvedReasons':unresolved_reasons}
     (out/'reference-image-audit.json').write_text(json.dumps(document,ensure_ascii=False,separators=(',',':'))+'\n')
     lines = ['# Audit des références visuelles', '', f'Vérification : {date}.', '', 'Cet audit ne modifie pas le scanner. Les cartes Pocket sont exclues. Les références déjà présentes dans les packs ORB sont comptées. Une référence trouvée correspond à une image téléchargée, décodée et vérifiée dans la langue indiquée ; son association au numéro doit être conservée lors de l’intégration.', '', 'Les séries non résolues ne sont pas nécessairement introuvables : aucune image n’a été confirmée dans les sources testées. Les anciennes séries et les séries japonaises nécessitent d’autres sources. Les erreurs réseau restent distinctes des réponses 404 dans le cache du script.', '', '| Langue | Cartes physiques | Références présentes | Manquantes | Images retrouvées | Restantes |', '|---|---:|---:|---:|---:|---:|']
     for lang,s in summary.items():

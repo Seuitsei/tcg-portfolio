@@ -2,21 +2,38 @@
 
 Vérification : 2026-10-09T15:17:33+00:00.
 
-Cet audit ne modifie pas le scanner. Les cartes Pocket sont exclues. Les références déjà présentes dans les packs ORB sont comptées. Une référence trouvée correspond à une image téléchargée, décodée et vérifiée dans la langue indiquée ; son association au numéro doit être conservée lors de l’intégration.
+Les **1 820 références françaises et 565 anglaises retrouvées sont intégrées** au catalogue et aux packs de reconnaissance. Les cartes Pocket sont exclues. Les références déjà présentes dans les packs ORB sont comptées. Une référence trouvée correspond à une image téléchargée, décodée et vérifiée dans la langue indiquée ; son association au numéro doit être conservée lors de l’intégration.
 
 Les séries non résolues ne sont pas nécessairement introuvables : aucune image n’a été confirmée dans les sources testées. Les anciennes séries et les séries japonaises nécessitent d’autres sources. Les erreurs réseau restent distinctes des réponses 404 dans le cache du script.
 
-| Langue | Cartes physiques | Références présentes | Manquantes | Images retrouvées | Restantes |
+| Langue | Cartes physiques | Présentes avant ajout | Manquantes avant ajout | Images retrouvées | Restantes |
 |---|---:|---:|---:|---:|---:|
-| fr | 20054 | 17155 | 2899 | 1802 | 1097 |
+| fr | 20054 | 17155 | 2899 | 1820 | 1079 |
 | en | 21256 | 19684 | 1572 | 565 | 1007 |
 | ja | 12781 | 3878 | 8903 | 0 | 8903 |
+
+## Intégration
+
+Les images officielles restent associées à leur langue et à leur numéro. Les packs contiennent les points ORB normaux et renforcés, calculés à partir des fichiers vérifiés. Le catalogue peut préparer ces nouvelles références sans dépendre du téléchargement des images depuis un autre domaine. Les fichiers téléchargés sont mémorisés localement dans IndexedDB.
+
+Un index de détails permet de proposer des cartes dont les couleurs sont altérées par une pochette ou des reflets. Il ne décide jamais de l’identité : les correspondances géométriques restent nécessaires. Les seuils de validation forte sont conservés. Une couleur fortement altérée peut seulement produire une proposition à confirmer si au moins 24 correspondances cohérentes couvrent largement les deux images, sans rival proche. La recherche couleur conserve une piste dédiée aux anciennes références pour éviter que les ajouts les éliminent du classement.
+
+Le premier chargement de cet index représente environ 19 Mo en français ou 13 Mo en anglais. Les packs de séries se chargent à la demande. Les scans difficiles peuvent encore demander un traitement plus long ; les alternatives à confirmer restent affichées. Les photos utilisateur ne sont pas publiées et le traitement visuel reste local.
+
+La page stable `index.html` est conservée. Sauvegarde avant intégration : branche `backup/avant-complement-references-20261009`.
+
+## Vérification
+
+- Les neuf nouvelles photos en classeur retrouvent leur bonne carte dans l’interface Chromium avec le moteur réel, dont les quatre Trainer Gallery. Les sept anciennes photos retrouvent également leur carte. Les résultats incertains restent des propositions à confirmer.
+- Un morceau de tissu et une image blanche restent rejetés ; la règle de confirmation sous voile coloré rejette les correspondances faibles, localisées ou ambiguës.
+- Les 30 références Trainer Gallery sont préparées en français et en anglais sans téléchargement des images externes. Après redémarrage du worker, les packs et l’index de détails sont récupérés dans IndexedDB, avec les téléchargements de références bloqués.
+- Trois scans successifs, le redémarrage de la caméra et le cadre fixe rouge/vert sont vérifiés avec une caméra simulée. Les tests ne remplacent pas un essai sur iPhone ou Android physique.
 
 ## Limites de la recherche
 
 | Langue | Autre source à rechercher | Aucune image confirmée aux URL testées | Erreur réseau non résolue | URL non vérifiée |
 |---|---:|---:|---:|---:|
-| fr | 876 | 221 | 0 | 0 |
+| fr | 858 | 221 | 0 | 0 |
 | en | 867 | 140 | 0 | 0 |
 | ja | 8899 | 4 | 0 | 0 |
 
@@ -140,7 +157,7 @@ Les séries non résolues ne sont pas nécessairement introuvables : aucune imag
 | fr | Écarlate et Violet Énergie | sve | 24 | 0 | 24 |
 | fr | Promo Nintendo | np | 21 | 0 | 21 |
 | fr | SM Kit du dresseur (Raichu d'Alola) | tk-sm-r | 19 | 0 | 19 |
-| fr | Détective Pikachu | det1 | 18 | 0 | 18 |
+| fr | Détective Pikachu | det1 | 18 | 18 | 0 |
 | fr | SM Kit du dresseur (Lougarox) | tk-sm-l | 18 | 0 | 18 |
 | fr | Promo SWSH | swshp | 16 | 16 | 0 |
 | fr | Collection McDonald's 2022 | 2022swsh | 15 | 0 | 15 |

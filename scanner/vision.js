@@ -128,13 +128,19 @@ function verify(cv,query,reference){
   return {inliers,ratio:inliers/good.length,coverage,referenceCoverage,corners:geometry};
  }finally{dispose(a,b,matches,matcher,src,dst,mask,H,inverse,corners,projected);}
 }
-function sceneSamples(cv,source){
+function sceneSamples(cv,source,details=false){
  const samples=[];
  for(const fraction of [1,.92,.82,.72,.62])for(const cy of [.5,.58]){
   const h=source.rows*fraction,w=Math.min(source.cols*.94,h*63/88),hh=Math.min(h,w*88/63);
   const rect={x:Math.round((source.cols-w)/2),y:Math.min(source.rows-Math.round(hh),Math.max(0,Math.round(source.rows*cy-hh/2))),width:Math.round(w),height:Math.round(hh)};
   const roi=source.roi(new cv.Rect(rect.x,rect.y,rect.width,rect.height));
   try{samples.push({rect,v:descriptor(cv,roi),features:null});}finally{roi.delete();}
+ }
+ if(details)for(const fraction of [.66,.70,.74,.78])for(const cx of [.44,.50]){
+  const h=source.rows*fraction,w=h*63/88,x=source.cols*cx-w/2,y=source.rows*.46-h/2;
+  if(x<0||y<0||x+w>source.cols||y+h>source.rows)continue;
+  const rect={x:Math.round(x),y:Math.round(y),width:Math.round(w),height:Math.round(h)};
+  const roi=source.roi(new cv.Rect(rect.x,rect.y,rect.width,rect.height));try{samples.push({rect,v:descriptor(cv,roi),features:null,additional:true});}finally{roi.delete();}
  }
  return samples;
 }
@@ -169,8 +175,11 @@ class StabilityGate{
 }
 // Scores are evidence thresholds, never calibrated probabilities.
 function decision(ranked,hasUnindexedVariant=false){
- const a=ranked[0],b=ranked[1];if(!a||a.inliers<8||a.coverage<.06||a.distance>.82)return 'reject';
+ const a=ranked[0],b=ranked[1];if(!a||a.inliers<8||a.coverage<.06)return 'reject';
  const margin=!b||a.evidence-b.evidence>14;
+ // A colour veil may suppress the coarse score: only offer a confirmation
+ // when distributed, unique geometric evidence remains strong. Never auto-accept.
+ if(a.distance>.82)return a.inliers>=24&&a.ratio>=.7&&a.coverage>=.25&&a.referenceCoverage>=.25&&margin?'candidates':'reject';
  if(!hasUnindexedVariant&&a.inliers>=24&&a.ratio>=.65&&a.coverage>=.22&&a.distance<.42&&margin)return 'strong';
  return 'candidates';
 }

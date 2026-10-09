@@ -1,9 +1,9 @@
-import {createCatalog} from './catalog.js?v=20261009-2';
-import {loadPortfolioPrice} from './portfolio-prices.js?v=20261009-2';
-import {BestFrame,nextDelay,configureCamera,cameraInfo} from './camera.js?v=20261009-2';
+import {createCatalog} from './catalog.js?v=20261009-3';
+import {loadPortfolioPrice} from './portfolio-prices.js?v=20261009-3';
+import {BestFrame,nextDelay,configureCamera,cameraInfo} from './camera.js?v=20261009-3';
 import {createPricePanel} from './prices.js?v=20261007-4';
 const $=id=>document.getElementById(id);
-const VERSION='20261009-2';
+const VERSION='20261009-3';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));

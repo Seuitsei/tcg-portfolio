@@ -27,7 +27,7 @@ La page stable `index.html` est conservée. Sauvegarde avant intégration : bran
 - Les neuf nouvelles photos en classeur retrouvent leur bonne carte dans l’interface Chromium avec le moteur réel, dont les quatre Trainer Gallery. Les sept anciennes photos retrouvent également leur carte. Les résultats incertains restent des propositions à confirmer.
 - Un morceau de tissu et une image blanche restent rejetés ; la règle de confirmation sous voile coloré rejette les correspondances faibles, localisées ou ambiguës.
 - Les 30 références Trainer Gallery sont préparées en français et en anglais sans téléchargement des images externes. Après redémarrage du worker, les packs et l’index de détails sont récupérés dans IndexedDB, avec les téléchargements de références bloqués.
-- Trois scans successifs, le redémarrage de la caméra et le cadre fixe rouge/vert sont vérifiés avec une caméra simulée. Les tests ne remplacent pas un essai sur iPhone ou Android physique.
+- Une localisation géométrique reste conservée pendant la stabilité ; un changement de l’image ou une qualité insuffisante l’invalide, sans relancer inutilement la comparaison de toute la banque. Trois scans successifs, le redémarrage de la caméra et le cadre fixe rouge/vert sont vérifiés avec une caméra simulée. Les tests ne remplacent pas un essai sur iPhone ou Android physique.
 
 ## Limites de la recherche
 

@@ -15,11 +15,12 @@ assert.equal(result.type,'result');assert.equal(result.result.candidates[0]?.id,
 if(process.env.TCG_MANUAL_ONLY)continue;
 await ctx.self.onmessage({data:{id:2,type:'reset'}});
 const small=await sharp(data,{raw:{width:info.width,height:info.height,channels:4}}).resize({width:480}).raw().toBuffer({resolveWithObject:true});
-let auto;for(let i=0;i<14;i++){await ctx.self.onmessage({data:{id:3,type:'frame',image:{width:small.info.width,height:small.info.height,data:new Uint8ClampedArray(small.data)},now:performance.now()}});auto=result.result;if(auto.ready)break;await new Promise(r=>setTimeout(r,150));}
+let auto;for(let i=0;i<14;i++){const frameStarted=performance.now();await ctx.self.onmessage({data:{id:3,type:'frame',image:{width:small.info.width,height:small.info.height,data:new Uint8ClampedArray(small.data)},now:performance.now()}});assert(performance.now()-frameStarted<60000,id+' frame timeout');auto=result.result;if(auto.ready)break;await new Promise(r=>setTimeout(r,150));}
 assert(auto.ready,id+' automatic stability');assert(['contours','details'].includes(auto.method));
 await ctx.self.onmessage({data:{id:4,type:'analyse',image,points:auto.points}});
 assert.equal(result.result.candidates[0]?.id,id,id+' automatic identity');
-console.log('AUTO',id,result.result.kind);console.log('AUTO',id,JSON.stringify({ready:auto.ready,method:auto.method,hint:auto.hint,quality:auto.quality}));
+assert.notEqual(result.result.kind,'reject',id+' automatic visible candidate');console.log('AUTO',id,result.result.kind);console.log('AUTO',id,JSON.stringify({ready:auto.ready,method:auto.method,hint:auto.hint,quality:auto.quality}));
+if(auto.method==='details'){await ctx.self.onmessage({data:{id:6,type:'frame',image:{width:small.info.width,height:small.info.height,data:new Uint8ClampedArray(small.info.width*small.info.height*4).fill(255)},now:performance.now()}});assert.equal(result.result.ready,false,'a changed/white image must not retain a stable scan');assert.equal(vm.runInContext('located',ctx),null,'discard the verified rectangle when its image changes');}
 
 }
 // No card: a piece of the textured fabric and plain white must not be confidently identified.

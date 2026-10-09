@@ -1,6 +1,6 @@
 'use strict';
-importScripts('vision.js?v=20261009-10','reference-packs.js?v=20261009-10','detail-index.js?v=20261009-10');
-const DATA_VERSION='20261009-10',packedReferences=new Map(),packedLoads=new Map(),packedSizes=new Map();let referencePacks=new Map(),packedBytes=0;
+importScripts('vision.js?v=20261009-11','reference-packs.js?v=20261009-11','detail-index.js?v=20261009-11');
+const DATA_VERSION='20261009-11',packedReferences=new Map(),packedLoads=new Map(),packedSizes=new Map();let referencePacks=new Map(),packedBytes=0;
 let preparedRecovered=new Set();
 let detailSpec=null,detailIndex=null,detailLoad=null;
 const V=ScannerVision;let engine=null,entries=[],allCards=[],sets=[],lang='fr',gate=new V.StabilityGate(),featuresCache=new Map(),prebuiltPacks=[],located=null,lastLocate=-Infinity;
@@ -134,12 +134,16 @@ async function frame(data){
  try{
   let detection=V.detect(engine,src);let q=null,method='contours';
   if(!detection){
-   if(data.now-lastLocate>1300){postMessage({type:'locating'});const start=performance.now();located=await locateCard(src);lastLocate=data.now+performance.now()-start;}
+   if(!located&&data.now-lastLocate>1300){postMessage({type:'locating'});const start=performance.now();located=await locateCard(src);lastLocate=data.now+performance.now()-start;}
    if(located){const points=V.capturePoints(located.points,src.cols,src.rows);if(points){let area=0;points.forEach((p,i)=>{const b=points[(i+1)%4];area+=p.x*b.y-b.x*p.y;});detection={points,fraction:Math.abs(area)/2/src.cols/src.rows};method='details';}}
   }else located=null;
   if(detection){crop=V.warp(engine,src,detection.points);q=V.quality(engine,crop);}
+  // Keep a verified rectangle while its image stays still; discard it as soon
+  // as the same pixel-motion threshold used by the stability gate is exceeded.
+  const changed=method==='details'&&q&&gate.previous&&q.sample.reduce((sum,value,i)=>sum+Math.abs(value-gate.previous.sample[i]),0)/q.sample.length>12;
   const state=gate.update(detection,q,src.cols,src.rows,data.now);
-  if(method==='details'&&q&&(q.sharpness<55||q.brightness<45||q.glare>.2))located=null;
+  if(changed)located=null;
+  if(method==='details'&&q&&(q.sharpness<55||q.brightness<45||q.brightness>225||q.glare>.2))located=null;
   return {...state,stableFrames:gate.frames,points:detection?.points.map(p=>({x:p.x/src.cols,y:p.y/src.rows}))||null,quality:q?{sharpness:q.sharpness,glare:q.glare,brightness:q.brightness}:null,method};
  }finally{V.dispose(src,crop);}
 }

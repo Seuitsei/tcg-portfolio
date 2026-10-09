@@ -89,17 +89,18 @@ function quality(cv,card){
   return {sharpness,brightness,glare,sample:Array.from(small.data)};
  }finally{dispose(gray,lap,mean,std,small);}
 }
-function features(cv,card){
- const gray=new cv.Mat(),resized=new cv.Mat(),kp=new cv.KeyPointVector(),desc=new cv.Mat(),mask=new cv.Mat(),orb=new cv.ORB(350);
+function features(cv,card,scene=false){
+ const gray=new cv.Mat(),resized=new cv.Mat(),kp=new cv.KeyPointVector(),desc=new cv.Mat(),mask=new cv.Mat(),orb=new cv.ORB(scene?1200:350);
  try{
-  cv.resize(card,resized,new cv.Size(WIDTH,HEIGHT),0,0,cv.INTER_AREA);cv.cvtColor(resized,gray,cv.COLOR_RGBA2GRAY);orb.detectAndCompute(gray,mask,kp,desc);
-  return {bytes:desc.data.slice(),points:Array.from({length:kp.size()},(_,i)=>{const p=kp.get(i).pt;return {x:p.x,y:p.y};})};
+  const scale=Math.min(1,900/Math.max(card.cols,card.rows));const width=scene?Math.round(card.cols*scale):WIDTH,height=scene?Math.round(card.rows*scale):HEIGHT;
+  cv.resize(card,resized,new cv.Size(width,height),0,0,cv.INTER_AREA);cv.cvtColor(resized,gray,cv.COLOR_RGBA2GRAY);orb.detectAndCompute(gray,mask,kp,desc);
+  return {width:resized.cols,height:resized.rows,bytes:desc.data.slice(),points:Array.from({length:kp.size()},(_,i)=>{const p=kp.get(i).pt;return {x:p.x,y:p.y};})};
  }finally{dispose(gray,resized,kp,desc,mask,orb);}
 }
 function verify(cv,query,reference){
  if(query.points.length<8||reference.points.length<8)return {inliers:0,ratio:0,coverage:0};
  const a=cv.matFromArray(query.points.length,32,cv.CV_8U,query.bytes),b=cv.matFromArray(reference.points.length,32,cv.CV_8U,reference.bytes),matches=new cv.DMatchVectorVector(),matcher=new cv.BFMatcher(cv.NORM_HAMMING,false);
- let src,dst,mask,H;
+ let src,dst,mask,H,inverse,corners,projected;
  try{
   matcher.knnMatch(a,b,matches,2);const good=[],used=new Set();
   for(let i=0;i<matches.size();i++){
@@ -111,10 +112,25 @@ function verify(cv,query,reference){
   if(H.empty())return {inliers:0,ratio:0,coverage:0};
   const points=good.filter((_,i)=>mask.data[i]).map(m=>query.points[m.queryIdx]);
   const inliers=points.length;
+  const refPoints=good.filter((_,i)=>mask.data[i]).map(m=>reference.points[m.trainIdx]);
+  const spread=ps=>ps.length?((Math.max(...ps.map(p=>p.x))-Math.min(...ps.map(p=>p.x)))*(Math.max(...ps.map(p=>p.y))-Math.min(...ps.map(p=>p.y)))):0;
+  const referenceCoverage=spread(refPoints)/(WIDTH*HEIGHT);
   const coverage=inliers?((Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x)))*(Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y))))/(WIDTH*HEIGHT):0;
   // A homography matching a repeated text strip must not masquerade as the whole card.
-  return {inliers,ratio:inliers/good.length,coverage};
- }finally{dispose(a,b,matches,matcher,src,dst,mask,H);}
+  inverse=new cv.Mat();cv.invert(H,inverse);corners=cv.matFromArray(4,1,cv.CV_32FC2,[0,0,WIDTH-1,0,WIDTH-1,HEIGHT-1,0,HEIGHT-1]);projected=new cv.Mat();cv.perspectiveTransform(corners,projected,inverse);
+  const geometry=Array.from({length:4},(_,i)=>({x:projected.data32F[i*2]/(query.width||WIDTH),y:projected.data32F[i*2+1]/(query.height||HEIGHT)}));
+  return {inliers,ratio:inliers/good.length,coverage,referenceCoverage,corners:geometry};
+ }finally{dispose(a,b,matches,matcher,src,dst,mask,H,inverse,corners,projected);}
+}
+function sceneSamples(cv,source){
+ const samples=[];
+ for(const fraction of [1,.92,.82,.72,.62])for(const cy of [.5,.58]){
+  const h=source.rows*fraction,w=Math.min(source.cols*.94,h*63/88),hh=Math.min(h,w*88/63);
+  const rect={x:Math.round((source.cols-w)/2),y:Math.min(source.rows-Math.round(hh),Math.max(0,Math.round(source.rows*cy-hh/2))),width:Math.round(w),height:Math.round(hh)};
+  const roi=source.roi(new cv.Rect(rect.x,rect.y,rect.width,rect.height));
+  try{samples.push({rect,v:descriptor(cv,roi),features:null});}finally{roi.delete();}
+ }
+ return samples;
 }
 function capturePoints(points,width,height){
  if(!Array.isArray(points)||points.length!==4||!points.every(p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=0&&p.x<=1&&p.y>=0&&p.y<=1))return null;
@@ -152,6 +168,6 @@ function decision(ranked,hasUnindexedVariant=false){
  if(!hasUnindexedVariant&&a.inliers>=24&&a.ratio>=.65&&a.coverage>=.22&&a.distance<.42&&margin)return 'strong';
  return 'candidates';
 }
-root.ScannerVision={WIDTH,HEIGHT,normaliseNumber,orderPoints,descriptor,distance,vectorDistance,rankVectors,detect,warp,quality,features,verify,capturePoints,StabilityGate,decision,dispose};
+root.ScannerVision={WIDTH,HEIGHT,normaliseNumber,orderPoints,descriptor,distance,vectorDistance,rankVectors,detect,warp,quality,features,verify,sceneSamples,capturePoints,StabilityGate,decision,dispose};
 if(typeof module!=='undefined')module.exports=root.ScannerVision;
 })(globalThis);

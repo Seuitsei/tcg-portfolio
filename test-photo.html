@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#102a2a"><title>TCG Portfolio · Photo nette · Test</title>
 <link rel="stylesheet" href="scanner/style.css?v=20261009-6">
 <link rel="stylesheet" href="interface-reference/mobile.css?v=20261009-8">
-<link rel="stylesheet" href="scanner/photo.css?v=20261009-photo1">
+<link rel="stylesheet" href="scanner/photo.css?v=20261010-photo2">
 </head>
 <body>
 <header><a href="./" class="brand">TCG Portfolio</a><a class="badge" href="atelier-interface.html">Atelier interface</a></header>
@@ -23,7 +23,8 @@
  <div id="meter" class="meter" hidden><span></span></div>
 </div>
 <div class="cameraActions"><button id="again" class="primary" hidden>Scanner une autre carte</button></div>
-<div class="cameraActions"><button id="stop" hidden>Fermer la caméra</button><button id="capture" hidden>Scanner</button><button id="autoScan" aria-pressed="true" hidden>Scan automatique : activé</button><button id="import">Importer une photo</button></div>
+<div class="shutterActions"><button id="capture" aria-label="Scanner" hidden><span class="shutterDisc" aria-hidden="true"></span><span class="shutterLabel">Scanner</span></button></div>
+<div class="cameraActions"><button id="stop" hidden>Fermer la caméra</button><button id="autoScan" aria-pressed="true" hidden>Scan automatique : activé</button><button id="import">Importer une photo</button></div>
 <input type="file" id="photo" accept="image/*" hidden>
 <p id="status" class="status" role="status" aria-live="polite">Préparation du moteur visuel… Tu peux déjà ouvrir la caméra.</p>
 <p id="coverage" class="muted"></p>

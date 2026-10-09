@@ -8,3 +8,5 @@ strong.portfolioPrice,.priceHistory{color:#a5e584}.portfolioQuote small{color:#9
 .priceGrid .scanMarketValue{color:#a5e584}.portfolioEditor{background:#0c192b;color:#eff4fc;border-color:#263b5b}
 
 .metrics small{display:block;color:#92a6c5;font-size:11px;line-height:1.5;margin-top:8px}#homeSpend{color:#a5e584;overflow-wrap:anywhere}
+
+.homeLogo{display:block;width:100%;height:auto;margin:16px 0 12px}#homeScreen>.homeLogo+p{text-align:center}

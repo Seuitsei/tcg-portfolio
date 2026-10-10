@@ -1,7 +1,7 @@
 'use strict';
 importScripts('vision.js?v=20261009-11','reference-packs.js?v=20261009-11','detail-index.js?v=20261009-11');
 const JAPANESE_TEST=typeof location!=='undefined'&&new URLSearchParams(location.search).get('jp')==='20261010',JP_ROOT=JAPANESE_TEST?'data/japanese-test/':'data/';
-const DATA_VERSION=JAPANESE_TEST?'20261010-jp2':'20261009-11',packedReferences=new Map(),packedLoads=new Map(),packedSizes=new Map();let referencePacks=new Map(),packedBytes=0;
+const DATA_VERSION=JAPANESE_TEST?'20261010-jp3':'20261009-11',packedReferences=new Map(),packedLoads=new Map(),packedSizes=new Map();let referencePacks=new Map(),packedBytes=0;
 let preparedRecovered=new Set();
 let detailSpec=null,detailIndex=null,detailLoad=null;
 const V=ScannerVision;let engine=null,entries=[],allCards=[],sets=[],lang='fr',gate=new V.StabilityGate(),featuresCache=new Map(),prebuiltPacks=[],located=null,lastLocate=-Infinity;
@@ -28,7 +28,7 @@ async function referenceFeatures(entry,enhance=false){
   if(!rows){
    if(!packedLoads.has(key))packedLoads.set(key,(async()=>{
     let bytes=await cacheGet(key);
-    if(!bytes){bytes=await fetchBytes('data/'+asset.file);if(bytes.byteLength!==asset.bytes)throw Error('Pack de références incomplet.');if(asset.file.endsWith('.gz'))bytes=await unpackGzip(bytes);if(bytes.byteLength!==(asset.rawBytes||asset.bytes))throw Error('Pack de références incomplet.');ScannerReferencePacks.decodeReferencePack(bytes);await cachePut(key,bytes);}
+    if(!bytes){bytes=await fetchBytes('data/'+asset.file+'?v='+asset.sha256);if(bytes.byteLength!==asset.bytes)throw Error('Pack de références incomplet.');if(asset.file.endsWith('.gz'))bytes=await unpackGzip(bytes);if(bytes.byteLength!==(asset.rawBytes||asset.bytes))throw Error('Pack de références incomplet.');ScannerReferencePacks.decodeReferencePack(bytes);await cachePut(key,bytes);}
     const rows=ScannerReferencePacks.decodeReferencePack(bytes);if(Object.keys(rows).length!==pack.count)throw Error('Pack de références incohérent.');
     // Keep a bounded number of decoded packs; the on-device cache retains downloaded bytes.
     while(packedReferences.size&&(packedReferences.size>=8||packedBytes+bytes.byteLength>16*1024*1024)){const old=packedReferences.keys().next().value;packedBytes-=packedSizes.get(old);packedSizes.delete(old);packedReferences.delete(old);}
@@ -56,7 +56,7 @@ async function fetchBytes(url,timeout=15000){const ctrl=new AbortController(),t=
 async function unpackGzip(bytes){if(typeof DecompressionStream==='undefined')throw Error('La décompression des références nécessite un navigateur à jour.');return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();}
 async function loadDetailIndex(){
  if(detailIndex)return detailIndex;if(!detailSpec||typeof DecompressionStream==='undefined')return null;
- if(!detailLoad){const spec=detailSpec;detailLoad=(async()=>{const key='detail:'+spec.sha256;let bytes=await cacheGet(key);if(!bytes){const parts=await Promise.all(spec.files.map(async part=>{const bytes=await fetchBytes('data/'+part.file,45000);if(bytes.byteLength!==part.bytes)throw Error('Index de détails incomplet.');return bytes;}));const joined=new Uint8Array(spec.bytes);let offset=0;for(const part of parts){joined.set(new Uint8Array(part),offset);offset+=part.byteLength;}const packed=joined.buffer;if(packed.byteLength!==spec.bytes)throw Error('Index de détails incomplet.');bytes=await unpackGzip(packed);if(bytes.byteLength!==spec.rawBytes)throw Error('Index de détails incomplet.');await cachePut(key,bytes);}const parsed=ScannerDetailIndex.decode(bytes,spec.ids);if(detailSpec===spec)detailIndex=parsed;return parsed;})().finally(()=>detailLoad=null);}
+ if(!detailLoad){const spec=detailSpec;detailLoad=(async()=>{const key='detail:'+spec.sha256;let bytes=await cacheGet(key);if(!bytes){const parts=await Promise.all(spec.files.map(async part=>{const bytes=await fetchBytes('data/'+part.file+'?v='+spec.sha256,45000);if(bytes.byteLength!==part.bytes)throw Error('Index de détails incomplet.');return bytes;}));const joined=new Uint8Array(spec.bytes);let offset=0;for(const part of parts){joined.set(new Uint8Array(part),offset);offset+=part.byteLength;}const packed=joined.buffer;if(packed.byteLength!==spec.bytes)throw Error('Index de détails incomplet.');bytes=await unpackGzip(packed);if(bytes.byteLength!==spec.rawBytes)throw Error('Index de détails incomplet.');await cachePut(key,bytes);}const parsed=ScannerDetailIndex.decode(bytes,spec.ids);if(detailSpec===spec)detailIndex=parsed;return parsed;})().finally(()=>detailLoad=null);}
  try{return await detailLoad;}catch{return null;}
 }
 async function init(data){

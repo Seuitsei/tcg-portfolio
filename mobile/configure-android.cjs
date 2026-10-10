@@ -5,3 +5,23 @@ if(!manifest.includes('android.permission.CAMERA'))manifest=manifest.replace('</
 fs.writeFileSync(file,manifest);
 const wrapper=path.join(__dirname,'android/gradle/wrapper/gradle-wrapper.properties');
 fs.writeFileSync(wrapper,fs.readFileSync(wrapper,'utf8').replace('gradle-8.14.3-all.zip','gradle-8.14.3-bin.zip').replace('networkTimeout=10000','networkTimeout=120000'));
+
+// Fixed debug-only key for updates to Test 2. Never use this public test key for production.
+fs.writeFileSync(path.join(__dirname,'android/test-debug.jks'),Buffer.from(fs.readFileSync(path.join(__dirname,'test-debug-keystore.base64'),'utf8').trim(),'base64'));
+const build=path.join(__dirname,'android/app/build.gradle');
+let gradle=fs.readFileSync(build,'utf8');
+const marker='// CraftDrop stable test signing';
+if(!gradle.includes(marker))gradle += `
+${marker}
+android {
+    signingConfigs {
+        debug {
+            storeFile rootProject.file('test-debug.jks')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
+}
+`;
+fs.writeFileSync(build,gradle);

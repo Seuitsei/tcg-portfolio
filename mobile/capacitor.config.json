@@ -1,6 +1,6 @@
 {
-  "appId": "fr.craftdrop.tcgtest",
-  "appName": "Craft & Drop Test",
+  "appId": "fr.craftdrop.tcgtest2",
+  "appName": "Craft & Drop Test 2",
   "webDir": "www",
   "server": {
     "hostname": "localhost",

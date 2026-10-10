@@ -33,7 +33,7 @@ recognition quality on a physical phone. Use a real Android phone for that test.
 
 ## Data and updates
 
-The APK uses `fr.craftdrop.tcgtest` and the fixed local origin `https://localhost`.
+The APK uses `fr.craftdrop.tcgtest2` and the fixed local origin `https://localhost`.
 Its collection is separate from the browser's `tcgCards` collection. Building
 or installing it does not erase the browser collection. Updates installed over
 this APK preserve its own data if the application ID and signing key stay the same.
@@ -56,3 +56,7 @@ The `Android test APK` workflow on branch `android/test-apk` builds a debug APK
 and attempts an emulator installation and launch. A running process and screenshot
 are smoke checks only: they do not validate recognition or collection persistence.
 The APK download is available in the workflow artifacts.
+
+Test 2 installs alongside the first APK to retain its data. It uses the fixed,
+public debug-only key in `test-debug-keystore.base64`, so subsequent Test 2 updates
+can preserve its local collection. This key is unsuitable for production.

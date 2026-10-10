@@ -22,6 +22,11 @@ jobs:
         with:
           packages: platform-tools
       - run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - name: Verify fixed navigation in browser
+        run: |
+          npm install --prefix /tmp/nav-browser playwright@1.51.1
+          /tmp/nav-browser/node_modules/.bin/playwright install --with-deps chromium
+          CODEX_PRIMARY_RUNTIME_NODE_MODULES=/tmp/nav-browser/node_modules node tests/navigation.cjs
       - run: npm ci && npm run android:init
         working-directory: mobile
       - run: ./gradlew assembleDebug --no-daemon --console=plain
@@ -31,6 +36,7 @@ jobs:
           name: craft-drop-android-debug
           path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
+      - run: python3 -m pip install Pillow
       - name: Enable emulator acceleration
         run: |
           sudo chmod 666 /dev/kvm
@@ -42,10 +48,11 @@ jobs:
           disable-animations: true
           script: |
             adb install mobile/android/app/build/outputs/apk/debug/app-debug.apk
-            adb shell am start -n fr.craftdrop.tcgtest/.MainActivity
+            adb shell am start -n fr.craftdrop.tcgtest2/.MainActivity
             sleep 15
-            adb shell pidof fr.craftdrop.tcgtest
+            adb shell pidof fr.craftdrop.tcgtest2
             adb exec-out screencap -p > android-emulator.png
+            python3 mobile/test_navigation.py
             adb logcat -d > android-emulator.log
       - uses: actions/upload-artifact@v4
         if: always()
@@ -54,3 +61,4 @@ jobs:
           path: |
             android-emulator.png
             android-emulator.log
+            android-nav-*.png

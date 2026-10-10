@@ -1,0 +1,824 @@
+{
+  "kind": "synthetic-reference-distortions-actual-worker",
+  "references": 9986,
+  "newReferences": 6108,
+  "checkedPacks": 121,
+  "orbPoints": 11818346,
+  "trials": [
+    {
+      "id": "M1S-001",
+      "mode": "clean",
+      "top": "M1S-001",
+      "kind": "candidates",
+      "ms": 775,
+      "unavailable": 12,
+      "inliers": 315
+    },
+    {
+      "id": "M1S-001",
+      "mode": "camera",
+      "top": "M1S-001",
+      "kind": "candidates",
+      "ms": 712,
+      "unavailable": 13,
+      "inliers": 303
+    },
+    {
+      "id": "M1S-001",
+      "mode": "glare",
+      "top": "M1S-001",
+      "kind": "candidates",
+      "ms": 689,
+      "unavailable": 10,
+      "inliers": 246
+    },
+    {
+      "id": "CP1-001",
+      "mode": "clean",
+      "top": "CP1-001",
+      "kind": "strong",
+      "ms": 774,
+      "unavailable": 0,
+      "inliers": 302
+    },
+    {
+      "id": "CP1-001",
+      "mode": "camera",
+      "top": "CP1-001",
+      "kind": "strong",
+      "ms": 822,
+      "unavailable": 0,
+      "inliers": 293
+    },
+    {
+      "id": "CP1-001",
+      "mode": "glare",
+      "top": "CP1-001",
+      "kind": "candidates",
+      "ms": 650,
+      "unavailable": 6,
+      "inliers": 196
+    },
+    {
+      "id": "CP2-001",
+      "mode": "clean",
+      "top": "CP2-001",
+      "kind": "candidates",
+      "ms": 600,
+      "unavailable": 8,
+      "inliers": 312
+    },
+    {
+      "id": "CP2-001",
+      "mode": "camera",
+      "top": "CP2-001",
+      "kind": "candidates",
+      "ms": 569,
+      "unavailable": 7,
+      "inliers": 300
+    },
+    {
+      "id": "CP2-001",
+      "mode": "glare",
+      "top": "CP2-001",
+      "kind": "candidates",
+      "ms": 678,
+      "unavailable": 6,
+      "inliers": 224
+    },
+    {
+      "id": "M6-001",
+      "mode": "clean",
+      "top": "M6-001",
+      "kind": "candidates",
+      "ms": 683,
+      "unavailable": 5,
+      "inliers": 314
+    },
+    {
+      "id": "M6-001",
+      "mode": "camera",
+      "top": "M6-001",
+      "kind": "candidates",
+      "ms": 923,
+      "unavailable": 5,
+      "inliers": 310
+    },
+    {
+      "id": "M6-001",
+      "mode": "glare",
+      "top": "M6-001",
+      "kind": "candidates",
+      "ms": 677,
+      "unavailable": 7,
+      "inliers": 234
+    },
+    {
+      "id": "M3-001",
+      "mode": "clean",
+      "top": "M3-001",
+      "kind": "candidates",
+      "ms": 810,
+      "unavailable": 9,
+      "inliers": 320
+    },
+    {
+      "id": "M3-001",
+      "mode": "camera",
+      "top": "M3-001",
+      "kind": "candidates",
+      "ms": 762,
+      "unavailable": 8,
+      "inliers": 314
+    },
+    {
+      "id": "M3-001",
+      "mode": "glare",
+      "top": "M3-001",
+      "kind": "candidates",
+      "ms": 693,
+      "unavailable": 9,
+      "inliers": 254
+    },
+    {
+      "id": "M5-001",
+      "mode": "clean",
+      "top": "M5-001",
+      "kind": "candidates",
+      "ms": 705,
+      "unavailable": 10,
+      "inliers": 318
+    },
+    {
+      "id": "M5-001",
+      "mode": "camera",
+      "top": "M5-001",
+      "kind": "candidates",
+      "ms": 582,
+      "unavailable": 10,
+      "inliers": 293
+    },
+    {
+      "id": "M5-001",
+      "mode": "glare",
+      "top": "M5-001",
+      "kind": "candidates",
+      "ms": 469,
+      "unavailable": 13,
+      "inliers": 275
+    },
+    {
+      "id": "M-P-001",
+      "mode": "clean",
+      "top": "M-P-001",
+      "kind": "candidates",
+      "ms": 833,
+      "unavailable": 6,
+      "inliers": 305
+    },
+    {
+      "id": "M-P-001",
+      "mode": "camera",
+      "top": "M-P-001",
+      "kind": "candidates",
+      "ms": 441,
+      "unavailable": 6,
+      "inliers": 298
+    },
+    {
+      "id": "M-P-001",
+      "mode": "glare",
+      "top": "M-P-001",
+      "kind": "candidates",
+      "ms": 851,
+      "unavailable": 5,
+      "inliers": 257
+    },
+    {
+      "id": "M1L-001",
+      "mode": "clean",
+      "top": "M1L-001",
+      "kind": "candidates",
+      "ms": 722,
+      "unavailable": 6,
+      "inliers": 304
+    },
+    {
+      "id": "M1L-001",
+      "mode": "camera",
+      "top": "M1L-001",
+      "kind": "candidates",
+      "ms": 975,
+      "unavailable": 6,
+      "inliers": 298
+    },
+    {
+      "id": "M1L-001",
+      "mode": "glare",
+      "top": "M1L-001",
+      "kind": "candidates",
+      "ms": 669,
+      "unavailable": 8,
+      "inliers": 238
+    },
+    {
+      "id": "M4-001",
+      "mode": "clean",
+      "top": "M4-001",
+      "kind": "candidates",
+      "ms": 769,
+      "unavailable": 8,
+      "inliers": 297
+    },
+    {
+      "id": "M4-001",
+      "mode": "camera",
+      "top": "M4-001",
+      "kind": "candidates",
+      "ms": 814,
+      "unavailable": 8,
+      "inliers": 289
+    },
+    {
+      "id": "M4-001",
+      "mode": "glare",
+      "top": "M4-001",
+      "kind": "candidates",
+      "ms": 757,
+      "unavailable": 7,
+      "inliers": 237
+    },
+    {
+      "id": "M2-001",
+      "mode": "clean",
+      "top": "M2-001",
+      "kind": "candidates",
+      "ms": 697,
+      "unavailable": 14,
+      "inliers": 301
+    },
+    {
+      "id": "M2-001",
+      "mode": "camera",
+      "top": "M2-001",
+      "kind": "candidates",
+      "ms": 1049,
+      "unavailable": 15,
+      "inliers": 277
+    },
+    {
+      "id": "M2-001",
+      "mode": "glare",
+      "top": "M2-001",
+      "kind": "candidates",
+      "ms": 624,
+      "unavailable": 11,
+      "inliers": 226
+    },
+    {
+      "id": "M2a-001",
+      "mode": "clean",
+      "top": "M2a-001",
+      "kind": "candidates",
+      "ms": 572,
+      "unavailable": 8,
+      "inliers": 314
+    },
+    {
+      "id": "M2a-001",
+      "mode": "camera",
+      "top": "M2a-001",
+      "kind": "candidates",
+      "ms": 447,
+      "unavailable": 7,
+      "inliers": 304
+    },
+    {
+      "id": "M2a-001",
+      "mode": "glare",
+      "top": "M2a-001",
+      "kind": "candidates",
+      "ms": 361,
+      "unavailable": 11,
+      "inliers": 241
+    },
+    {
+      "id": "MC-001",
+      "mode": "clean",
+      "top": "MC-001",
+      "kind": "candidates",
+      "ms": 543,
+      "unavailable": 5,
+      "inliers": 306
+    },
+    {
+      "id": "MC-001",
+      "mode": "camera",
+      "top": "MC-001",
+      "kind": "candidates",
+      "ms": 505,
+      "unavailable": 6,
+      "inliers": 299
+    },
+    {
+      "id": "MC-001",
+      "mode": "glare",
+      "top": "MC-001",
+      "kind": "candidates",
+      "ms": 586,
+      "unavailable": 7,
+      "inliers": 215
+    },
+    {
+      "id": "SV-P-001",
+      "mode": "clean",
+      "top": "SV-P-001",
+      "kind": "candidates",
+      "ms": 660,
+      "unavailable": 3,
+      "inliers": 319
+    },
+    {
+      "id": "SV-P-001",
+      "mode": "camera",
+      "top": "SV-P-001",
+      "kind": "candidates",
+      "ms": 904,
+      "unavailable": 3,
+      "inliers": 287
+    },
+    {
+      "id": "SV-P-001",
+      "mode": "glare",
+      "top": "SV-P-001",
+      "kind": "candidates",
+      "ms": 730,
+      "unavailable": 5,
+      "inliers": 226
+    },
+    {
+      "id": "SM3p-001",
+      "mode": "clean",
+      "top": "SM3p-001",
+      "kind": "candidates",
+      "ms": 1411,
+      "unavailable": 2,
+      "inliers": 306
+    },
+    {
+      "id": "SM3p-001",
+      "mode": "camera",
+      "top": "SM3p-001",
+      "kind": "candidates",
+      "ms": 1034,
+      "unavailable": 1,
+      "inliers": 293
+    },
+    {
+      "id": "SM3p-001",
+      "mode": "glare",
+      "top": "SM3p-001",
+      "kind": "candidates",
+      "ms": 773,
+      "unavailable": 3,
+      "inliers": 233
+    },
+    {
+      "id": "SM7a-001",
+      "mode": "clean",
+      "top": "SM7a-001",
+      "kind": "candidates",
+      "ms": 809,
+      "unavailable": 1,
+      "inliers": 315
+    },
+    {
+      "id": "SM7a-001",
+      "mode": "camera",
+      "top": "SM7a-001",
+      "kind": "candidates",
+      "ms": 750,
+      "unavailable": 1,
+      "inliers": 310
+    },
+    {
+      "id": "SM7a-001",
+      "mode": "glare",
+      "top": "SM7a-001",
+      "kind": "candidates",
+      "ms": 775,
+      "unavailable": 2,
+      "inliers": 267
+    },
+    {
+      "id": "SM11b-001",
+      "mode": "clean",
+      "top": "SM11b-001",
+      "kind": "candidates",
+      "ms": 761,
+      "unavailable": 8,
+      "inliers": 307
+    },
+    {
+      "id": "SM11b-001",
+      "mode": "camera",
+      "top": "SM11b-001",
+      "kind": "candidates",
+      "ms": 669,
+      "unavailable": 9,
+      "inliers": 300
+    },
+    {
+      "id": "SM11b-001",
+      "mode": "glare",
+      "top": "SM11b-001",
+      "kind": "candidates",
+      "ms": 700,
+      "unavailable": 11,
+      "inliers": 257
+    },
+    {
+      "id": "SM10a-001",
+      "mode": "clean",
+      "top": "SM10a-001",
+      "kind": "candidates",
+      "ms": 1001,
+      "unavailable": 2,
+      "inliers": 303
+    },
+    {
+      "id": "SM10a-001",
+      "mode": "camera",
+      "top": "SM10a-001",
+      "kind": "candidates",
+      "ms": 878,
+      "unavailable": 1,
+      "inliers": 295
+    },
+    {
+      "id": "SM10a-001",
+      "mode": "glare",
+      "top": "SM10a-001",
+      "kind": "candidates",
+      "ms": 700,
+      "unavailable": 3,
+      "inliers": 260
+    },
+    {
+      "id": "SM8-001",
+      "mode": "clean",
+      "top": "SM8-001",
+      "kind": "candidates",
+      "ms": 904,
+      "unavailable": 1,
+      "inliers": 308
+    },
+    {
+      "id": "SM8-001",
+      "mode": "camera",
+      "top": "SM8-001",
+      "kind": "candidates",
+      "ms": 736,
+      "unavailable": 3,
+      "inliers": 299
+    },
+    {
+      "id": "SM8-001",
+      "mode": "glare",
+      "top": "SM8-001",
+      "kind": "candidates",
+      "ms": 704,
+      "unavailable": 2,
+      "inliers": 231
+    },
+    {
+      "id": "SM5p-001",
+      "mode": "clean",
+      "top": "SM5p-001",
+      "kind": "candidates",
+      "ms": 572,
+      "unavailable": 3,
+      "inliers": 306
+    },
+    {
+      "id": "SM5p-001",
+      "mode": "camera",
+      "top": "SM5p-001",
+      "kind": "candidates",
+      "ms": 608,
+      "unavailable": 3,
+      "inliers": 300
+    },
+    {
+      "id": "SM5p-001",
+      "mode": "glare",
+      "top": "SM5p-001",
+      "kind": "candidates",
+      "ms": 515,
+      "unavailable": 3,
+      "inliers": 223
+    },
+    {
+      "id": "SM3H-001",
+      "mode": "clean",
+      "top": "SM3H-001",
+      "kind": "candidates",
+      "ms": 676,
+      "unavailable": 5,
+      "inliers": 301
+    },
+    {
+      "id": "SM3H-001",
+      "mode": "camera",
+      "top": "SM3H-001",
+      "kind": "candidates",
+      "ms": 798,
+      "unavailable": 5,
+      "inliers": 296
+    },
+    {
+      "id": "SM3H-001",
+      "mode": "glare",
+      "top": "SM3H-001",
+      "kind": "candidates",
+      "ms": 696,
+      "unavailable": 6,
+      "inliers": 253
+    },
+    {
+      "id": "SM12-001",
+      "mode": "clean",
+      "top": "SM12-001",
+      "kind": "candidates",
+      "ms": 8193,
+      "unavailable": 2,
+      "inliers": 315
+    },
+    {
+      "id": "SM12-001",
+      "mode": "camera",
+      "top": "SM12-001",
+      "kind": "candidates",
+      "ms": 5122,
+      "unavailable": 2,
+      "inliers": 316
+    },
+    {
+      "id": "SM12-001",
+      "mode": "glare",
+      "top": "SM12-001",
+      "kind": "candidates",
+      "ms": 760,
+      "unavailable": 2,
+      "inliers": 257
+    },
+    {
+      "id": "SM1M-001",
+      "mode": "clean",
+      "top": "SM1M-001",
+      "kind": "candidates",
+      "ms": 748,
+      "unavailable": 0,
+      "inliers": 321
+    },
+    {
+      "id": "SM1M-001",
+      "mode": "camera",
+      "top": "SM1M-001",
+      "kind": "candidates",
+      "ms": 797,
+      "unavailable": 1,
+      "inliers": 316
+    },
+    {
+      "id": "SM1M-001",
+      "mode": "glare",
+      "top": "SM1M-001",
+      "kind": "candidates",
+      "ms": 777,
+      "unavailable": 1,
+      "inliers": 261
+    },
+    {
+      "id": "SM4S-001",
+      "mode": "clean",
+      "top": "SM4S-001",
+      "kind": "candidates",
+      "ms": 669,
+      "unavailable": 3,
+      "inliers": 302
+    },
+    {
+      "id": "SM4S-001",
+      "mode": "camera",
+      "top": "SM4S-001",
+      "kind": "candidates",
+      "ms": 607,
+      "unavailable": 3,
+      "inliers": 292
+    },
+    {
+      "id": "SM4S-001",
+      "mode": "glare",
+      "top": "SM4S-001",
+      "kind": "candidates",
+      "ms": 681,
+      "unavailable": 5,
+      "inliers": 252
+    },
+    {
+      "id": "SM9-001",
+      "mode": "clean",
+      "top": "SM9-001",
+      "kind": "candidates",
+      "ms": 623,
+      "unavailable": 5,
+      "inliers": 314
+    },
+    {
+      "id": "SM9-001",
+      "mode": "camera",
+      "top": "SM9-001",
+      "kind": "candidates",
+      "ms": 644,
+      "unavailable": 5,
+      "inliers": 296
+    },
+    {
+      "id": "SM9-001",
+      "mode": "glare",
+      "top": "SM9-001",
+      "kind": "candidates",
+      "ms": 795,
+      "unavailable": 6,
+      "inliers": 279
+    },
+    {
+      "id": "SV11B-003",
+      "mode": "clean",
+      "top": "SV11B-003",
+      "kind": "candidates",
+      "ms": 721,
+      "unavailable": 3,
+      "inliers": 320
+    },
+    {
+      "id": "SV11B-003",
+      "mode": "camera",
+      "top": "SV11B-003",
+      "kind": "candidates",
+      "ms": 686,
+      "unavailable": 3,
+      "inliers": 286
+    },
+    {
+      "id": "SV11B-003",
+      "mode": "glare",
+      "top": "SV11B-003",
+      "kind": "candidates",
+      "ms": 705,
+      "unavailable": 2,
+      "inliers": 219
+    },
+    {
+      "id": "SV11W-005",
+      "mode": "clean",
+      "top": "SV11W-005",
+      "kind": "candidates",
+      "ms": 749,
+      "unavailable": 6,
+      "inliers": 318
+    },
+    {
+      "id": "SV11W-005",
+      "mode": "camera",
+      "top": "SV11W-005",
+      "kind": "candidates",
+      "ms": 629,
+      "unavailable": 5,
+      "inliers": 319
+    },
+    {
+      "id": "SV11W-005",
+      "mode": "glare",
+      "top": "SV11W-005",
+      "kind": "candidates",
+      "ms": 727,
+      "unavailable": 6,
+      "inliers": 285
+    },
+    {
+      "id": "S8b-001",
+      "mode": "clean",
+      "top": "S8b-001",
+      "kind": "candidates",
+      "ms": 740,
+      "unavailable": 3,
+      "inliers": 303
+    },
+    {
+      "id": "S8b-001",
+      "mode": "camera",
+      "top": "S8b-001",
+      "kind": "candidates",
+      "ms": 840,
+      "unavailable": 2,
+      "inliers": 299
+    },
+    {
+      "id": "S8b-001",
+      "mode": "glare",
+      "top": "S8b-001",
+      "kind": "candidates",
+      "ms": 710,
+      "unavailable": 4,
+      "inliers": 267
+    },
+    {
+      "id": "SM12a-001",
+      "mode": "clean",
+      "top": "SM12a-001",
+      "kind": "candidates",
+      "ms": 641,
+      "unavailable": 5,
+      "inliers": 315
+    },
+    {
+      "id": "SM12a-001",
+      "mode": "camera",
+      "top": "SM12a-001",
+      "kind": "candidates",
+      "ms": 707,
+      "unavailable": 6,
+      "inliers": 310
+    },
+    {
+      "id": "SM12a-001",
+      "mode": "glare",
+      "top": "SM12a-001",
+      "kind": "candidates",
+      "ms": 528,
+      "unavailable": 8,
+      "inliers": 272
+    }
+  ],
+  "negatives": [
+    {
+      "uniform": 0,
+      "rejected": true
+    },
+    {
+      "uniform": 50,
+      "rejected": true
+    },
+    {
+      "uniform": 128,
+      "rejected": true
+    },
+    {
+      "uniform": 255,
+      "rejected": true
+    }
+  ],
+  "externalReferences": "Old TCGdex refs deliberately unavailable; confidence remains conservative when a rival cannot be checked.",
+  "manualScenes": [
+    {
+      "id": "M1S-001",
+      "top": "M1S-001",
+      "kind": "candidates",
+      "ms": 767
+    },
+    {
+      "id": "CP1-001",
+      "top": "CP1-001",
+      "kind": "strong",
+      "ms": 896
+    },
+    {
+      "id": "CP2-001",
+      "top": "CP2-001",
+      "kind": "candidates",
+      "ms": 827
+    }
+  ],
+  "legacyControls": [
+    {
+      "id": "SV7-001",
+      "top": "SV7-001",
+      "kind": "candidates"
+    },
+    {
+      "id": "SV2a-006",
+      "top": "SV2a-006",
+      "kind": "strong"
+    }
+  ],
+  "jaLegacyCoverage": 3878,
+  "frLegacyCoverage": 18975,
+  "enLegacyCoverage": 20249,
+  "summary": {
+    "trials": 84,
+    "correct": 84,
+    "falseStrong": 0
+  }
+}

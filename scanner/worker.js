@@ -1,6 +1,7 @@
 'use strict';
 importScripts('vision.js?v=20261009-11','reference-packs.js?v=20261009-11','detail-index.js?v=20261009-11');
-const DATA_VERSION='20261009-11',packedReferences=new Map(),packedLoads=new Map(),packedSizes=new Map();let referencePacks=new Map(),packedBytes=0;
+const JAPANESE_TEST=typeof location!=='undefined'&&new URLSearchParams(location.search).get('jp')==='20261010',JP_ROOT=JAPANESE_TEST?'data/japanese-test/':'data/';
+const DATA_VERSION=JAPANESE_TEST?'20261010-jp1':'20261009-11',packedReferences=new Map(),packedLoads=new Map(),packedSizes=new Map();let referencePacks=new Map(),packedBytes=0;
 let preparedRecovered=new Set();
 let detailSpec=null,detailIndex=null,detailLoad=null;
 const V=ScannerVision;let engine=null,entries=[],allCards=[],sets=[],lang='fr',gate=new V.StabilityGate(),featuresCache=new Map(),prebuiltPacks=[],located=null,lastLocate=-Infinity;
@@ -11,8 +12,8 @@ let engineReady=new Promise((resolve,reject)=>{
 const dbPromise=new Promise(resolve=>{
  try{const req=indexedDB.open('tcg-visual-cache-v1',1);req.onupgradeneeded=()=>req.result.createObjectStore('packs');req.onsuccess=()=>resolve(req.result);req.onerror=()=>resolve(null);req.onblocked=()=>resolve(null);}catch{resolve(null);}
 });
-async function cacheGet(key){const db=await dbPromise;if(!db)return null;return new Promise(resolve=>{try{const r=db.transaction('packs').objectStore('packs').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>resolve(null);}catch{resolve(null);}});}
-async function cachePut(key,value){const db=await dbPromise;if(!db)return;return new Promise(resolve=>{try{const tx=db.transaction('packs','readwrite');tx.objectStore('packs').put(value,key);tx.oncomplete=tx.onerror=tx.onabort=()=>resolve();}catch{resolve();}});}
+async function cacheGet(key){if(JAPANESE_TEST&&lang==='ja')key='japanese-test:'+key;const db=await dbPromise;if(!db)return null;return new Promise(resolve=>{try{const r=db.transaction('packs').objectStore('packs').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>resolve(null);}catch{resolve(null);}});}
+async function cachePut(key,value){if(JAPANESE_TEST&&lang==='ja')key='japanese-test:'+key;const db=await dbPromise;if(!db)return;return new Promise(resolve=>{try{const tx=db.transaction('packs','readwrite');tx.objectStore('packs').put(value,key);tx.oncomplete=tx.onerror=tx.onabort=()=>resolve();}catch{resolve();}});}
 async function getJSON(url){const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),45000);try{const r=await fetch(url,{signal:controller.signal});if(!r.ok)throw Error('Chargement impossible ('+r.status+').');return await r.json();}finally{clearTimeout(timer);}}
 function summary(){return {count:entries.length,sets:sets.map(s=>({...s,indexed:entries.filter(c=>c.setId===s.id).length,prepared:entries.filter(c=>c.setId===s.id&&(c.orb||c.referencePack&&preparedRecovered.has(c.referencePack))).length})),lang};}
 function addEntries(items){const seen=new Map(entries.map(c=>[c.id,c]));for(const e of items){if(seen.has(e.id)){if(e.orb)Object.assign(seen.get(e.id),{...e,v:Int8Array.from(e.v)});}else{e.v=Int8Array.from(e.v);entries.push(e);seen.set(e.id,e);}}}
@@ -61,10 +62,10 @@ async function loadDetailIndex(){
 async function init(data){
  lang=data.lang||'fr';entries=[];featuresCache.clear();packedReferences.clear();packedLoads.clear();packedSizes.clear();packedBytes=0;gate.reset();located=null;lastLocate=-Infinity;
  detailSpec=null;detailIndex=null;detailLoad=null;
- const [catalog,allSets,manifest]=await Promise.all([getJSON((lang==='ja'?'data/catalog-ja.json':'data/catalog.json')+'?v='+DATA_VERSION),getJSON(lang==='ja'?'data/sets-ja.json':'data/sets.json'),getJSON('data/manifest.json')]);
+ const [catalog,allSets,manifest]=await Promise.all([getJSON((lang==='ja'?JP_ROOT+'catalog-ja.json':'data/catalog.json')+'?v='+DATA_VERSION),getJSON(lang==='ja'?'data/sets-ja.json':'data/sets.json'),getJSON('data/manifest.json')]);
  allCards=lang==='ja'?catalog:catalog[lang];sets=lang==='ja'?allSets:allSets[lang];
  postMessage({type:'progress',text:'Chargement de l’index visuel '+lang.toUpperCase()+'…'});
- const [global,blob,recovered,details]=await Promise.all([getJSON('data/vectors-'+lang+'.json?v='+DATA_VERSION),fetchBytes('data/vectors-'+lang+'.bin?v='+DATA_VERSION),getJSON('data/recovered-references.json?v='+DATA_VERSION),getJSON('data/detail-index.json?v='+DATA_VERSION)]);
+ const [global,blob,recovered,details]=await Promise.all([getJSON((lang==='ja'?JP_ROOT:'data/')+'vectors-'+lang+'.json?v='+DATA_VERSION),fetchBytes((lang==='ja'?JP_ROOT:'data/')+'vectors-'+lang+'.bin?v='+DATA_VERSION),getJSON((lang==='ja'?JP_ROOT:'data/')+'recovered-references.json?v='+DATA_VERSION),getJSON((lang==='ja'?JP_ROOT:'data/')+'detail-index.json?v='+DATA_VERSION)]);
  referencePacks=new Map(recovered.packs.filter(p=>p.lang===lang).map(p=>[p.key,p]));
  preparedRecovered=new Set((await cacheGet('prepared-recovered:'+lang+':'+DATA_VERSION)||[]).filter(key=>referencePacks.has(key)));
  detailSpec=details.packs.find(p=>p.lang===lang)||null;
@@ -167,7 +168,7 @@ async function analyse(data){
   if(locatedIndex>=0&&!shortlist.some(s=>s.index===locatedIndex))shortlist.push({index:locatedIndex,distance:Math.min(V.vectorDistance(upright,entries[locatedIndex].v),V.vectorDistance(inverted,entries[locatedIndex].v))});
   const top=entries[shortlist[0]?.index];if(!top)return {kind:'reject',reason:'Prépare au moins une extension dans le catalogue visuel.',candidates:[]};
   // Include same-name/number printings even if the artwork shortlist missed them.
-  const siblings=entries.map((e,i)=>({e,i})).filter(({e})=>e.name===top.name&&V.normaliseNumber(e.localId)===V.normaliseNumber(top.localId));
+  const siblings=entries.map((e,i)=>({e,i})).filter(({e})=>e.name===top.name&&(V.normaliseNumber(e.localId)===V.normaliseNumber(top.localId)||JAPANESE_TEST&&lang==='ja'&&V.vectorDistance(e.v,top.v)<.12));
   for(const {e,i} of siblings)if(!shortlist.some(s=>s.index===i))shortlist.push({index:i,distance:Math.min(V.vectorDistance(upright,e.v),V.vectorDistance(inverted,e.v))});
   const ranks=[];let unavailable=0;
   // At most 16 normal candidates plus explicit reprints; three reference downloads at a time.
@@ -192,7 +193,10 @@ async function analyse(data){
   ranks.sort((a,b)=>b.evidence-a.evidence||a.distance-b.distance);
   if(!ranks.length)return {kind:'reject',reason:'Les références ne sont pas accessibles. Vérifie ta connexion pour ce premier scan ; les références déjà préparées restent locales.',candidates:[],ms:Math.round(performance.now()-t)};
   const winner=ranks[0];const indexedIds=new Set(entries.map(e=>e.id));const missing=allCards.filter(c=>c.name===winner?.name&&V.normaliseNumber(c.localId)===V.normaliseNumber(winner.localId)&&!indexedIds.has(c.id));
-  const variantRivals=entries.filter(e=>e.id!==winner.id&&e.name===winner.name&&V.normaliseNumber(e.localId)===V.normaliseNumber(winner.localId));
+  // JP TEST: close same-name printings may reuse artwork with a different number.
+  // Nominate and expose those editions; a colour descriptor cannot resolve them.
+  const winnerEntry=entries.find(e=>e.id===winner.id);
+  const variantRivals=entries.filter(e=>e.id!==winner.id&&e.name===winner.name&&(V.normaliseNumber(e.localId)===V.normaliseNumber(winner.localId)||JAPANESE_TEST&&lang==='ja'&&V.vectorDistance(e.v,winnerEntry.v)<.12));
   const kind=V.decision(ranks,missing.length>0||unavailable>0||variantRivals.length>0||winner.referenceLang&&winner.referenceLang!==lang);
   const candidates=ranks.filter((r,i)=>i===0||r.inliers>=8&&r.coverage>=.06).slice(0,3);
   for(const rival of variantRivals){if(!candidates.some(c=>c.id===rival.id)&&candidates.length<5)candidates.push(ranks.find(r=>r.id===rival.id)||{...publicEntry(rival),unverified:true});}
@@ -204,7 +208,7 @@ async function analyse(data){
 async function prepareSet(data){
  const info=sets.find(s=>s.id===data.setId);if(!info)throw Error('Extension inconnue.');
  const builtPack=prebuiltPacks.find(p=>p.setId===info.id&&p.count>0);
- if(builtPack){const key=builtPack.file+':'+builtPack.sha256;const rows=await cacheGet(key)||await getJSON('data/'+builtPack.file);await cachePut(key,rows);addEntries(rows);await cachePut('set:'+lang+':'+info.id,rows);const custom=await cacheGet('custom:'+lang)||[];await cachePut('custom:'+lang,Array.from(new Set([...custom,info.id])));return {...summary(),failures:Math.max(0,info.cardCount.total-rows.length)};}
+ if(builtPack){const key=builtPack.file+':'+builtPack.sha256;const rows=await cacheGet(key)||await getJSON('data/'+builtPack.file);await cachePut(key,rows);addEntries(rows);await cachePut('set:'+lang+':'+info.id,rows);const custom=await cacheGet('custom:'+lang)||[];await cachePut('custom:'+lang,Array.from(new Set([...custom,info.id])));if(!JAPANESE_TEST||!Array.from(referencePacks.values()).some(p=>p.setId===info.id))return {...summary(),failures:Math.max(0,info.cardCount.total-rows.length)};}
  let recoveredFailures=0;
  for(const pack of referencePacks.values())if(pack.setId===info.id){
   const entry=entries.find(e=>e.referencePack===pack.key);

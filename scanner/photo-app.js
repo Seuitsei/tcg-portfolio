@@ -3,9 +3,9 @@ import {loadPortfolioPrice,loadPortfolioVariants} from './portfolio-prices.js?v=
 import {BestFrame,nextDelay,configureCamera,cameraInfo} from './camera.js?v=20261009-5';
 import {createPricePanel} from './prices.js?v=20261009-5';
 const $=id=>document.getElementById(id);
-import {FocusGate} from './photo-quality.js?v=20261009-photo1';
+import {FocusGate} from './photo-quality.js?v=20261010-jp1';
 const focusGate=new FocusGate();
-const VERSION='20261009-photo1';
+const VERSION='20261010-jp1';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));
@@ -20,7 +20,7 @@ function rpc(type,data={},transfer=[]){
 async function boot(){
  ready=false;summary=null;$('search').disabled=true;
  if(worker)worker.terminate();for(const p of pending.values()){clearTimeout(p.t);p.reject(Error('Changement de langue.'));}pending.clear();
- worker=new Worker('scanner/worker.js?v='+VERSION);
+ worker=new Worker('scanner/worker.js?v='+VERSION+'&jp=20261010');
  worker.onmessage=e=>{const m=e.data;if(m.type==='locating'){if(live&&!paused)$('liveHint').textContent='Recherche des détails de la carte…';return;}if(m.type==='progress'){if(!$('status').classList.contains('error'))status(m.text);$('catalogState').textContent=m.text;return;}const p=pending.get(m.id);if(!p)return;clearTimeout(p.t);pending.delete(m.id);if(m.type==='error')p.reject(Error(m.error));else p.resolve(m.result);};
  worker.onerror=()=>{ready=false;status('Le moteur visuel n’a pas démarré. La caméra et la version stable restent accessibles. Actualise pour réessayer.',true);};
  try{summary=await rpc('init',{lang:$('lang').value});ready=true;$('search').disabled=false;updateCoverage();if(!$('status').classList.contains('error'))status(live?'Centre la carte puis appuie sur Scanner.':'Scanner prêt. Ouvre la caméra et présente une carte entière.');renderSets();if(live)schedule();}

@@ -5,7 +5,7 @@ import {createPricePanel} from './prices.js?v=20261009-5';
 const $=id=>document.getElementById(id);
 import {FocusGate} from './photo-quality.js?v=20261010-jp1';
 const focusGate=new FocusGate();
-const VERSION='20261010-jp3';
+const VERSION='20261010-frame1';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));
@@ -43,11 +43,21 @@ async function startCamera(){
  }catch(e){if(token!==cameraToken)return;stopCamera();const messages={NotAllowedError:'Accès caméra refusé. Autorise la caméra dans les réglages du site, puis réessaie.',NotFoundError:'Aucune caméra trouvée. Tu peux importer une photo.',NotReadableError:'Caméra occupée par une autre application. Ferme-la puis réessaie.'};status(messages[e.name]||e.message,true);}
 }
 function grab(maxEdge){const v=$('video');if(v.readyState<2||!v.videoWidth||!v.videoHeight)throw Error('La caméra n’est pas encore prête.');const scale=Math.min(1,maxEdge/Math.max(v.videoWidth,v.videoHeight));frameCanvas.width=Math.round(v.videoWidth*scale);frameCanvas.height=Math.round(v.videoHeight*scale);frameContext.drawImage(v,0,0,frameCanvas.width,frameCanvas.height);return frameContext.getImageData(0,0,frameCanvas.width,frameCanvas.height);}
-function drawOutline(points,progress){
- // The visible guide stays fixed; detected corners still drive capture and recognition.
- $('outline').setAttribute('points','12,10 88,10 88,90 12,90');
- $('outline').style.stroke=progress>=1?'#71e7a4':progress>0?'#f5bb58':'#f27568';$('meter').firstElementChild.style.width=(progress*100)+'%';
+let guideProgress=0;
+function guideBounds(width,height){
+ const h=Math.min(height*.76,width*.82*88/63),w=h*63/88;
+ return {x:(width-w)/2,y:(height-h)/2,width:w,height:h};
 }
+function drawOutline(points,progress){
+ // One fixed card-shaped guide; recognition never moves its visible bounds.
+ guideProgress=progress;
+ const stage=$('stage').getBoundingClientRect(),g=guideBounds(stage.width,stage.height);
+ $('overlay').setAttribute('viewBox',`0 0 ${stage.width} ${stage.height}`);
+ for(const [key,value] of Object.entries(g))$('outline').setAttribute(key,value);
+ $('outline').style.stroke=progress>=1?'#71e7a4':progress>0?'#f5bb58':'#f27568';
+ $('meter').firstElementChild.style.width=(progress*100)+'%';
+}
+new ResizeObserver(()=>drawOutline(null,guideProgress)).observe($('stage'));
 function schedule(){clearTimeout(timer);if(live&&!paused)timer=setTimeout(tick,nextDelay(tickStart,performance.now()));}
 async function tick(){
  if(!live||paused)return;
@@ -59,8 +69,9 @@ async function tick(){
   // Map the fixed guide through object-fit:cover to the original video pixels.
   const scale=Math.max(stage.width/v.videoWidth,stage.height/v.videoHeight);
   const ox=(v.videoWidth*scale-stage.width)/2,oy=(v.videoHeight*scale-stage.height)/2;
-  const sx=(stage.width*.12+ox)/scale,sy=(stage.height*.10+oy)/scale;
-  const sw=stage.width*.76/scale,sh=stage.height*.80/scale;
+  const g=guideBounds(stage.width,stage.height);
+  const sx=(g.x+ox)/scale,sy=(g.y+oy)/scale;
+  const sw=g.width/scale,sh=g.height/scale;
   sampleCanvas.width=504;sampleCanvas.height=704;
   sampleContext.drawImage(v,sx,sy,sw,sh,0,0,504,704);
   const q=focusGate.evaluate(sampleContext.getImageData(0,0,504,704),performance.now());

@@ -10,3 +10,7 @@
 #capture:disabled{opacity:.5}.shutterLabel{font-weight:650;line-height:20px}
 .cameraActions{justify-content:center}#autoScan{display:none!important}
 @media(prefers-reduced-motion:reduce){.shutterDisc{transition:none}}
+
+/* Card guide: subtle border, rounded corners, and a soft outer shade. */
+#outline{stroke-width:2;filter:drop-shadow(0 0 4px #0008)}
+#overlay{overflow:visible}

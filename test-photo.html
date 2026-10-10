@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#102a2a"><title>TCG Portfolio · Photo nette · Test</title>
 <link rel="stylesheet" href="scanner/style.css?v=20261009-6">
 <link rel="stylesheet" href="interface-reference/mobile.css?v=20261009-8">
-<link rel="stylesheet" href="scanner/photo.css?v=20261010-photo2">
+<link rel="stylesheet" href="scanner/photo.css?v=20261010-frame1">
 </head>
 <body>
 <header><a href="./" class="brand">TCG Portfolio</a><a class="badge" href="atelier-interface.html">Atelier interface</a></header>
@@ -17,7 +17,7 @@
 <div id="stage" class="stage">
  <video id="video" autoplay playsinline muted hidden></video>
  <canvas id="frozenPreview" hidden aria-label="Photo capturée"></canvas>
- <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polygon id="outline" points="12,10 88,10 88,90 12,90"/></svg>
+ <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect id="outline" x="12" y="10" width="76" height="80" rx="14"/></svg>
  <div id="cameraPlaceholder"><span class="cameraIcon" aria-hidden="true">▣</span><h2>Prêt à scanner ?</h2><p>Ta photo reste sur ton appareil.</p><button id="start" class="primary">Ouvrir la caméra</button></div>
  <div id="liveHint" class="liveHint" hidden>Présente une carte entière.</div>
  <div id="meter" class="meter" hidden><span></span></div>
@@ -38,6 +38,6 @@
 </main>
 <nav aria-label="Navigation"><button id="homeNav">Accueil</button><button id="catalogNav">Catalogue</button><button id="scanNav" class="active">Scanner</button><button id="portfolioNav">Classeur</button></nav>
 <footer>Références : TCGdex / Pokémon TCG API. Application indépendante, non affiliée à Pokémon.<br><a href="docs/SCANNER-V5.md">Notes de version et limites</a> · <a href="THIRD_PARTY_NOTICES.md">Licences</a></footer>
-<script type="module" src="scanner/photo-app.js?v=20261010-jp3"></script>
+<script type="module" src="scanner/photo-app.js?v=20261010-frame1"></script>
 <script type="module" src="interface-reference/mobile.js?v=20261009-7"></script>
 </body></html>

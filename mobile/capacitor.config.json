@@ -1,0 +1,12 @@
+{
+  "appId": "fr.craftdrop.tcgtest",
+  "appName": "Craft & Drop Test",
+  "webDir": "www",
+  "server": {
+    "hostname": "localhost",
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}

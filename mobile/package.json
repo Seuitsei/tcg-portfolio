@@ -1,0 +1,17 @@
+{
+  "name": "craft-drop-mobile-test",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "prepare:web": "node prepare-web.cjs",
+    "android:init": "npm run prepare:web && cap add android && node configure-android.cjs",
+    "android:sync": "npm run prepare:web && cap sync android && node configure-android.cjs"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.5.3",
+    "@capacitor/android": "8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3"
+  }
+}

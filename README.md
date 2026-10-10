@@ -13,7 +13,7 @@ La reconnaissance automatique et les prix en temps réel seront ajoutés progres
 
 ## Scanner visuel V5 — TEST
 
-La nouvelle version expérimentale est disponible au [lien TEST permanent](https://seuitsei.github.io/tcg-portfolio/test-localisation.html).
+La version utilisée pour les prochains essais et mises à jour est disponible au [lien permanent de l’application](https://seuitsei.github.io/tcg-portfolio/test-photo.html). Conserver cette URL ; versionner les ressources internes pour qu’une actualisation charge les changements.
 La [version stable](https://seuitsei.github.io/tcg-portfolio/) reste inchangée en attendant validation sur smartphone.
 
 - [Fonctionnement, tests et limites](docs/SCANNER-V5.md)

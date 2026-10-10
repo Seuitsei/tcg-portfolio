@@ -1,7 +1,7 @@
 'use strict';
 importScripts('vision.js?v=20261009-11','reference-packs.js?v=20261009-11','detail-index.js?v=20261009-11');
 const JAPANESE_TEST=typeof location!=='undefined'&&new URLSearchParams(location.search).get('jp')==='20261010',JP_ROOT=JAPANESE_TEST?'data/japanese-test/':'data/';
-const DATA_VERSION=JAPANESE_TEST?'20261010-jp1':'20261009-11',packedReferences=new Map(),packedLoads=new Map(),packedSizes=new Map();let referencePacks=new Map(),packedBytes=0;
+const DATA_VERSION=JAPANESE_TEST?'20261010-jp2':'20261009-11',packedReferences=new Map(),packedLoads=new Map(),packedSizes=new Map();let referencePacks=new Map(),packedBytes=0;
 let preparedRecovered=new Set();
 let detailSpec=null,detailIndex=null,detailLoad=null;
 const V=ScannerVision;let engine=null,entries=[],allCards=[],sets=[],lang='fr',gate=new V.StabilityGate(),featuresCache=new Map(),prebuiltPacks=[],located=null,lastLocate=-Infinity;
@@ -62,7 +62,7 @@ async function loadDetailIndex(){
 async function init(data){
  lang=data.lang||'fr';entries=[];featuresCache.clear();packedReferences.clear();packedLoads.clear();packedSizes.clear();packedBytes=0;gate.reset();located=null;lastLocate=-Infinity;
  detailSpec=null;detailIndex=null;detailLoad=null;
- const [catalog,allSets,manifest]=await Promise.all([getJSON((lang==='ja'?JP_ROOT+'catalog-ja.json':'data/catalog.json')+'?v='+DATA_VERSION),getJSON(lang==='ja'?'data/sets-ja.json':'data/sets.json'),getJSON('data/manifest.json')]);
+ const [catalog,allSets,manifest]=await Promise.all([getJSON((lang==='ja'?JP_ROOT+'catalog-ja.json':'data/catalog.json')+'?v='+DATA_VERSION),getJSON(lang==='ja'?JP_ROOT+'sets-ja.json':'data/sets.json'),getJSON('data/manifest.json')]);
  allCards=lang==='ja'?catalog:catalog[lang];sets=lang==='ja'?allSets:allSets[lang];
  postMessage({type:'progress',text:'Chargement de l’index visuel '+lang.toUpperCase()+'…'});
  const [global,blob,recovered,details]=await Promise.all([getJSON((lang==='ja'?JP_ROOT:'data/')+'vectors-'+lang+'.json?v='+DATA_VERSION),fetchBytes((lang==='ja'?JP_ROOT:'data/')+'vectors-'+lang+'.bin?v='+DATA_VERSION),getJSON((lang==='ja'?JP_ROOT:'data/')+'recovered-references.json?v='+DATA_VERSION),getJSON((lang==='ja'?JP_ROOT:'data/')+'detail-index.json?v='+DATA_VERSION)]);
@@ -95,8 +95,8 @@ async function locateCard(src,enhance=false,normalScene=null){
  const samples=V.sceneSamples(engine,src,enhance);let shortlist=V.rankVectors(samples.filter(s=>!s.additional).map(s=>s.v),entries,enhance?40:16),best=null;
  if(enhance){
   const extra=[],regional=[],index=await loadDetailIndex();
-  if(index){const queries=normalScene?[normalScene,scene]:[scene];for(const s of samples){const roi=src.roi(new engine.Rect(s.rect.x,s.rect.y,s.rect.width,s.rect.height));try{queries.push(V.features(engine,roi));}finally{roi.delete();}}
-   const nominated=ScannerDetailIndex.rank(index,queries,3),positions=new Map(entries.map((e,i)=>[e.id,i]));for(const item of nominated){const i=positions.get(item.id);if(i!==undefined)extra.push({index:i,distance:Math.min(...samples.map(s=>V.vectorDistance(s.v,entries[i].v)))});}
+  if(index){const queries=normalScene?[normalScene,scene]:[scene];for(const s of samples){const roi=src.roi(new engine.Rect(s.rect.x,s.rect.y,s.rect.width,s.rect.height));try{queries.push(V.features(engine,roi));if(JAPANESE_TEST&&lang==='ja')queries.push(V.features(engine,roi,false,true));}finally{roi.delete();}}
+   const nominated=ScannerDetailIndex.rank(index,queries,JAPANESE_TEST&&lang==='ja'?32:3),positions=new Map(entries.map((e,i)=>[e.id,i]));for(const item of nominated){const i=positions.get(item.id);if(i!==undefined)extra.push({index:i,distance:Math.min(...samples.map(s=>V.vectorDistance(s.v,entries[i].v)))});}
   }
   // Separate regional retrieval avoids eliminating a good card because another
   // window contains a neighbouring card or the black binder fabric.
@@ -154,7 +154,7 @@ async function analyse(data){
   const captured=data.alreadyCropped?null:V.capturePoints(data.points,src.cols,src.rows);
   let detailed=null;
   let detection=data.alreadyCropped?null:captured?{points:captured}:V.detect(engine,src);
-  if(!data.alreadyCropped&&(data.manual||!detection)){const details=await locateCard(src);if(details){detailed=details;detection={points:V.capturePoints(details.points,src.cols,src.rows)};}}
+  if(!data.alreadyCropped&&(data.manual||!detection)){const details=await locateCard(src,JAPANESE_TEST&&lang==='ja');if(details){detailed=details;detection={points:V.capturePoints(details.points,src.cols,src.rows)};}}
   if(data.alreadyCropped){card=new engine.Mat();engine.resize(src,card,new engine.Size(V.WIDTH,V.HEIGHT),0,0,engine.INTER_AREA);}
   else if(detection)card=V.warp(engine,src,detection.points);
   else return {kind:'reject',reason:'Carte non localisée. Centre une seule carte entière, puis reprends une photo.',candidates:[],ms:performance.now()-t};

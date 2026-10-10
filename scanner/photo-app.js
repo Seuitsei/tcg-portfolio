@@ -5,7 +5,7 @@ import {createPricePanel} from './prices.js?v=20261009-5';
 const $=id=>document.getElementById(id);
 import {FocusGate} from './photo-quality.js?v=20261010-jp1';
 const focusGate=new FocusGate();
-const VERSION='20261010-jp1';
+const VERSION='20261010-jp2';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));

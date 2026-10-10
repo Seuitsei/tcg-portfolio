@@ -1,0 +1,207 @@
+{
+  "kind": "local OpenCV worker validation; not iPhone accuracy measurement",
+  "realPhotos": [
+    {
+      "expected": "S8b-252",
+      "top": "S8b-252",
+      "kind": "candidates",
+      "reason": "Correspondance visuelle à confirmer.",
+      "quality": {
+        "sharpness": 10134.030794660517,
+        "glare": 0
+      },
+      "unavailable": 0,
+      "ms": 9556,
+      "candidates": [
+        {
+          "id": "S8b-252",
+          "inliers": 30,
+          "coverage": 0.446974064009531,
+          "ratio": 0.8108108108108109,
+          "distance": 0.774462365591398
+        }
+      ]
+    },
+    {
+      "expected": "S10b-011",
+      "top": "S10b-011",
+      "kind": "candidates",
+      "reason": "Correspondance visuelle à confirmer.",
+      "quality": {
+        "sharpness": 6571.352603414594,
+        "glare": 5.636724386724387e-05
+      },
+      "unavailable": 0,
+      "ms": 26318,
+      "candidates": [
+        {
+          "id": "S10b-011",
+          "inliers": 138,
+          "coverage": 0.29375002239689685,
+          "ratio": 0.8263473053892215,
+          "distance": 0.8207287933094385
+        }
+      ]
+    },
+    {
+      "expected": "S10b-049",
+      "top": "S10b-049",
+      "kind": "candidates",
+      "reason": "Correspondance visuelle à confirmer.",
+      "quality": {
+        "sharpness": 4429.368837081698,
+        "glare": 0
+      },
+      "unavailable": 0,
+      "ms": 9175,
+      "candidates": [
+        {
+          "id": "S10b-049",
+          "inliers": 53,
+          "coverage": 0.5259740352630615,
+          "ratio": 0.7910447761194029,
+          "distance": 0.43381123058542415
+        }
+      ]
+    },
+    {
+      "expected": "S12a-262",
+      "top": "S12a-262",
+      "kind": "candidates",
+      "reason": "Correspondance visuelle à confirmer.",
+      "quality": {
+        "sharpness": 5486.32628648827,
+        "glare": 0
+      },
+      "unavailable": 0,
+      "ms": 25244,
+      "candidates": [
+        {
+          "id": "S12a-262",
+          "inliers": 149,
+          "coverage": 0.42119267565054624,
+          "ratio": 0.8563218390804598,
+          "distance": 0.8490143369175628
+        }
+      ]
+    }
+  ],
+  "syntheticControls": [
+    {
+      "id": "S10b-001",
+      "mode": "clean",
+      "top": "S10b-001",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-001",
+      "mode": "camera",
+      "top": "S10b-001",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-011",
+      "mode": "clean",
+      "top": "S10b-011",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-011",
+      "mode": "camera",
+      "top": "S10b-011",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-025",
+      "mode": "clean",
+      "top": "S10b-025",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-025",
+      "mode": "camera",
+      "top": "S10b-025",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-034",
+      "mode": "clean",
+      "top": "S10b-034",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-034",
+      "mode": "camera",
+      "top": "S10b-034",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-049",
+      "mode": "clean",
+      "top": "S10b-049",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-049",
+      "mode": "camera",
+      "top": "S10b-049",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-071",
+      "mode": "clean",
+      "top": "S10b-071",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-071",
+      "mode": "camera",
+      "top": "S10b-071",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-093",
+      "mode": "clean",
+      "top": "S10b-093",
+      "kind": "candidates"
+    },
+    {
+      "id": "S10b-093",
+      "mode": "camera",
+      "top": "S10b-093",
+      "kind": "candidates"
+    },
+    {
+      "id": "SV7-001",
+      "mode": "clean",
+      "top": "SV7-001",
+      "kind": "candidates"
+    },
+    {
+      "id": "SV7-001",
+      "mode": "camera",
+      "top": "SV7-001",
+      "kind": "candidates"
+    },
+    {
+      "id": "SV2a-006",
+      "mode": "clean",
+      "top": "SV2a-006",
+      "kind": "candidates"
+    },
+    {
+      "id": "SV2a-006",
+      "mode": "camera",
+      "top": "SV2a-006",
+      "kind": "candidates"
+    }
+  ],
+  "legacyProfileLoads": 5,
+  "references": 10079,
+  "packedReferences": 6207,
+  "negativeImages": [
+    "uniform white",
+    "binder fabric"
+  ],
+  "photosCommitted": false
+}

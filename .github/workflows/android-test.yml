@@ -39,7 +39,7 @@ jobs:
           name: craft-drop-android-debug
           path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
-      - run: python3 -m pip install Pillow
+      - run: python3 -m pip install Pillow websocket-client
       - name: Enable emulator acceleration
         run: |
           sudo chmod 666 /dev/kvm
@@ -49,6 +49,7 @@ jobs:
           arch: x86_64
           profile: pixel_6
           disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back emulated
           script: |
             adb install mobile/android/app/build/outputs/apk/debug/app-debug.apk
             adb shell am start -n fr.craftdrop.tcgtest2/.MainActivity
@@ -56,6 +57,7 @@ jobs:
             adb shell pidof fr.craftdrop.tcgtest2
             adb exec-out screencap -p > android-emulator.png
             python3 mobile/test_navigation.py
+            python3 mobile/test_camerax.py
             adb logcat -d > android-emulator.log
       - uses: actions/upload-artifact@v4
         if: always()
@@ -65,4 +67,6 @@ jobs:
             android-emulator.png
             android-emulator.log
             android-nav-*.png
+            android-camerax-*.png
+            android-camerax-result.json
 

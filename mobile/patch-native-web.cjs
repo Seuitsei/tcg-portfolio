@@ -3,8 +3,8 @@ const fs=require('node:fs'),path=require('node:path');
 module.exports=function patchNativeWeb(out){
  const file=path.join(out,'scanner/photo-app.js');let app=fs.readFileSync(file,'utf8');
  function replace(before,after){if(app.split(before).length!==2)throw Error('Native integration source changed: '+before.slice(0,90));app=app.replace(before,after);}
- replace("const VERSION='20261011-camera1';", "const VERSION='20261011-camerax1';\nimport {nativeCamera,decodeNativePhoto} from './native-camera.js?v=20261011-camerax1';\nlet nativeInfo=null,nativeFrameBusy=false;");
- replace("function stopCamera(){", "function stopCamera(){if(nativeCamera){nativeCamera.stop().catch(()=>{});nativeInfo=null;}");
+ replace("const VERSION='20261011-camera1';", "const VERSION='20261011-camerax1';\nimport {nativeCamera,decodeNativePhoto} from './native-camera.js?v=20261011-camerax1';\nlet nativeInfo=null,nativeFrameBusy=false,nativeCaptureSerial=0;");
+ replace("function stopCamera(){", "function stopCamera(){if(nativeCamera){nativeCaptureSerial++;if(!analysisBusy)$('import').disabled=false;nativeCamera.stop().catch(()=>{});nativeInfo=null;}");
  replace("function showCameraState(message=''){", `function showCameraState(message=''){
  if(nativeCamera&&nativeInfo){
   $('refocus').disabled=analysisBusy||!nativeCamera.active;
@@ -20,6 +20,7 @@ module.exports=function patchNativeWeb(out){
  replace("async function analyseCamera(){", "async function analyseCamera(){if(nativeCamera){await analyseNativeCamera();return;}");
  replace("if(stream){showCameraState();listCameras(token);}", "if(stream||nativeInfo){showCameraState();listCameras(token);}if(nativeCamera&&!nativeCamera.active)$('capture').disabled=true;");
  replace("$('refocus').onclick=async()=>{", "$('refocus').onclick=async()=>{if(nativeCamera){$('refocus').disabled=true;try{const result=await nativeCamera.focus();cameraDiagnostic.focusSuccessful=result.success;focusGate.reset();drawOutline(null,0);showCameraState(result.success?'Mise au point effectuée.':'Mise au point non confirmée : éloigne un peu la carte.');}catch(e){showCameraState(e.message);}return;}");
+ replace("stopCamera();const url=URL.createObjectURL(file);", "stopCamera();cameraDiagnostic={engine:'import'};const url=URL.createObjectURL(file);");
  replace("document.hidden&&(stream||$('start').disabled)", "document.hidden&&(stream||nativeCamera?.active||$('start').disabled)");
  app+=`
 async function startNativeCamera(token){
@@ -27,7 +28,7 @@ async function startNativeCamera(token){
  nativeInfo=await nativeCamera.start(selectedCamera,
   async frame=>{
    if(token!==cameraToken||!live||paused||nativeFrameBusy)return;nativeFrameBusy=true;
-   try{const image=await decodeNativePhoto(frame);if(token!==cameraToken||paused)return;const q=focusGate.evaluate(image,performance.now());cameraDiagnostic={...cameraDiagnostic,focus:q};drawOutline(null,q.progress);$('liveHint').textContent=q.hint;$('capture').classList.toggle('photo-ready',q.ready);nativeCamera.quality(q);}catch{focusGate.reset();nativeCamera.quality({progress:0,hint:'Place la carte dans le cadre.'});}finally{nativeFrameBusy=false;}
+   try{const image=await decodeNativePhoto(frame);if(token!==cameraToken||paused)return;const q=focusGate.evaluate(image,performance.now());cameraDiagnostic={...cameraDiagnostic,focus:q};drawOutline(null,q.progress);$('liveHint').textContent=q.hint;$('capture').classList.toggle('photo-ready',q.ready);nativeCamera.quality(q);}catch{if(token===cameraToken&&!paused){focusGate.reset();nativeCamera.quality({progress:0,hint:'Place la carte dans le cadre.'});}}finally{nativeFrameBusy=false;}
   },()=>{if(token===cameraToken){stopCamera();status('Caméra mise en pause. Rouvre-la pour reprendre.');}},result=>{if(token===cameraToken)cameraDiagnostic.focusSuccessful=result.success;}
  );
  if(token!==cameraToken)return;
@@ -38,7 +39,7 @@ async function startNativeCamera(token){
 async function analyseNativeCamera(){
  if(!ready){status('Le catalogue est encore en préparation.');return;}
  if(analysisBusy||!live||paused||!nativeCamera.active)return;
- const token=cameraToken;paused=true;$('capture').disabled=true;$('cameraSelect').disabled=true;$('refocus').disabled=true;$('import').disabled=true;status('Prise de la photo native…');
+ const token=cameraToken,job=++nativeCaptureSerial;paused=true;$('capture').disabled=true;$('cameraSelect').disabled=true;$('refocus').disabled=true;$('import').disabled=true;status('Prise de la photo native…');
  try{
   const photo=await nativeCamera.capture();if(token!==cameraToken)return;
   const image=await decodeNativePhoto(photo);if(token!==cameraToken)return;
@@ -47,7 +48,7 @@ async function analyseNativeCamera(){
   $('frozenPreview').width=image.width;$('frozenPreview').height=image.height;$('frozenPreview').getContext('2d').putImageData(image,0,0);$('frozenPreview').hidden=false;
   await analyseImage(image,false,null,true);
  }catch(e){if(token===cameraToken){paused=false;status(e.message,true);}}
- finally{if(token===cameraToken){$('import').disabled=false;$('capture').disabled=!nativeCamera.active;if(nativeInfo){showCameraState();listCameras(token);}}}
+ finally{if(job===nativeCaptureSerial)$('import').disabled=false;if(token===cameraToken){$('capture').disabled=!nativeCamera.active;if(nativeInfo){showCameraState();listCameras(token);}}}
 }
 `;
  fs.writeFileSync(file,app);

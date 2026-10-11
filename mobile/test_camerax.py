@@ -8,13 +8,20 @@ def adb(*args):
     return subprocess.check_output(['adb', *args]).decode().strip()
 
 adb('shell', 'pm', 'grant', 'fr.craftdrop.tcgtest2', 'android.permission.CAMERA')
-pid=adb('shell','pidof','fr.craftdrop.tcgtest2').split()[0]
-sockets=adb('shell','cat','/proc/net/unix')
-socket=next(line.split()[-1].lstrip('@') for line in sockets.splitlines() if 'webview_devtools_remote_'+pid in line)
-adb('forward','tcp:9222','localabstract:'+socket)
-pages=json.load(urllib.request.urlopen('http://127.0.0.1:9222/json'))
-target=next(p for p in pages if p.get('type')=='page')
-ws=websocket.create_connection(target['webSocketDebuggerUrl'],suppress_origin=True,timeout=90)
+def connect():
+    deadline=time.time()+60
+    while time.time()<deadline:
+        try:
+            pid=adb('shell','pidof','fr.craftdrop.tcgtest2').split()[0]
+            sockets=adb('shell','cat','/proc/net/unix')
+            socket=next(line.split()[-1].lstrip('@') for line in sockets.splitlines() if 'webview_devtools_remote_'+pid in line)
+            adb('forward','tcp:9222','localabstract:'+socket)
+            pages=json.load(urllib.request.urlopen('http://127.0.0.1:9222/json'))
+            target=next(p for p in pages if p.get('type')=='page')
+            return websocket.create_connection(target['webSocketDebuggerUrl'],suppress_origin=True,timeout=90)
+        except Exception:time.sleep(.5)
+    raise RuntimeError('WebView debugger did not become available')
+ws=connect()
 request_id=0
 def evaluate(expression):
     global request_id
@@ -35,12 +42,27 @@ def wait(expression, seconds=75):
     raise AssertionError('Timed out: '+expression+'; status='+str(evaluate("document.querySelector('#status').textContent")))
 
 def screenshot(name):
+    evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))")
+    time.sleep(.4)
     Path(name).write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
 
 try:
+    wait("!!document.querySelector('#scanNav')")
+    evaluate("localStorage.setItem('tcgCards',JSON.stringify([{collectionId:'native-test',id:'keep',name:'Keep',buy:'12.50'}]));true")
+    import re
+    previous_version=re.search(r'versionName=(\S+)',adb('shell','dumpsys','package','fr.craftdrop.tcgtest2')).group(1)
+    previous_origin=evaluate('location.origin')
+    ws.close()
+    # Replace the preceding signed APK, without uninstalling or clearing its data.
+    adb('install','-r','mobile/android/app/build/outputs/apk/debug/app-debug.apk')
+    adb('shell','am','start','-n','fr.craftdrop.tcgtest2/.MainActivity')
+    ws=connect()
     wait("!!(document.querySelector('#scanNav')&&window.Capacitor?.Plugins?.CardCamera)")
-    evaluate("localStorage.setItem('tcgCards',JSON.stringify([{collectionId:'native-test',id:'keep',name:'Keep',buy:'12.50'}]));document.querySelector('#scanNav').click();true")
+    assert evaluate("JSON.parse(localStorage.getItem('tcgCards'))[0].buy")=='12.50'
+    assert evaluate('location.origin')==previous_origin=='https://localhost'
+    evaluate("document.querySelector('#scanNav').click();true")
     wait("!document.querySelector('#search').disabled")
+    wait("!document.querySelector('#scanScreen').hidden&&document.querySelector('#homeScreen').hidden&&document.querySelector('#scanNav').classList.contains('active')")
     screenshot('android-camerax-before.png')
     evaluate("document.querySelector('#start').click();true")
     wait("!document.querySelector('#cameraControls').hidden&&document.querySelector('#cameraState').textContent.includes('CameraX')")
@@ -72,7 +94,7 @@ try:
     logs=adb('logcat','-d','-s','CraftDropCamera:I','AndroidRuntime:E')
     assert 'CameraX still capture delivered' in logs
     assert 'FATAL EXCEPTION' not in logs
-    Path('android-camerax-result.json').write_text(json.dumps({'camera':diagnostic['camera'],'focus':focus,'collectionPreserved':True,'checks':['native preview','native photo delivered to worker','restart','navigation cleanup','pause','tabs unchanged'],'limitation':'Emulator camera scene; no physical autofocus or recognition success measurement.'},indent=2))
+    Path('android-camerax-result.json').write_text(json.dumps({'updatedFrom':previous_version,'updatedTo':'1.1.0','origin':previous_origin,'camera':diagnostic['camera'],'focus':focus,'collectionPreserved':True,'checks':['native preview','native photo delivered to worker','restart','navigation cleanup','pause','tabs unchanged'],'limitation':'Emulator camera scene; no physical autofocus or recognition success measurement.'},indent=2))
     print('PASS CameraX emulator: native preview/capture to production worker, focus command, restart, navigation and background cleanup, unchanged tabs and local purchase price. Not physical-camera accuracy.')
 finally:
     ws.close()

@@ -6,4 +6,6 @@ fs.copyFileSync(path.join(root,'THIRD_PARTY_NOTICES.md'),path.join(out,'THIRD_PA
 const html=fs.readFileSync(path.join(root,'test-photo.html'),'utf8');
 fs.writeFileSync(path.join(out,'index.html'),html);fs.writeFileSync(path.join(out,'test-photo.html'),html);
 require('./patch-native-web.cjs')(out);
+fs.copyFileSync(path.join(__dirname,'ANDROIDX-LICENSE.txt'),path.join(out,'scanner/vendor/ANDROIDX-LICENSE.txt'));
+fs.appendFileSync(path.join(out,'THIRD_PARTY_NOTICES.md'),'\n\n## Android APK only — AndroidX CameraX / ExifInterface\n\nCopyright The Android Open Source Project. CameraX 1.6.2 and ExifInterface 1.4.2 are used unmodified under Apache-2.0. Complete [license](scanner/vendor/ANDROIDX-LICENSE.txt).\n');
 console.log('Bundled test-photo application; original browser storage and web files untouched.');

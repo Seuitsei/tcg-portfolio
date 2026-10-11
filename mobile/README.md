@@ -60,3 +60,7 @@ The APK download is available in the workflow artifacts.
 Test 2 installs alongside the first APK to retain its data. It uses the fixed,
 public debug-only key in `test-debug-keystore.base64`, so subsequent Test 2 updates
 can preserve its local collection. This key is unsuitable for production.
+
+## Caméra native Android
+
+Test 2 version 1.1.0 intègre CameraX uniquement dans le paquet APK. La page web et main restent inchangées. Voir [ANDROID-CAMERAX.md](ANDROID-CAMERAX.md) pour le fonctionnement, les tests et leurs limites.

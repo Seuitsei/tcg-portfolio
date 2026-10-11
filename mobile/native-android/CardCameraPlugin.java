@@ -148,6 +148,10 @@ public class CardCameraPlugin extends Plugin {
         ui.postDelayed(() -> { if (session == generation && opening != null) failOpening("L’aperçu caméra n’a pas démarré. Réessaie.", null); }, 15000);
     }
     private void bind(int session) {
+        if (session != generation || previewView == null) return;
+        if (previewView.getWidth() == 0 || previewView.getHeight() == 0 || previewView.getDisplay() == null) {
+            ui.postDelayed(() -> bind(session), 16); return;
+        }
         try {
             CameraSelector.Builder selector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK);
             if (!lensId.isEmpty()) selector.addCameraFilter(infos -> {

@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,6 +40,16 @@ jobs:
           name: craft-drop-android-debug
           path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
+      - name: Verify APK native bridge in browser
+        run: CODEX_PRIMARY_RUNTIME_NODE_MODULES=/tmp/nav-browser/node_modules node mobile/test_native_web.cjs
+      - name: Download preceding APK for update test
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/previous-apk
+          if ! gh run download 38146890718 --name craft-drop-android-debug --dir /tmp/previous-apk; then
+            echo 'Previous artifact unavailable; verify an in-place reinstall instead.'
+          fi
       - run: python3 -m pip install Pillow websocket-client
       - name: Enable emulator acceleration
         run: |
@@ -51,7 +62,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back emulated
           script: |
-            adb install mobile/android/app/build/outputs/apk/debug/app-debug.apk
+            if [ -f /tmp/previous-apk/app-debug.apk ]; then adb install /tmp/previous-apk/app-debug.apk; else adb install mobile/android/app/build/outputs/apk/debug/app-debug.apk; fi
             adb shell am start -n fr.craftdrop.tcgtest2/.MainActivity
             sleep 15
             adb shell pidof fr.craftdrop.tcgtest2

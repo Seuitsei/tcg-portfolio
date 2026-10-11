@@ -42,6 +42,9 @@ def wait(expression, seconds=75):
     raise AssertionError('Timed out: '+expression+'; status='+str(evaluate("document.querySelector('#status').textContent")))
 
 def tap(selector):
+    if not selector.endswith('Nav'):
+        evaluate("document.querySelector("+json.dumps(selector)+").scrollIntoView({block:'center'});true")
+        time.sleep(.4)
     point=evaluate("(()=>{const r=document.querySelector("+json.dumps(selector)+").getBoundingClientRect();return {x:(r.x+r.width/2)*devicePixelRatio,y:(r.y+r.height/2)*devicePixelRatio,webHeight:innerHeight*devicePixelRatio};})()")
     screen=Image.open(__import__('io').BytesIO(subprocess.check_output(['adb','exec-out','screencap','-p'])))
     # Pixel 6 fixture has equal-height status and three-button system bars.

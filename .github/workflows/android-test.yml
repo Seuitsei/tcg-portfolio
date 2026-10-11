@@ -80,4 +80,5 @@ jobs:
             android-nav-*.png
             android-camerax-*.png
             android-camerax-result.json
+            android-camerax-dom.json
 

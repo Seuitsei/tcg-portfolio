@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#102a2a"><title>TCG Portfolio · Photo nette · Test</title>
 <link rel="stylesheet" href="scanner/style.css?v=20261009-6">
 <link rel="stylesheet" href="interface-reference/mobile.css?v=20261009-8">
-<link rel="stylesheet" href="scanner/photo.css?v=20261011-nav1">
+<link rel="stylesheet" href="scanner/photo.css?v=20261011-camera1">
 </head>
 <body>
 <div id="appScroll" class="appScroll">
@@ -26,6 +26,11 @@
 <div class="cameraActions"><button id="again" class="primary" hidden>Scanner une autre carte</button></div>
 <div class="shutterActions"><button id="capture" aria-label="Scanner" hidden><span class="shutterDisc" aria-hidden="true"></span><span class="shutterLabel">Scanner</span></button></div>
 <div class="cameraActions"><button id="stop" hidden>Fermer la caméra</button><button id="autoScan" aria-pressed="true" hidden>Scan automatique : activé</button><button id="import">Importer une photo</button></div>
+<details id="cameraControls" class="panel" hidden><summary>Caméra et netteté</summary>
+<label>Caméra <select id="cameraSelect"><option value="">Caméra arrière automatique</option></select></label>
+<p id="cameraState" class="muted" role="status"></p><button id="refocus" type="button">Relancer la mise au point</button>
+<p class="muted">Si l’image est floue, éloigne un peu la carte, nettoie l’objectif ou essaie une autre caméra. Tu peux aussi prendre une photo avec l’appareil photo du téléphone puis l’importer.</p>
+</details>
 <input type="file" id="photo" accept="image/*" hidden>
 <p id="status" class="status" role="status" aria-live="polite">Préparation du moteur visuel… Tu peux déjà ouvrir la caméra.</p>
 <p id="coverage" class="muted"></p>
@@ -41,6 +46,7 @@
 </div>
 <nav aria-label="Navigation"><button id="homeNav">Accueil</button><button id="catalogNav">Catalogue</button><button id="scanNav" class="active">Scanner</button><button id="portfolioNav">Classeur</button></nav>
 
-<script type="module" src="scanner/photo-app.js?v=20261011-nav1"></script>
-<script type="module" src="interface-reference/mobile.js?v=20261011-nav1"></script>
+<script type="module" src="scanner/photo-app.js?v=20261011-camera1"></script>
+<script type="module" src="interface-reference/mobile.js?v=20261011-camera1"></script>
 </body></html>
+

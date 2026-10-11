@@ -1,11 +1,11 @@
 import {createCatalog} from './catalog.js?v=20261009-5';
 import {loadPortfolioPrice,loadPortfolioVariants} from './portfolio-prices.js?v=20261009-6';
-import {BestFrame,nextDelay,configureCamera,cameraInfo} from './camera.js?v=20261009-5';
+import {BestFrame,nextDelay,configureCamera,cameraInfo,cameraConstraints,refocusCamera,focusModes} from './camera.js?v=20261011-camera1';
 import {createPricePanel} from './prices.js?v=20261009-5';
 const $=id=>document.getElementById(id);
 import {FocusGate} from './photo-quality.js?v=20261010-jp1';
 const focusGate=new FocusGate();
-const VERSION='20261010-frame1';
+const VERSION='20261011-camera1';
 const bestFrame=new BestFrame();let lastVideoTime=-1,tickStart=0,cameraDiagnostic={};
 const sampleCanvas=document.createElement('canvas'),sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
 const loadPrices=createPricePanel($('priceContent'));
@@ -27,20 +27,38 @@ async function boot(){
  catch(e){status(e.message,true);}
 }
 function updateCoverage(){if(!summary)return;$('coverage').textContent=summary.count.toLocaleString('fr-FR')+' références visuelles · '+summary.lang.toUpperCase()+' · traitement sur cet appareil'+(summary.lang==='ja'?' · couverture japonaise partielle : seules les cartes illustrées du catalogue sont reconnues.':'');$('catalogState').textContent=$('coverage').textContent;}
-function stopCamera(){$('again').hidden=true;bestFrame.reset();focusGate.reset();lastVideoTime=-1;$('scanScreen').classList.remove('camera-open');cameraToken++;live=false;paused=false;clearTimeout(timer);timer=null;stream?.getTracks().forEach(t=>t.stop());stream=null;$('video').srcObject=null;$('frozenPreview').hidden=true;$('capture').classList.remove('photo-ready');$('video').hidden=true;$('cameraPlaceholder').hidden=false;$('liveHint').hidden=true;$('meter').hidden=true;$('stop').hidden=true;$('capture').hidden=true;$('autoScan').hidden=true;$('start').disabled=false;$('stage').classList.add('idle');$('outline').setAttribute('points','12,10 88,10 88,90 12,90');$('outline').style.stroke='#f27568';}
+let selectedCamera='';
+function stopCamera(){ $('cameraControls').hidden=true;$('again').hidden=true;bestFrame.reset();focusGate.reset();lastVideoTime=-1;$('scanScreen').classList.remove('camera-open');cameraToken++;live=false;paused=false;clearTimeout(timer);timer=null;stream?.getTracks().forEach(t=>t.stop());stream=null;$('video').srcObject=null;$('frozenPreview').hidden=true;$('capture').classList.remove('photo-ready');$('video').hidden=true;$('cameraPlaceholder').hidden=false;$('liveHint').hidden=true;$('meter').hidden=true;$('stop').hidden=true;$('capture').hidden=true;$('autoScan').hidden=true;$('start').disabled=false;$('capture').disabled=false;$('stage').classList.add('idle');$('outline').setAttribute('points','12,10 88,10 88,90 12,90');$('outline').style.stroke='#f27568';}
+function showCameraState(message=''){
+ const track=stream?.getVideoTracks()[0];if(!track)return;
+ const info=cameraInfo(track),modes=focusModes(track);
+ cameraDiagnostic={...cameraDiagnostic,...info};
+ $('refocus').disabled=analysisBusy||!modes.some(m=>m==='continuous'||m==='single-shot');
+ const focus=cameraDiagnostic.automaticControls?.focusMode;
+ $('cameraState').textContent=[info.label||'Caméra',info.width&&info.height?`${info.width} × ${info.height}`:'Résolution non communiquée',focus?`Mise au point demandée : ${focus==='continuous'?'continue':'ponctuelle'}`:'Autofocus non contrôlable ici',message].filter(Boolean).join(' · ');
+}
+async function listCameras(token){
+ try{
+  const devices=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput');
+  if(token!==cameraToken)return;
+  $('cameraSelect').replaceChildren(new Option('Caméra arrière automatique',''),...devices.map((d,i)=>new Option(d.label||`Caméra ${i+1}`,d.deviceId)));
+  $('cameraSelect').value=selectedCamera;
+  $('cameraSelect').disabled=devices.length<2;
+ }catch{if(token===cameraToken)$('cameraSelect').disabled=true;}
+}
 async function startCamera(){
  stopCamera();const token=++cameraToken;$('start').disabled=true;selected=null;$('selection').hidden=true;$('results').hidden=true;
  try{
   if(!navigator.mediaDevices?.getUserMedia)throw Error('Caméra indisponible dans ce navigateur. Ouvre le lien HTTPS dans Chrome ou Safari, ou importe une photo.');
-  // Keep the known-working stable page's ideal constraints. Never require a specific lens.
-  const acquired=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});
+  // Keep the automatic rear camera by default; only pin a lens chosen by the user.
+  const acquired=await navigator.mediaDevices.getUserMedia(cameraConstraints(selectedCamera));
   if(token!==cameraToken){acquired.getTracks().forEach(t=>t.stop());return;}
   stream=acquired;$('video').srcObject=stream;$('video').hidden=false;$('cameraPlaceholder').hidden=true;await $('video').play();
   if(token!==cameraToken){acquired.getTracks().forEach(t=>t.stop());return;}
   live=true;paused=false;$('scanScreen').classList.add('camera-open');$('stop').hidden=false;$('capture').hidden=false;$('autoScan').hidden=true;$('liveHint').hidden=false;$('meter').hidden=false;$('stage').classList.remove('idle');
-  const track=stream.getVideoTracks()[0];cameraDiagnostic=cameraInfo(track);configureCamera(track,()=>stream===acquired).then(applied=>{if(stream===acquired)cameraDiagnostic={...cameraInfo(track),automaticControls:applied};});track.addEventListener('ended',()=>{if(stream===acquired){stopCamera();status('Caméra interrompue. Appuie sur « Ouvrir la caméra » pour reprendre.');}});
+  const track=stream.getVideoTracks()[0];cameraDiagnostic=cameraInfo(track);$('capture').disabled=true;const applied=await configureCamera(track,()=>stream===acquired);if(token!==cameraToken)return;cameraDiagnostic={...cameraInfo(track),automaticControls:applied};$('capture').disabled=false;$('cameraControls').hidden=false;showCameraState();await listCameras(token);if(token!==cameraToken)return;track.addEventListener('ended',()=>{if(stream===acquired){stopCamera();status('Caméra interrompue. Appuie sur « Ouvrir la caméra » pour reprendre.');}});
   if(ready)await rpc('reset');schedule();status(ready?'Centre la carte. Le vert indique une image prête à photographier.':'Caméra ouverte. Le catalogue visuel finit de se préparer…');
- }catch(e){if(token!==cameraToken)return;stopCamera();const messages={NotAllowedError:'Accès caméra refusé. Autorise la caméra dans les réglages du site, puis réessaie.',NotFoundError:'Aucune caméra trouvée. Tu peux importer une photo.',NotReadableError:'Caméra occupée par une autre application. Ferme-la puis réessaie.'};status(messages[e.name]||e.message,true);}
+ }catch(e){if(token!==cameraToken)return;stopCamera();const messages={NotAllowedError:'Accès caméra refusé. Autorise la caméra dans les réglages du site, puis réessaie.',NotFoundError:'Aucune caméra trouvée. Tu peux importer une photo.',NotReadableError:'Caméra occupée par une autre application. Ferme-la puis réessaie.'};status(messages[e.name]||e.message,true);if(selectedCamera){$('cameraControls').hidden=false;$('cameraSelect').disabled=false;$('refocus').disabled=true;$('cameraState').textContent='Cette caméra ne peut pas être ouverte. Sélectionne une autre caméra ou le mode automatique.';}}
 }
 function grab(maxEdge){const v=$('video');if(v.readyState<2||!v.videoWidth||!v.videoHeight)throw Error('La caméra n’est pas encore prête.');const scale=Math.min(1,maxEdge/Math.max(v.videoWidth,v.videoHeight));frameCanvas.width=Math.round(v.videoWidth*scale);frameCanvas.height=Math.round(v.videoHeight*scale);frameContext.drawImage(v,0,0,frameCanvas.width,frameCanvas.height);return frameContext.getImageData(0,0,frameCanvas.width,frameCanvas.height);}
 let guideProgress=0;
@@ -83,12 +101,12 @@ async function tick(){
 }
 async function analyseCamera(){if(!ready){status('Le catalogue est encore en préparation.');return;}if(analysisBusy||!live)return;try{const image=grab(Infinity);$('frozenPreview').width=image.width;$('frozenPreview').height=image.height;$('frozenPreview').getContext('2d').putImageData(image,0,0);$('frozenPreview').hidden=false;await analyseImage(image,false,null,true);}catch(e){status(e.message,true);}}
 async function analyseImage(image,alreadyCropped=false,points=null,manual=false){
- if(analysisBusy)return;bestFrame.reset();analysisBusy=true;$('again').hidden=true;paused=true;clearTimeout(timer);$('capture').disabled=true;$('import').disabled=true;$('results').hidden=true;$('selection').hidden=true;selected=null;
+ if(analysisBusy)return;bestFrame.reset();analysisBusy=true;$('again').hidden=true;paused=true;clearTimeout(timer);$('capture').disabled=true;$('cameraSelect').disabled=true;$('refocus').disabled=true;$('import').disabled=true;$('results').hidden=true;$('selection').hidden=true;selected=null;
  const token=cameraToken;
  status('Photo prise. Recherche de la carte… Cela peut prendre quelques secondes.');$('liveHint').textContent='Analyse de la carte…';
  try{const result=await rpc('analyse',{image,alreadyCropped,points,manual},[image.data.buffer]);if(token!==cameraToken)return;showResult(result);}
  catch(e){if(token===cameraToken){status(e.message,true);$('results').hidden=false;$('resultTitle').textContent='Analyse interrompue';$('resultReason').textContent='Réessaie ou importe une photo.';$('candidates').replaceChildren();}}
- finally{analysisBusy=false;if(token===cameraToken)$('again').hidden=false;$('capture').disabled=false;$('import').disabled=false;}
+ finally{analysisBusy=false;if(token===cameraToken)$('again').hidden=false;$('capture').disabled=false;$('import').disabled=false;if(stream){showCameraState();listCameras(token);}}
 }
 function showResult(result){
  $('results').hidden=false;$('resultTitle').textContent=result.kind==='strong'?'Carte reconnue':result.kind==='candidates'?'À toi de confirmer':'Réessaie le scan';$('resultReason').textContent=result.reason;
@@ -144,6 +162,8 @@ function editPortfolioCard(card){
  };
 }
 $('autoScan').onclick=async()=>{autoScan=!autoScan;scanModeToken++;bestFrame.reset();$('autoScan').textContent='Scan automatique : '+(autoScan?'activé':'désactivé');$('autoScan').setAttribute('aria-pressed',String(autoScan));if(ready)try{await rpc('reset');}catch(e){status(e.message,true);}};
+$('cameraSelect').onchange=async()=>{if(analysisBusy)return;selectedCamera=$('cameraSelect').value;await startCamera();};
+$('refocus').onclick=async()=>{const active=stream,track=active?.getVideoTracks()[0];if(!track||analysisBusy)return;$('refocus').disabled=true;const mode=await refocusCamera(track);if(stream!==active)return;if(mode){cameraDiagnostic.automaticControls={...cameraDiagnostic.automaticControls,focusMode:mode};focusGate.reset();drawOutline(null,0);}showCameraState(mode?'Demande envoyée : attends que l’image soit nette.':'Mise au point non disponible. Essaie une autre caméra ou importe une photo.');};
 $('start').onclick=startCamera;$('stop').onclick=stopCamera;$('capture').onclick=analyseCamera;$('again').onclick=restart;$('import').onclick=()=>$('photo').click();$('photo').onchange=e=>importPhoto(e.target.files[0]);
 $('lang').onchange=()=>{catalog.reset();$('setList').replaceChildren();stopCamera();$('results').hidden=true;$('selection').hidden=true;selected=null;boot();};$('catalogBtn').onclick=()=>navigate('catalog');$('back').onclick=()=>navigate('scan');$('scanNav').onclick=()=>navigate('scan');$('portfolioNav').onclick=()=>navigate('portfolio');$('setFilter').oninput=renderSets;
 $('search').onclick=async()=>{if(!ready)return;paused=true;clearTimeout(timer);try{const candidates=await rpc('search',{query:$('name').value,number:$('number').value});$('results').hidden=false;$('again').hidden=false;$('resultTitle').textContent='Recherche catalogue';$('resultReason').textContent=candidates.length?candidates.length+' résultat(s). Confirme l’édition.':'Aucun résultat.';$('selection').hidden=true;selected=null;renderCandidates(candidates);}catch(e){status(e.message,true);}};
@@ -151,3 +171,4 @@ $('add').onclick=()=>{if(!selected)return;try{const current=readCollection();cur
 $('copyDiagnostics').onclick=async()=>{try{await navigator.clipboard.writeText($('debug').textContent);$('copyDiagnostics').textContent='Diagnostic copié';}catch{status('Sélectionne et copie le texte du diagnostic ci-dessus.');}};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&(stream||$('start').disabled)){stopCamera();status('Caméra mise en pause. Rouvre-la pour reprendre.');}});window.addEventListener('pagehide',stopCamera);
 $('stage').classList.add('idle');boot();
+

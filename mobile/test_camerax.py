@@ -60,7 +60,9 @@ try:
     wait("!!(document.querySelector('#scanNav')&&window.Capacitor?.Plugins?.CardCamera)")
     assert evaluate("JSON.parse(localStorage.getItem('tcgCards'))[0].buy")=='12.50'
     assert evaluate('location.origin')==previous_origin=='https://localhost'
-    evaluate("document.querySelector('#scanNav').click();true")
+    # Use Android input, as a user does, so the WebView is visibly presented.
+    screen=Image.open(__import__('io').BytesIO(subprocess.check_output(['adb','exec-out','screencap','-p'])))
+    adb('shell','input','tap',str(int(screen.width*.625)),str(int(screen.height*.91)))
     wait("!document.querySelector('#search').disabled")
     wait("!document.querySelector('#scanScreen').hidden&&document.querySelector('#homeScreen').hidden&&document.querySelector('#scanNav').classList.contains('active')")
     screenshot('android-camerax-before.png')
@@ -97,4 +99,6 @@ try:
     Path('android-camerax-result.json').write_text(json.dumps({'updatedFrom':previous_version,'updatedTo':'1.1.0','origin':previous_origin,'camera':diagnostic['camera'],'focus':focus,'collectionPreserved':True,'checks':['native preview','native photo delivered to worker','restart','navigation cleanup','pause','tabs unchanged'],'limitation':'Emulator camera scene; no physical autofocus or recognition success measurement.'},indent=2))
     print('PASS CameraX emulator: native preview/capture to production worker, focus command, restart, navigation and background cleanup, unchanged tabs and local purchase price. Not physical-camera accuracy.')
 finally:
+    Path('android-emulator.log').write_text(adb('logcat','-d'))
+    Path('android-camerax-dom.json').write_text(json.dumps(evaluate("({height:innerHeight,width:innerWidth,dpr:devicePixelRatio,screen:screen.height,homeHidden:document.querySelector('#homeScreen').hidden,scanHidden:document.querySelector('#scanScreen').hidden,stage:document.querySelector('.stage').getBoundingClientRect().toJSON(),capture:document.querySelector('#capture').getBoundingClientRect().toJSON(),body:document.body.innerText.slice(0,1800)})"),indent=2))
     ws.close()

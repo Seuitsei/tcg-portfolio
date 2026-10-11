@@ -125,7 +125,7 @@ public class CardCameraPlugin extends Plugin {
         guide.setContentDescription("Aperçu CameraX. Toucher pour faire la mise au point.");
         guide.setOnTouchListener((v, e) -> {
             if (e.getAction() == MotionEvent.ACTION_UP) {
-                requestFocus(e.getX(), e.getY(), null);
+                requestFocus(e.getX(), e.getY(), null, true);
                 v.performClick();
             }
             return true;
@@ -138,7 +138,7 @@ public class CardCameraPlugin extends Plugin {
             if (streaming && opening != null) {
                 PluginCall pending = opening; opening = null;
                 pending.resolve(info());
-                requestFocus(previewView.getWidth() / 2f, previewView.getHeight() / 2f, null);
+                requestFocus(previewView.getWidth() / 2f, previewView.getHeight() / 2f, null, false);
                 Log.i("CraftDropCamera", "CameraX preview streaming");
                 ui.post(sample);
             }
@@ -244,11 +244,13 @@ public class CardCameraPlugin extends Plugin {
     @PluginMethod public void focus(PluginCall call) {
         ui.post(() -> {
             if (previewView == null) { call.reject("Caméra fermée."); return; }
-            requestFocus(previewView.getWidth() / 2f, previewView.getHeight() / 2f, call);
+            requestFocus(previewView.getWidth() / 2f, previewView.getHeight() / 2f, call, true);
         });
     }
-    private void requestFocus(float x, float y, PluginCall call) {
+    private void requestFocus(float x, float y, PluginCall call, boolean showFeedback) {
         if (camera == null || !streaming) { if (call != null) call.reject("Attends que l’aperçu caméra soit prêt."); return; }
+        final GuideView focusGuide = guide;
+        final int focusTicket = showFeedback && focusGuide != null ? focusGuide.beginFocus(x, y) : -1;
         try {
             final int session = generation;
             MeteringPoint point = previewView.getMeteringPointFactory().createPoint(x, y, .18f);
@@ -259,10 +261,19 @@ public class CardCameraPlugin extends Plugin {
                     boolean success = future.get().isFocusSuccessful();
                     JSObject result = new JSObject(); result.put("success", success);
                     if (call != null) call.resolve(result);
-                    if (session == generation) notifyListeners("focus", result);
-                } catch (Exception e) { if (call != null) call.reject("Mise au point non disponible sur cet objectif."); }
+                    if (session == generation) {
+                        if (focusTicket >= 0 && guide == focusGuide) focusGuide.finishFocus(focusTicket, success);
+                        notifyListeners("focus", result);
+                    }
+                } catch (Exception e) {
+                    if (session == generation && focusTicket >= 0 && guide == focusGuide) focusGuide.finishFocus(focusTicket, false);
+                    if (call != null) call.reject("Mise au point non disponible sur cet objectif.");
+                }
             }, ContextCompat.getMainExecutor(getContext()));
-        } catch (Exception e) { if (call != null) call.reject("Mise au point non disponible sur cet objectif."); }
+        } catch (Exception e) {
+            if (focusTicket >= 0) focusGuide.finishFocus(focusTicket, false);
+            if (call != null) call.reject("Mise au point non disponible sur cet objectif.");
+        }
     }
     @PluginMethod public void capture(PluginCall call) {
         ui.post(() -> {
@@ -336,8 +347,46 @@ public class CardCameraPlugin extends Plugin {
     private class GuideView extends View {
         final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         float progress;
+        int focusTicket, focusState;
+        float focusX, focusY;
+        long focusStarted, focusFinished;
+        boolean focusVisible;
         String hint = "Place la carte dans le cadre · Touche l’image pour faire le point";
         GuideView() { super(CardCameraPlugin.this.getContext()); }
+        int beginFocus(float x, float y) {
+            int ticket = ++focusTicket;
+            focusX = x; focusY = y; focusState = 0; focusVisible = true;
+            focusStarted = android.os.SystemClock.uptimeMillis(); focusFinished = 0;
+            invalidate();
+            // Unsupported lenses and stalled requests must not leave a permanent reticle.
+            postDelayed(() -> { if (focusVisible && ticket == focusTicket && focusFinished == 0) finishFocus(ticket, false); }, 2500);
+            return ticket;
+        }
+        void finishFocus(int ticket, boolean success) {
+            if (!focusVisible || ticket != focusTicket || focusFinished != 0) return;
+            focusState = success ? 1 : 2;
+            focusFinished = android.os.SystemClock.uptimeMillis();
+            invalidate();
+        }
+        void drawFocus(Canvas canvas, float density) {
+            if (!focusVisible) return;
+            long now = android.os.SystemClock.uptimeMillis();
+            float alpha = focusFinished == 0 ? 1 : Math.min(1f, Math.max(0f, (1100f - (now - focusFinished)) / 300f));
+            if (alpha == 0) { focusVisible = false; return; }
+            float half = 24 * density * (1 + .18f * Math.max(0f, 1 - (now - focusStarted) / 180f));
+            float cx = Math.max(half + 3 * density, Math.min(getWidth() - half - 3 * density, focusX));
+            float cy = Math.max(half + 3 * density, Math.min(getHeight() - half - 3 * density, focusY));
+            RectF rect = new RectF(cx - half, cy - half, cx + half, cy + half);
+            paint.setStyle(Paint.Style.STROKE); paint.setStrokeWidth(3.5f * density);
+            paint.setColor(Color.argb(Math.round(100 * alpha), 0, 0, 0));
+            canvas.drawRoundRect(rect, 7 * density, 7 * density, paint);
+            paint.setStrokeWidth(1.5f * density);
+            paint.setColor(focusState == 1 ? Color.rgb(113, 231, 164) : focusState == 2 ? Color.rgb(245, 187, 88) : Color.WHITE);
+            paint.setAlpha(Math.round(255 * alpha));
+            canvas.drawRoundRect(rect, 7 * density, 7 * density, paint);
+            paint.setAlpha(255);
+            postInvalidateOnAnimation();
+        }
         @Override protected void onDraw(Canvas canvas) {
             float density = getResources().getDisplayMetrics().density;
             paint.setStyle(Paint.Style.STROKE); paint.setStrokeWidth(2 * density);
@@ -349,6 +398,8 @@ public class CardCameraPlugin extends Plugin {
             CharSequence label = android.text.TextUtils.ellipsize(hint, new android.text.TextPaint(paint), Math.max(1, getWidth() - 30 * density), android.text.TextUtils.TruncateAt.END);
             canvas.drawText(label.toString(), getWidth() / 2f, getHeight() - 40 * density, paint);
             paint.setColor(Color.rgb(113, 231, 164)); canvas.drawRect(getWidth() * .2f, getHeight() - 16 * density, getWidth() * (.2f + .6f * progress), getHeight() - 12 * density, paint);
+            drawFocus(canvas, density);
         }
     }
 }
+

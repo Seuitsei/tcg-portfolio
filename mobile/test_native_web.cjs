@@ -31,6 +31,13 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
  await page.waitForFunction(()=>!document.querySelector('#cameraControls').hidden);
  assert.match(await page.locator('#cameraState').textContent(),/CameraX/);
  assert(await page.locator('#capture').isVisible());
+ const shutter=page.locator('#capture');
+ assert.equal(await shutter.evaluate(e=>getComputedStyle(e).webkitTapHighlightColor),'rgba(0, 0, 0, 0)');
+ const box=await shutter.boundingBox();
+ await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();
+ const pressed=await shutter.evaluate(e=>({background:getComputedStyle(e).backgroundColor,disc:getComputedStyle(e.querySelector('.shutterDisc')).transform}));
+ assert.equal(pressed.background,'rgba(0, 0, 0, 0)');assert.notEqual(pressed.disc,'none');
+ await page.mouse.move(0,0);await page.mouse.up();
  const bounds=await page.locator('#outline').evaluate(e=>['x','y','width','height'].map(k=>e.getAttribute(k)));
  await page.evaluate(()=>sendNativeFrame());await page.waitForFunction(()=>nativeQualities.length>0);
  assert.deepEqual(await page.locator('#outline').evaluate(e=>['x','y','width','height'].map(k=>e.getAttribute(k))),bounds);
@@ -53,3 +60,4 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
  console.log('PASS packaged APK JS: CameraX bridge exclusively, decoded still photo to worker, quality/fixed guide, lens switch, focus, restart, pause, navigation cleanup and collection preservation. Native bridge and worker are fixtures; not physical autofocus or card accuracy.');
  }finally{await browser.close();server.close();}
 })().catch(e=>{console.error(e);process.exit(1)});
+

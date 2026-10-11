@@ -54,5 +54,15 @@ async function analyseNativeCamera(){
  fs.writeFileSync(file,app);
  fs.copyFileSync(path.join(__dirname,'native-camera.js'),path.join(out,'scanner/native-camera.js'));
  fs.copyFileSync(path.join(__dirname,'node_modules/@capacitor/core/dist/index.js'),path.join(out,'scanner/capacitor-core.js'));
- for(const name of ['index.html','test-photo.html']){const p=path.join(out,name);fs.writeFileSync(p,fs.readFileSync(p,'utf8').replaceAll('20261011-camera1','20261011-camerax1'));}
+ const shutterStyle=`<style id="native-shutter-feedback">
+ /* Android WebView paints a rectangular tap highlight unless explicitly disabled. */
+ #capture{-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+ #capture:active,#capture:focus{background:transparent;box-shadow:none}
+ #capture:focus-visible{outline:none}
+ #capture:focus-visible .shutterDisc{outline-color:#a3bcf5}
+ #capture .shutterDisc{pointer-events:none}
+ #capture:active .shutterDisc{transform:scale(.94);background:#e3e8ee}
+ </style>`;
+ for(const name of ['index.html','test-photo.html']){const p=path.join(out,name);fs.writeFileSync(p,fs.readFileSync(p,'utf8').replaceAll('20261011-camera1','20261011-camerax1').replace('</head>',shutterStyle+'\n</head>'));}
 };
+

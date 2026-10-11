@@ -83,6 +83,10 @@ try:
     bar=(0,int(before.height*.89),before.width,int(before.height*.945))
     assert ImageChops.difference(before.crop(bar),after.crop(bar)).getbbox() is None,'Native preview moved or covered bottom tabs'
     # Actual native focus command; fixed-focus emulator cameras need not report success.
+    tap('#stage')
+    screenshot('android-camerax-focus-reticle.png')
+    time.sleep(2)
+    screenshot('android-camerax-focus-cleared.png')
     focus=evaluate("window.Capacitor.Plugins.CardCamera.focus()")
     assert isinstance(focus.get('success'),bool)
     # Native photo -> JS canvas -> production worker. No expected identity on a virtual scene.
@@ -112,9 +116,11 @@ try:
     logs=adb('logcat','-d','-s','CraftDropCamera:I','AndroidRuntime:E')
     assert 'CameraX still capture delivered' in logs
     assert 'FATAL EXCEPTION' not in logs
-    Path('android-camerax-result.json').write_text(json.dumps({'updatedFrom':previous_version,'updatedTo':'1.1.0','origin':previous_origin,'camera':diagnostic['camera'],'focus':focus,'collectionPreserved':True,'checks':['native preview','native photo delivered to worker','restart','navigation cleanup','pause','tabs unchanged'],'limitation':'Emulator camera scene; no physical autofocus or recognition success measurement.'},indent=2))
+    updated_version=re.search(r'versionName=(\S+)',adb('shell','dumpsys','package','fr.craftdrop.tcgtest2')).group(1)
+    Path('android-camerax-result.json').write_text(json.dumps({'updatedFrom':previous_version,'updatedTo':updated_version,'origin':previous_origin,'camera':diagnostic['camera'],'focus':focus,'collectionPreserved':True,'checks':['native preview','native photo delivered to worker','restart','navigation cleanup','pause','tabs unchanged'],'limitation':'Emulator camera scene; no physical autofocus or recognition success measurement.'},indent=2))
     print('PASS CameraX emulator: native preview/capture to production worker, focus command, restart, navigation and background cleanup, unchanged tabs and local purchase price. Not physical-camera accuracy.')
 finally:
     Path('android-emulator.log').write_text(adb('logcat','-d'))
     Path('android-camerax-dom.json').write_text(json.dumps(evaluate("({height:innerHeight,width:innerWidth,dpr:devicePixelRatio,screen:screen.height,homeHidden:document.querySelector('#homeScreen').hidden,scanHidden:document.querySelector('#scanScreen').hidden,stage:document.querySelector('.stage').getBoundingClientRect().toJSON(),capture:document.querySelector('#capture').getBoundingClientRect().toJSON(),body:document.body.innerText.slice(0,1800)})"),indent=2))
     ws.close()
+

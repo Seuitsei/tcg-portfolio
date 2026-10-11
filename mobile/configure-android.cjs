@@ -10,7 +10,7 @@ fs.writeFileSync(wrapper,fs.readFileSync(wrapper,'utf8').replace('gradle-8.14.3-
 fs.writeFileSync(path.join(__dirname,'android/test-debug.jks'),Buffer.from(fs.readFileSync(path.join(__dirname,'test-debug-keystore.base64'),'utf8').trim(),'base64'));
 const build=path.join(__dirname,'android/app/build.gradle');
 let gradle=fs.readFileSync(build,'utf8');
-gradle=gradle.replace(/versionCode \d+/, 'versionCode 3').replace(/versionName "[^"]*"/, 'versionName "1.1.0"');
+gradle=gradle.replace(/versionCode \d+/, 'versionCode 4').replace(/versionName "[^"]*"/, 'versionName "1.1.1"');
 const marker='// CraftDrop stable test signing';
 if(!gradle.includes(marker))gradle += `
 ${marker}
@@ -43,3 +43,4 @@ dependencies {
 }
 `;
 fs.writeFileSync(build,nativeBuild);
+

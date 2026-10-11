@@ -98,7 +98,14 @@ public class CardCameraPlugin extends Plugin {
         opening = call;
         bounds = call.getData();
         lensId = call.getString("deviceId", "");
-        host = new FrameLayout(getContext());
+        host = new FrameLayout(getContext()) {
+            @Override public boolean dispatchTouchEvent(MotionEvent event) {
+                // Drawing clips do not by themselves exclude touches outside the scroll area.
+                Rect clip = getClipBounds();
+                if (clip != null && !clip.contains((int) event.getX(), (int) event.getY())) return false;
+                return super.dispatchTouchEvent(event);
+            }
+        };
         host.setClipChildren(true);
         ((ViewGroup) bridge.getWebView().getParent()).addView(host, new ViewGroup.LayoutParams(-1, -1));
         viewport = new FrameLayout(getContext());

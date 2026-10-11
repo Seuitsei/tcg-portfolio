@@ -41,6 +41,13 @@ def wait(expression, seconds=75):
         time.sleep(.5)
     raise AssertionError('Timed out: '+expression+'; status='+str(evaluate("document.querySelector('#status').textContent")))
 
+def tap(selector):
+    point=evaluate("(()=>{const r=document.querySelector("+json.dumps(selector)+").getBoundingClientRect();return {x:(r.x+r.width/2)*devicePixelRatio,y:(r.y+r.height/2)*devicePixelRatio,webHeight:innerHeight*devicePixelRatio};})()")
+    screen=Image.open(__import__('io').BytesIO(subprocess.check_output(['adb','exec-out','screencap','-p'])))
+    # Pixel 6 fixture has equal-height status and three-button system bars.
+    inset=(screen.height-point['webHeight'])/2
+    adb('shell','input','tap',str(round(point['x'])),str(round(point['y']+inset)))
+
 def screenshot(name):
     evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))")
     time.sleep(.4)
@@ -66,7 +73,7 @@ try:
     wait("!document.querySelector('#search').disabled")
     wait("!document.querySelector('#scanScreen').hidden&&document.querySelector('#homeScreen').hidden&&document.querySelector('#scanNav').classList.contains('active')")
     screenshot('android-camerax-before.png')
-    evaluate("document.querySelector('#start').click();true")
+    tap('#start')
     wait("!document.querySelector('#cameraControls').hidden&&document.querySelector('#cameraState').textContent.includes('CameraX')")
     screenshot('android-camerax-preview.png')
     before=Image.open('android-camerax-before.png').convert('RGB');after=Image.open('android-camerax-preview.png').convert('RGB')
@@ -76,19 +83,25 @@ try:
     focus=evaluate("window.Capacitor.Plugins.CardCamera.focus()")
     assert isinstance(focus.get('success'),bool)
     # Native photo -> JS canvas -> production worker. No expected identity on a virtual scene.
-    evaluate("document.querySelector('#capture').click();true")
+    evaluate("document.querySelector('#capture').scrollIntoView({block:'center'});true")
+    time.sleep(.4)
+    tap('#capture')
     wait("!document.querySelector('#again').hidden",120)
     diagnostic=evaluate("JSON.parse(document.querySelector('#debug').textContent)")
     assert diagnostic['camera']['engine']=='CameraX',diagnostic
     assert diagnostic['camera']['captureWidth']>0 and diagnostic['camera']['captureHeight']>0
     assert evaluate("!document.querySelector('#frozenPreview').hidden")
     screenshot('android-camerax-capture.png')
-    evaluate("document.querySelector('#again').click();true")
+    evaluate("document.querySelector('#again').scrollIntoView({block:'center'});true")
+    tap('#again')
     wait("!document.querySelector('#cameraControls').hidden&&!document.querySelector('#capture').disabled&&document.querySelector('#cameraState').textContent.includes('CameraX')")
-    evaluate("document.querySelector('#portfolioNav').click();true")
+    tap('#portfolioNav')
+    wait("document.querySelector('#scanScreen').hidden")
     assert evaluate("document.querySelector('#scanScreen').hidden")
     assert evaluate("JSON.parse(localStorage.getItem('tcgCards'))[0].buy")=='12.50'
-    evaluate("document.querySelector('#scanNav').click();document.querySelector('#start').click();true")
+    tap('#scanNav')
+    evaluate("document.querySelector('#start').scrollIntoView({block:'center'});true")
+    tap('#start')
     wait("!document.querySelector('#cameraControls').hidden")
     adb('shell','input','keyevent','KEYCODE_HOME');time.sleep(1)
     adb('shell','am','start','-n','fr.craftdrop.tcgtest2/.MainActivity')

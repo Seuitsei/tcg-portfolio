@@ -1,0 +1,7 @@
+/* Shared web/Android slot: 320x50 creative, separate from navigation and safe area. */
+body.has-test-banner{--banner-safe:max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px));--banner-height:calc(86px + var(--banner-safe));--app-nav-height:72px}
+body.has-test-banner .appScroll{bottom:calc(var(--app-nav-height) + var(--banner-height))}
+body.has-test-banner>nav{bottom:var(--banner-height);height:72px;min-height:72px;max-height:72px;padding:8px 12px}
+#bannerSlot{position:absolute;left:0;right:0;bottom:0;height:var(--banner-height);box-sizing:border-box;padding:8px 0 calc(8px + var(--banner-safe));background:#0c192b;border-top:1px solid #23344e;display:flex;flex-direction:column;align-items:center;gap:3px;z-index:100}
+#bannerLabel{margin:0;font:10px/16px system-ui,sans-serif;color:#92a6c5;text-align:center}
+#bannerCreative{box-sizing:border-box;width:320px;max-width:100%;height:50px;flex-shrink:0;background:#12223a;color:#c7d7ee;display:flex;align-items:center;justify-content:center;text-align:center;font:12px/18px system-ui,sans-serif;border:1px dashed #526682;overflow:hidden}

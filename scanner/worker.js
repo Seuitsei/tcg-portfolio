@@ -28,7 +28,7 @@ async function referenceFeatures(entry,enhance=false){
   if(!rows){
    if(!packedLoads.has(key))packedLoads.set(key,(async()=>{
     let bytes=await cacheGet(key);
-    if(!bytes){bytes=await fetchBytes('data/'+asset.file+'?v='+asset.sha256);if(bytes.byteLength!==asset.bytes)throw Error('Pack de références incomplet.');if(asset.file.endsWith('.gz'))bytes=await unpackGzip(bytes);if(bytes.byteLength!==(asset.rawBytes||asset.bytes))throw Error('Pack de références incomplet.');ScannerReferencePacks.decodeReferencePack(bytes);await cachePut(key,bytes);}
+    if(!bytes){bytes=await fetchBytes('data/'+asset.file+'?v='+asset.sha256);if(bytes.byteLength!==asset.bytes)throw Error('Pack de références incomplet.');if(asset.file.endsWith('.gz')||asset.file.endsWith('.gz.asset'))bytes=await unpackGzip(bytes);if(bytes.byteLength!==(asset.rawBytes||asset.bytes))throw Error('Pack de références incomplet.');ScannerReferencePacks.decodeReferencePack(bytes);await cachePut(key,bytes);}
     const rows=ScannerReferencePacks.decodeReferencePack(bytes);if(Object.keys(rows).length!==pack.count)throw Error('Pack de références incohérent.');
     // Keep a bounded number of decoded packs; the on-device cache retains downloaded bytes.
     while(packedReferences.size&&(packedReferences.size>=8||packedBytes+bytes.byteLength>16*1024*1024)){const old=packedReferences.keys().next().value;packedBytes-=packedSizes.get(old);packedSizes.delete(old);packedReferences.delete(old);}
@@ -52,7 +52,17 @@ async function referenceFeatures(entry,enhance=false){
 }
 function publicEntry(c){return {id:c.id,name:c.name,localId:c.localId,printedNumber:c.printedNumber,referenceLang:c.referenceLang,image:c.image,lang:c.lang||lang,setId:c.setId||c.id.slice(0,c.id.lastIndexOf('-')),setName:c.setName,total:c.total};}
 function imageURL(c){return c.image+(/\.(png|jpg|webp)$/.test(c.image)?'':'/low.webp');}
-async function fetchBytes(url,timeout=15000){const ctrl=new AbortController(),t=setTimeout(()=>ctrl.abort(),timeout);try{const r=await fetch(url,{signal:ctrl.signal});if(!r.ok)throw Error('Référence indisponible ('+r.status+').');return await r.arrayBuffer();}finally{clearTimeout(t);}}
+function referenceFailure(entry,enhance,error,phase,blocksStrong){
+ if(!activeAnalysis||activeAnalysis.cancelled)return;
+ const asset=referencePacks.get(entry.referencePack)?.[enhance?'foil':'normal'];
+ const row={id:entry.id,name:entry.name,variant:enhance?'foil':'normal',phase,blocksStrong,
+  source:asset?'data/'+asset.file:entry.referencePack?'pack:'+entry.referencePack:imageURL(entry),
+  code:error.code||'REFERENCE_ERROR',status:error.status??null,reason:error.message||String(error)};
+ const failures=activeAnalysis.referenceFailures||(activeAnalysis.referenceFailures=[]);
+ const old=failures.find(f=>f.id===row.id&&f.variant===row.variant&&f.phase===phase&&f.code===row.code);
+ if(old)old.attempts++;else failures.push({...row,attempts:1});
+}
+async function fetchBytes(url,timeout=15000){const ctrl=new AbortController(),parent=activeAnalysis?.controller.signal,abort=()=>ctrl.abort();let expired=false;if(parent?.aborted)abort();else parent?.addEventListener('abort',abort,{once:true});const t=setTimeout(()=>{expired=true;ctrl.abort();},timeout);try{const r=await fetch(url,{signal:ctrl.signal});if(!r.ok)throw Object.assign(Error('Référence indisponible ('+r.status+').'),{code:'HTTP',status:r.status});return await r.arrayBuffer();}catch(error){if(!error.code)error.code=expired?'TIMEOUT':parent?.aborted?'CANCELLED':'FETCH_ERROR';throw error;}finally{clearTimeout(t);parent?.removeEventListener('abort',abort);}}
 async function unpackGzip(bytes){if(typeof DecompressionStream==='undefined')throw Error('La décompression des références nécessite un navigateur à jour.');return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();}
 async function loadDetailIndex(){
  if(detailIndex)return detailIndex;if(!detailSpec||typeof DecompressionStream==='undefined')return null;
@@ -107,9 +117,10 @@ async function locateCard(src,enhance=false,normalScene=null){
   shortlist=[...mixed.map(s=>({...s,detail:true})),...baseline.filter(s=>!mixed.some(e=>e.index===s.index))];
  }
  const pending=new Map();let referenceWait=0;
- const prefetch=i=>{if(i<shortlist.length&&!pending.has(i)&&referenceWait<8000)pending.set(i,referenceFeatures(entries[shortlist[i].index],enhance).catch(()=>null));};
+ const prefetch=i=>{if(i<shortlist.length&&!pending.has(i)&&referenceWait<8000){const entry=entries[shortlist[i].index];pending.set(i,referenceFeatures(entry,enhance).catch(error=>{referenceFailure(entry,enhance,error,'localization',false);return null;}));}};
  prefetch(0);prefetch(1);prefetch(2);
- for(let i=0;i<shortlist.length;i++){
+ try{for(let i=0;i<shortlist.length;i++){
+  await analysisCheckpoint();
   const rank=shortlist[i],waiting=performance.now(),loaded=await pending.get(i),ref=loaded&&compact(loaded);referenceWait+=performance.now()-waiting;pending.delete(i);prefetch(i+3);if(!ref)continue;
   const nearest=samples.filter(s=>rank.detail||!s.additional).map(s=>({s,d:V.vectorDistance(s.v,entries[rank.index].v)})).sort((a,b)=>a.d-b.d).slice(0,enhance?2:3);
   const attempts=[{f:scene,rect:{x:0,y:0,width:src.cols,height:src.rows}}];
@@ -128,6 +139,8 @@ async function locateCard(src,enhance=false,normalScene=null){
   }
   if(best?.score>=24)break;
  }
+ }finally{await Promise.allSettled([...pending.values()]);}
+ checkAnalysis();
  return best||(!enhance?await locateCard(src,true,scene):null);
 }
 async function frame(data){
@@ -148,7 +161,13 @@ async function frame(data){
   return {...state,stableFrames:gate.frames,points:detection?.points.map(p=>({x:p.x/src.cols,y:p.y/src.rows}))||null,quality:q?{sharpness:q.sharpness,glare:q.glare,brightness:q.brightness}:null,method};
  }finally{V.dispose(src,crop);}
 }
+let activeAnalysis=null;
+function checkAnalysis(){if(activeAnalysis?.cancelled)throw Error('CANCELLED: preview interrupted for manual capture');}
+async function analysisCheckpoint(){if(activeAnalysis){await new Promise(resolve=>setTimeout(resolve,0));checkAnalysis();}}
 async function analyse(data){
+ await analysisCheckpoint();
+ // Fresh evidence for previews and still verification; never reuse a located identity.
+ if(data.independent){located=null;lastLocate=-Infinity;}
  const t=performance.now(),src=engine.matFromImageData(data.image);let card,rotated;
  try{
   const captured=data.alreadyCropped?null:V.capturePoints(data.points,src.cols,src.rows);
@@ -173,9 +192,10 @@ async function analyse(data){
   const ranks=[];let unavailable=0;
   // At most 16 normal candidates plus explicit reprints; three reference downloads at a time.
   const references=new Map(),queue=shortlist.slice();
-  async function load(){while(queue.length){const s=queue.shift();try{references.set(s.index,await referenceFeatures(entries[s.index]));}catch{unavailable++;}}}
-  await Promise.all([load(),load(),load()]);
+  async function load(){while(queue.length){checkAnalysis();const s=queue.shift();try{references.set(s.index,await referenceFeatures(entries[s.index]));}catch(error){unavailable++;referenceFailure(entries[s.index],false,error,'verification',true);}}}
+  await Promise.allSettled([load(),load(),load()]);checkAnalysis();
   for(const s of shortlist){
+   await analysisCheckpoint();
    const e=entries[s.index],ref=references.get(s.index);if(!ref)continue;const verified=V.verify(engine,query,ref);
    // Geometric evidence carries more weight than coarse visual resemblance.
    const evidence=verified.inliers*Math.min(1,verified.coverage/.2)*verified.ratio/(1+s.distance);
@@ -186,12 +206,13 @@ async function analyse(data){
    const detailCard=data.alreadyCropped?src:V.warp(engine,src,detection.points,2);
    try{const detailQuery=V.features(engine,detailCard,false,true);
     const extra=V.rankVectors([upright,inverted],entries,detailed||located?16:40);for(const s of shortlist)if(!extra.some(x=>x.index===s.index))extra.push(s);
-    const detailRefs=new Map(),jobs=extra.slice(),deadline=performance.now()+8000;async function detailLoad(){while(jobs.length&&performance.now()<deadline){const s=jobs.shift();try{detailRefs.set(s.index,await referenceFeatures(entries[s.index],true));}catch{unavailable++;}}}await Promise.all([detailLoad(),detailLoad(),detailLoad()]);unavailable+=jobs.length;
-    for(const s of extra){const ref=detailRefs.get(s.index);if(!ref)continue;const verified=V.verify(engine,detailQuery,ref);if(verified.inliers<12||verified.ratio<.55||verified.referenceCoverage<.15)continue;const e=entries[s.index],evidence=verified.inliers*Math.min(1,verified.coverage/.2)*verified.ratio/(1+s.distance),old=ranks.find(r=>r.id===e.id);if(!old||evidence>old.evidence){if(old)ranks.splice(ranks.indexOf(old),1);ranks.push({...publicEntry(e),...verified,distance:s.distance,evidence});}}
+    const detailRefs=new Map(),jobs=extra.slice(),deadline=performance.now()+8000;async function detailLoad(){while(jobs.length&&performance.now()<deadline){checkAnalysis();const s=jobs.shift();try{detailRefs.set(s.index,await referenceFeatures(entries[s.index],true));}catch(error){unavailable++;referenceFailure(entries[s.index],true,error,'verification',true);}}}await Promise.allSettled([detailLoad(),detailLoad(),detailLoad()]);checkAnalysis();unavailable+=jobs.length;
+    for(const s of jobs)referenceFailure(entries[s.index],true,{code:'BUDGET',message:'Référence non vérifiée avant la fin du budget de détails.'},'verification',true);
+    for(const s of extra){await analysisCheckpoint();const ref=detailRefs.get(s.index);if(!ref)continue;const verified=V.verify(engine,detailQuery,ref);if(verified.inliers<12||verified.ratio<.55||verified.referenceCoverage<.15)continue;const e=entries[s.index],evidence=verified.inliers*Math.min(1,verified.coverage/.2)*verified.ratio/(1+s.distance),old=ranks.find(r=>r.id===e.id);if(!old||evidence>old.evidence){if(old)ranks.splice(ranks.indexOf(old),1);ranks.push({...publicEntry(e),...verified,distance:s.distance,evidence});}}
    }finally{if(detailCard!==src)detailCard.delete();}
   }
   ranks.sort((a,b)=>b.evidence-a.evidence||a.distance-b.distance);
-  if(!ranks.length)return {kind:'reject',reason:'Les références ne sont pas accessibles. Vérifie ta connexion pour ce premier scan ; les références déjà préparées restent locales.',candidates:[],ms:Math.round(performance.now()-t)};
+  if(!ranks.length)return {kind:'reject',reason:'Les références ne sont pas accessibles. Vérifie ta connexion pour ce premier scan ; les références déjà préparées restent locales.',candidates:[],unavailable,ms:Math.round(performance.now()-t)};
   const winner=ranks[0];const indexedIds=new Set(entries.map(e=>e.id));const missing=allCards.filter(c=>c.name===winner?.name&&V.normaliseNumber(c.localId)===V.normaliseNumber(winner.localId)&&!indexedIds.has(c.id));
   // JP TEST: close same-name printings may reuse artwork with a different number.
   // Nominate and expose those editions; a colour descriptor cannot resolve them.
@@ -240,12 +261,31 @@ function search(data){
   return !!(term||number);
  }).slice(0,40).map(c=>{const sid=c.id.slice(0,c.id.lastIndexOf('-')),s=sets.find(s=>s.id===sid);return {...publicEntry(c),setName:s?.name};});
 }
-self.onmessage=async event=>{
- const {id,type,...data}=event.data;
+async function handleMessage(event){
+ const {id,type,...data}=event.data;const started=performance.now();
  try{
   let result;if(type==='init')result=await init(data);else{await engineReady;
    if(type==='frame')result=await frame(data);else if(type==='analyse')result=await analyse(data);else if(type==='prepare')result=await prepareSet(data);else if(type==='search')result=search(data);else if(type==='setCards'){const set=sets.find(s=>s.id===data.setId);if(!set)throw Error('Extension inconnue.');result=allCards.filter(c=>(c.setId||c.id.slice(0,c.id.lastIndexOf('-')))===set.id).map(c=>({...publicEntry(c),setName:set.name})).sort((a,b)=>a.localId.localeCompare(b.localId,undefined,{numeric:true}));}else if(type==='reset'){gate.reset();located=null;lastLocate=-Infinity;result=true;}else throw Error('Commande inconnue.');
   }
-  postMessage({id,type:'result',result});
- }catch(error){postMessage({id,type:'error',error:error.message||String(error)});}
+  if(type==='analyse')result.referenceFailures=activeAnalysis?.referenceFailures||[];
+  checkAnalysis();postMessage({id,type:'result',result,timing:{queueMs:started-event.queuedAt,workerMs:performance.now()-started}});
+ }catch(error){postMessage({id,type:'error',error:error.message||String(error),referenceFailures:activeAnalysis?.referenceFailures||[],timing:{queueMs:started-event.queuedAt,workerMs:performance.now()-started}});}
+}
+// One engine owner; aborted I/O settles and Mats are disposed before manual work.
+const workQueue=[];let draining=false;
+function cancelPreviews(){
+ if(activeAnalysis?.preview){activeAnalysis.cancelled=true;activeAnalysis.controller.abort();}
+ for(let i=workQueue.length-1;i>=0;i--)if(workQueue[i].event.data.type==='analyse'&&!workQueue[i].event.data.manual){const job=workQueue.splice(i,1)[0];postMessage({id:job.event.data.id,type:'error',error:'CANCELLED: queued preview'});job.resolve();}
+}
+async function drain(){
+ if(draining)return;draining=true;
+ try{while(workQueue.length){const job=workQueue.shift(),data=job.event.data;
+  activeAnalysis=data.type==='analyse'?{preview:!data.manual,cancelled:false,controller:new AbortController()}:null;
+  try{await handleMessage(job.event);}finally{activeAnalysis=null;job.resolve();}
+ }}finally{draining=false;}
+}
+self.onmessage=event=>{
+ if(event.data.type==='cancelPreview'){cancelPreviews();postMessage({id:event.data.id,type:'result',result:true});return Promise.resolve();}
+ const priority=event.data.type==='analyse'&&event.data.manual;if(priority)cancelPreviews();
+ return new Promise(resolve=>{const job={event:{data:event.data,queuedAt:performance.now()},resolve};if(priority)workQueue.unshift(job);else workQueue.push(job);void drain();});
 };

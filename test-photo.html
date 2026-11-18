@@ -5,8 +5,17 @@
 <meta name="theme-color" content="#102a2a"><title>TCG Portfolio · Photo nette · Test</title>
 <link rel="stylesheet" href="scanner/style.css?v=20261009-6">
 <link rel="stylesheet" href="interface-reference/mobile.css?v=20261009-8">
-<link rel="stylesheet" href="scanner/photo.css?v=20261011-camera1">
+<link rel="stylesheet" href="scanner/photo.css?v=20261118-web117">
 <link rel="stylesheet" href="scanner/banner.css?v=20261021-banner2">
+<style id="native-shutter-feedback">
+ /* Android WebView paints a rectangular tap highlight unless explicitly disabled. */
+ #capture{-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+ #capture:active,#capture:focus{background:transparent;box-shadow:none}
+ #capture:focus-visible{outline:none}
+ #capture:focus-visible .shutterDisc{outline-color:#a3bcf5}
+ #capture .shutterDisc{pointer-events:none}
+ #capture:active .shutterDisc{transform:scale(.94);background:#e3e8ee}
+ </style>
 </head>
 <body>
 <div id="appScroll" class="appScroll">
@@ -14,7 +23,7 @@
 <main>
 <section id="homeScreen" hidden><img class="homeLogo" src="interface-reference/craft-drop-logo.webp?v=20261009-8" alt="Craft &amp; Drop"><p class="muted">Tes cartes, réunies au même endroit.</p><div class="metrics"><article><span>Classeur</span><strong id="homeCount">0 cartes</strong></article><article><span>Valeur de mon classeur</span><strong id="homeSpend">Calcul…</strong><small id="homeValueState" aria-live="polite"></small></article></div><button id="homeScan" class="primary wide">Scanner une carte</button><div class="shortcuts"><button id="homeCollection">Mes cartes →</button><button id="homeCatalog">Catalogue →</button></div><h2>Derniers ajouts</h2><div id="recentCards" class="recent"></div><p class="muted">Valeur estimée d’après les prix Cardmarket. Les cartes sans prix ou sans variante confirmée ne sont pas incluses.</p></section>
 <section id="scanScreen"><img class="homeLogo" src="interface-reference/craft-drop-logo.webp?v=20261009-8" alt="Craft &amp; Drop">
-<div class="intro"><p class="eyebrow">POKÉMON · SCAN LOCAL</p><h1>Scanner une carte</h1><p>Cadre vert : image prête. Appuie sur Scanner pour analyser la photo.</p></div>
+<div class="intro"><p class="eyebrow">POKÉMON · SCAN LOCAL</p><h1>Scanner une carte</h1><p>Présente une carte pour le scan automatique, ou appuie sur Scanner pour prendre une photo.</p></div>
 <div class="toolbar"><label>Langue de la carte <select id="lang"><option value="fr">Français</option><option value="en">English</option><option value="ja">日本語 · Japonais (partiel)</option></select></label><button id="catalogBtn" class="text">Catalogue visuel</button></div>
 <div id="stage" class="stage">
  <video id="video" autoplay playsinline muted hidden></video>
@@ -38,7 +47,7 @@
 <section id="results" class="panel" hidden><div class="resultTop"><h2 id="resultTitle">Résultat</h2><canvas id="cropPreview" width="252" height="352" aria-label="Carte détectée et redressée"></canvas></div><p id="resultReason"></p><div id="candidates"></div></section>
 <section id="selection" class="panel" hidden><h2 id="selectionName"></h2><p id="selectionMeta"></p><section class="prices" aria-label="Prix du marché"><h3>Prix du marché</h3><div id="priceContent" aria-live="polite"></div></section><label>Finition <select id="finish"><option value="">À confirmer</option><option>Normale</option><option>Holographique</option><option>Reverse</option><option>Autre</option></select></label><label>Prix d’achat (€)<input id="buy" inputmode="decimal" placeholder="Facultatif"></label><button id="add" class="primary">Ajouter au portfolio</button><p class="muted">La finition et l’état ne sont pas déterminés automatiquement.</p></section>
 <details class="panel"><summary>Rechercher une carte manuellement</summary><div class="fields"><label>Nom<input id="name" placeholder="Dracaufeu"></label><label>Référence<input id="number" placeholder="021/072 ou OP05-119"></label></div><button id="search">Rechercher</button><p class="muted">Catalogue Pokémon pour cette version. Une référence seule ne suffit pas à confirmer l’édition.</p></details>
-<details class="panel" id="diagnostics"><summary>Détails du dernier scan</summary><pre id="debug">Aucun scan.</pre><button id="copyDiagnostics">Copier le diagnostic</button></details>
+<details class="panel" id="diagnostics"><summary>Diagnostic caméra et reconnaissance</summary><div class="diagnosticActions"><button id="copyDiagnostics" type="button">Copier le diagnostic</button><button id="exportDiagnostics" type="button">Exporter / Partager le diagnostic</button></div><pre id="debug">Aucun scan.</pre></details>
 </section>
 <section id="catalogScreen" hidden><img class="homeLogo" src="interface-reference/craft-drop-logo.webp?v=20261009-8" alt="Craft &amp; Drop"><button id="back" class="text">← Retour au scanner</button><h1>Catalogue</h1><p id="catalogHelp">Ouvre une extension pour parcourir ses cartes et les ajouter au classeur. La préparation du scan hors ligne reste facultative.</p><p id="catalogState" role="status"></p><input id="setFilter" type="search" placeholder="Rechercher une extension"><div id="setList"></div></section>
 <section id="portfolioScreen" hidden><img class="homeLogo" src="interface-reference/craft-drop-logo.webp?v=20261009-8" alt="Craft &amp; Drop"><h1>Mes cartes</h1><p id="count"></p><div id="portfolioList"></div><p class="muted">Le portfolio utilise le même stockage local que la version stable, sur ce navigateur.</p></section>
@@ -47,8 +56,8 @@
 </div>
 <nav aria-label="Navigation"><button id="homeNav">Accueil</button><button id="catalogNav">Catalogue</button><button id="scanNav" class="active">Scanner</button><button id="portfolioNav">Classeur</button></nav>
 
-<script type="module" src="scanner/banner.js?v=20261021-banner1"></script>
-<script type="module" src="scanner/photo-app.js?v=20261011-camera1"></script>
-<script type="module" src="interface-reference/mobile.js?v=20261011-camera1"></script>
+<script type="module" src="scanner/banner.js?v=20261118-web117"></script>
+<script type="module" src="scanner/photo-app.js?v=20261118-web117"></script>
+<script type="module" src="interface-reference/mobile.js?v=20261021-camerax4"></script>
 </body></html>
 

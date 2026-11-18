@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="scanner/photo.css?v=20261118-web117">
 <link rel="stylesheet" href="scanner/banner.css?v=20261021-banner2">
 <style id="native-shutter-feedback">
+ .brandVersion{display:flex;flex-direction:column;gap:5px;min-width:0}
+ .siteVersion{font-size:11px;line-height:1.4;color:#a7bff4;font-weight:500}
  /* Android WebView paints a rectangular tap highlight unless explicitly disabled. */
  #capture{-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;-webkit-user-select:none}
  #capture:active,#capture:focus{background:transparent;box-shadow:none}
@@ -19,7 +21,7 @@
 </head>
 <body>
 <div id="appScroll" class="appScroll">
-<header><a href="./" class="brand">TCG Portfolio</a><a class="badge" href="atelier-interface.html">Atelier interface</a></header>
+<header><div class="brandVersion"><a href="./" class="brand">TCG Portfolio</a><span class="siteVersion" aria-label="Version du site : web 1.1.7">Web 1.1.7 · 18/11/2026</span></div><a class="badge" href="atelier-interface.html">Atelier interface</a></header>
 <main>
 <section id="homeScreen" hidden><img class="homeLogo" src="interface-reference/craft-drop-logo.webp?v=20261009-8" alt="Craft &amp; Drop"><p class="muted">Tes cartes, réunies au même endroit.</p><div class="metrics"><article><span>Classeur</span><strong id="homeCount">0 cartes</strong></article><article><span>Valeur de mon classeur</span><strong id="homeSpend">Calcul…</strong><small id="homeValueState" aria-live="polite"></small></article></div><button id="homeScan" class="primary wide">Scanner une carte</button><div class="shortcuts"><button id="homeCollection">Mes cartes →</button><button id="homeCatalog">Catalogue →</button></div><h2>Derniers ajouts</h2><div id="recentCards" class="recent"></div><p class="muted">Valeur estimée d’après les prix Cardmarket. Les cartes sans prix ou sans variante confirmée ne sont pas incluses.</p></section>
 <section id="scanScreen"><img class="homeLogo" src="interface-reference/craft-drop-logo.webp?v=20261009-8" alt="Craft &amp; Drop">
